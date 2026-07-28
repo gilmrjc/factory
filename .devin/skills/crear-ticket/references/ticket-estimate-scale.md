@@ -1,0 +1,1 @@
+../../_shared/ticket-estimate-scale.md

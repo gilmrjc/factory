@@ -1,0 +1,1 @@
+../../_shared/mermaid-c4-template.md

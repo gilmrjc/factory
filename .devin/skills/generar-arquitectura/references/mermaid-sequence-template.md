@@ -1,0 +1,1 @@
+../../_shared/mermaid-sequence-template.md

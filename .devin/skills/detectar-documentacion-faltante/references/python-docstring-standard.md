@@ -1,0 +1,1 @@
+../../_shared/python-docstring-standard.md

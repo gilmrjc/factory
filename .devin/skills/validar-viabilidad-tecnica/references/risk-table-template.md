@@ -1,0 +1,1 @@
+../../_shared/risk-table-template.md

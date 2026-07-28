@@ -1,0 +1,1 @@
+../../_shared/component-analysis-table.md

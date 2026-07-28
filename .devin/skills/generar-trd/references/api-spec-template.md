@@ -1,0 +1,1 @@
+../../_shared/api-spec-template.md

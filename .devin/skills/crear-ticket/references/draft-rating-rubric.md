@@ -1,0 +1,1 @@
+../../_shared/draft-rating-rubric.md

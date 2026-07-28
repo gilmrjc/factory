@@ -1,0 +1,1 @@
+../../_shared/criticality-matrix-template.md

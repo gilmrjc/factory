@@ -1,0 +1,1 @@
+../../_shared/infrastructure-analysis-table.md

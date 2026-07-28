@@ -1,0 +1,1 @@
+../../_shared/model-spec-template.md
