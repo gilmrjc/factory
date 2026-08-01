@@ -3,7 +3,7 @@ name: validar-viabilidad-producto
 description: >-
   Valida viabilidad de un requerimiento de producto: alineación con visión,
   demanda real, recursos disponibles, riesgo negocio. Salida:
-  docs/<domain>/<REQ-SLUG>-viability.md con go/no-go. Gate de aprobación
+  docs/<domain>/initiatives/<PRD-SLUG>/product-viability.md con go/no-go. Gate de aprobación
   antes de proceder a definir usuarios. Úsalo para decidir si invertir tiempo
   en PRD o rechazar idea.
 argument-hint: "[REQ-SLUG | REQUIREMENTS-RUTA]"
@@ -28,9 +28,10 @@ Solo análisis: no aprueba finalmente. Genera recomendación para stakeholders.
 Requerido: `REQ-SLUG` o `REQUIREMENTS-RUTA`.
 
 Infiere desde:
-- Ruta: `docs/**/<REQ-SLUG>-requirements.md`
+- Ruta: `docs/**/initiatives/**/requirements.md`
 - Contenido pegado: si usuario pega requerimiento capturado
 - Requerimiento previo: busca archivo más reciente de `*-requirements.md`
+- Existente: busca `docs/**/initiatives/**/product-viability.md` para reanudar/actualizar una validación previa
 
 Pregunta cuando falta: "¿Qué requerimiento valido? (ruta o slug)"
 
@@ -209,32 +210,54 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 Estructura:
 
 1. **Resumen ejecutivo**: Go/No-Go + rationale
-2. **Alineación estratégica**: ¿Encaja con visión?
-3. **Validación de demanda**: Evidencia nivel-apropiada
-4. **Disponibilidad de recursos**: Equipo, tiempo, tech
-5. **Análisis de riesgo**: Técnico, negocio, oportunidad
+2. **Alineación Estratégica**: ¿Encaja con visión?
+3. **Validación de Demanda Real**: Evidencia nivel-apropiada
+4. **Disponibilidad de Recursos**: Equipo, tiempo, tech
+5. **Análisis de Riesgo**: Técnico, negocio, oportunidad
 6. **Veredicto final**: Go/Conditional Go/No-Go
 7. **Condiciones (si Conditional)**: Qué debe resolverse
-8. **Ready for**: `definir-usuarios` o `blocked`
+8. **Ready for**: `definir-usuarios` o `blocked` (con ruta relativa del siguiente artefacto)
 
 ## Salida
 
-Escribe en: `docs/<domain>/<REQ-SLUG>-viability.md`
+Escribe en: `docs/<domain>/initiatives/<PRD-SLUG>/product-viability.md`
+
+**Header requerido** (al inicio del documento):
+- Req slug
+- Dominio
+- Fecha
+- Skill: validar-viabilidad-producto
+- Input: ruta del artefacto fuente (requirements.md)
+- Stage (MVP/Growth/Scale, cuando aplique)
 
 **Secciones requeridas**:
-- Resumen ejecutivo (Go/No-Go)
-- Validación alineación estratégica
-- Validación demanda (estado-apropiada)
-- Disponibilidad recursos
-- Matriz de riesgo
-- Veredicto final (con score)
-- Condiciones si Conditional Go
-- Ready for (`definir-usuarios`, `blocked`)
+- Header requerido
+- 1. Resumen ejecutivo (Go/No-Go)
+- 2. Alineación Estratégica
+- 3. Validación de Demanda Real (estado-apropiada)
+- 4. Disponibilidad de Recursos
+- 5. Matriz de Riesgo
+- 6. Veredicto Final (con score)
+- 7. Condiciones si Conditional Go
+- Autoevaluación (checklist de validación)
+- Ready for (`definir-usuarios`, `blocked`, `spike`)
+
+**Autoevaluación (checklist de validación)**:
+- [ ] Alineación estratégica evaluada contra visión/roadmap explícito
+- [ ] Demanda validada con evidencia apropiada al stage (MVP/Growth/Scale)
+- [ ] Recursos (equipo, tiempo, infraestructura) verificados
+- [ ] Riesgos técnicos, de negocio y de oportunidad mapeados
+- [ ] Score calculado y veredicto (Go/Conditional Go/No-Go) justificado
+- [ ] Condiciones de Conditional Go listadas y accionables
+- [ ] Ready for definido correctamente
+- [ ] Documento de salida accionable para stakeholders
 
 Ready for valores:
 - `definir-usuarios`: Go approved, proceder a definir personas
 - `blocked`: No-Go o Conditional Go con condiciones críticas no resueltas
 - `spike`: Conditional Go, necesita spike técnico primero
+
+En la sección Ready for, incluye la ruta relativa del siguiente artefacto esperado (ej: `docs/<domain>/initiatives/<PRD-SLUG>/personas-mapping.md`).
 
 ---
 

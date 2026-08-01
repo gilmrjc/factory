@@ -1,12 +1,12 @@
 ---
 name: validar-viabilidad-tecnica
 description: >-
-  Valida la viabilidad técnica de un epic o PRD contra el codebase actual.
-  Identifica deuda técnica que bloquea, construcciones nuevas necesarias,
-  precedentes en el código, y estimaciones ajustadas. Salida:
-  docs/<domain>/<EPIC-SLUG>-viability-assessment.md. Úsalo después de
-  planificar-desde-prd para detectar bloqueadores técnicos antes de dividir
-  épicas.
+  Valida viabilidad técnica de un epic o PRD contra el codebase actual
+  identificando deuda técnica bloqueante, construcciones nuevas necesarias y
+  precedentes. Salida: docs/<domain>/<EPIC-SLUG>-viability-assessment.md.
+  Úsalo cuando el usuario pida validar, evaluar, auditar o revisar viabilidad
+  técnica. No lo usas para generar documentación arquitectónica (usar
+  generar-arquitectura) ni para dividir epics en tareas (usar dividir-epic).
 argument-hint: "[EPIC-PLAN-RUTA | PRD-RUTA]"
 allowed-tools:
   - read

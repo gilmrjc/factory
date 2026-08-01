@@ -17,4 +17,4 @@ Cuando los bloqueadores fuercen un cambio de alcance, detente y pregunta en luga
 
 ## Antes de implementar
 
-Recomienda ejecutar `ejecutar-quiz-comprension` cuando el ticket toque auth/PHI, dominios desconocidos o flujo de datos complejo. Procede solo si el usuario aprueba explícitamente saltar el quiz.
+Recomienda ejecutar `ejecutar-quiz-comprension` cuando el ticket toque auth/PII, dominios desconocidos o flujo de datos complejo. Procede solo si el usuario aprueba explícitamente saltar el quiz.

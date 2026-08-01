@@ -5,7 +5,7 @@
 - **8**: Útil pero casos débiles, severidad suave, o citas de convención escasas.
 - **7**: Cubre los hilos; división, severidad, o Ready necesita revisión.
 - **5–6**: Hilos faltantes, acuerdos de goma, Ready contradice a los blockers, o pregunta la intención sin respuesta.
-- **1–4**: La clasificación contradice las fuentes, recomienda codificar a pesar de bloqueadores, u omite riesgos de auth/PHI.
+- **1–4**: La clasificación contradice las fuentes, recomienda codificar a pesar de bloqueadores, u omite riesgos de auth/PII.
 
 ## Estrategia de revisión
 

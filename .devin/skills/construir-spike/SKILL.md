@@ -1,9 +1,7 @@
 ---
 name: construir-spike
 description: >-
-  Construye un spike desechable para responder una pregunta de diseño de una tarea o documento de contexto.
-  Úsalo cuando una pregunta de diseño no esté clara y un bocacho desechable la resuelva más rápido que el debate,
-  y no para implementar la feature real, abrir PR ni pulir en producción.
+  Construye un spike desechable para responder una pregunta de diseño específica. Úsalo cuando el usuario pida investigar, explorar, probar o validar una incógnita técnica mediante un boceto desechable. No lo usas para hacer visible el comportamiento en runtime (usa construir-demo), implementar la feature real, abrir PR ni pulir en producción.
 argument-hint: "[TASK-SLUG | CONTEXT-DOC-SLUG]"
 allowed-tools:
   - read
@@ -27,7 +25,7 @@ Pon la intención de producto desconocida en Preguntas abiertas. Haz una sola pr
 
 Persigue una sola pregunta de diseño por spike. Cuando el usuario nombra múltiples preguntas, detente y pregunta cuál spikpear primero; divide el resto en spikes separados.
 
-Usa solo fixtures sintéticos. Detente y pregunta cuando se necesitarían datos reales de clientes, PHI, secrets, o credenciales de producción.
+Usa solo fixtures sintéticos. Detente y pregunta cuando se necesitarían datos reales de clientes, PII, secrets, o credenciales de producción.
 
 Esto no es una demo interactiva. [construir-demo](../construir-demo/SKILL.md) hace visible el comportamiento en runtime mediante una demo standalone.
 
@@ -102,4 +100,4 @@ Luego detente. Quédate dentro de la única pregunta del spike. Aparca los descu
 - Suficiente detalle para que [planificando-implementacion](../planificando-implementacion/SKILL.md) pueda proceder sin re-ejecutar el spike.
 - La Fase A fue aprobada antes de escribir cualquier código del spike.
 - Exactamente una pregunta de diseño fue respondida.
-- Solo se usaron fixtures sintéticos (sin datos reales de clientes, PHI, secrets, o credenciales de producción).
+- Solo se usaron fixtures sintéticos (sin datos reales de clientes, PII, secrets, o credenciales de producción).

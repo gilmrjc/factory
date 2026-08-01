@@ -3,10 +3,9 @@ name: predecir-impacto-cambio
 description: >-
   Analiza cambios de código (plan de implementación o rama) y predice impacto
   en sistemas downstream: dependencias, breaking changes, efecto en performance,
-  seguridad. Salida: docs/<domain>/<TICKET-ID>-impact-analysis.md con matriz de
-  riesgos, servicios afectados, esfuerzo de cascade updates. Úsalo después de
-  planificar-implementacion (antes de implementar) o después de revisar-cambios-locales
-  (antes de crear PR).
+  seguridad. Úsalo cuando el usuario pida evaluar, evaluar riesgo o hacer análisis
+  de impacto de cambios antes de implementar o crear PR. No implementa cambios
+  ni modifica código; solo predice impacto para informar decisiones.
 argument-hint: "[PLAN-DOC | BRANCH]"
 allowed-tools:
   - read

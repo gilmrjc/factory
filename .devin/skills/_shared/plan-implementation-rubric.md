@@ -5,7 +5,7 @@
 - **8**: Plan senior pero desalineado con las convenciones hermanas citadas o pasos de validación vagos para las capas cambiadas
 - **7**: Implementa los requisitos; aún se necesitan mejoras de arquitectura antes de codificar
 - **5–6**: Vacíos en criterios, tests, edge cases inseguros sin manejar, o scope creep sin Preguntas abiertas
-- **1–4**: El plan contradice los AC del ticket, entry points incorrectos, o enfoque inseguro de auth/PHI
+- **1–4**: El plan contradice los AC del ticket, entry points incorrectos, o enfoque inseguro de auth/PII
 
 ## Gates de aprobación
 

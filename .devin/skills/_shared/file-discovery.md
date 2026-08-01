@@ -61,7 +61,7 @@ Cuando `REFERENCE-DOC-SOURCE` no está en el mensaje:
 3. Obtén cada candidato; prefiere páginas tituladas como TDD, spec, design, epic o investigation.
 4. Registra el título + URL de la página obtenida en la línea de inputs resueltos y en secciones de índice de fuentes.
 
-No pegues secretos, PHI ni PII de clientes desde tu documentación de referencia en documentos locales. Resume en su lugar.
+No pegues secretos, PII de clientes desde tu documentación de referencia en documentos locales. Resume en su lugar.
 
 ## Reglas de precedencia para conflictos entre fuentes
 

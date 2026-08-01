@@ -5,8 +5,9 @@ description: >-
   Usa subagentes en paralelo para clasificar grupos de hilos independientes. Escribe
   docs/<domain>/<TICKET-ID>-pr-<PR-NUMBER>-comments-triage.md con veredicto, severidad,
   respuesta propuesta y Ready for. Carga el doc de review-comments cuando está presente.
-  Análisis únicamente — no publica respuestas ni resuelve hilos. Úsalo cuando comentarios
-  nuevos de revisión en un PR abierto necesiten un fix, respuesta o plan de aplazamiento.
+  Análisis únicamente — no publica respuestas ni resuelve hilos. Úsalo cuando el usuario pida
+  clasificar, triage, priorizar o categorizar comentarios nuevos de revisión en un PR abierto
+  que necesiten un fix, respuesta o plan de aplazamiento.
 argument-hint: "[PR-NUMBER] [TICKET-SLUG]"
 allowed-tools:
   - read
@@ -71,7 +72,7 @@ Cuando queden cero hilos abiertos después del filtrado, escribe un triage breve
 1. Agrupa los comentarios abiertos temáticamente (la misma preocupación en varios archivos = un tema).
 2. Compara los patrones disputados con archivos similares en el repo para convenciones. Cuando el veredicto sea **disagree** o **partially agree**, cita **al menos una** ruta hermana que respalde el caso (o lista el vacío bajo Preguntas abiertas).
 3. **Guía de severidad** (calibra antes de etiquetar):
-    - **blocker** — rompe criterios de aceptación, auth/PHI, o comportamiento correcto
+    - **blocker** — rompe criterios de aceptación, auth/PII, o comportamiento correcto
     - **important** — incorrecto vs convenciones del proyecto o probable bug/regresión
     - **nit** — estilo o claridad opcional; no requerido para subir
     - **fuera del alcance** — fuera de este PR / ligado a objetivos excluidos de la fuente

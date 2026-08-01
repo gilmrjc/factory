@@ -140,7 +140,7 @@ Lee `Ready for` de `…-implementation-plan.md`:
 - **`generar-brief-contexto`**: Re-ejecuta Fase 2, luego Fase 4.
 - **`implement`**: Continúa a Fase 6 cuando la puntuación del plan sea ≥ 9.
 
-Antes de Fase 6, ofrece `understanding-quiz` cuando el ticket toque auth/PHI, dominios desconocidos o flujo de datos complejo. Procede a Fase 6 solo cuando el usuario aprueba explícitamente saltar el quiz.
+Antes de Fase 6, ofrece `understanding-quiz` cuando el ticket toque auth/PII, dominios desconocidos o flujo de datos complejo. Procede a Fase 6 solo cuando el usuario aprueba explícitamente saltar el quiz.
 
 Cuando la puntuación del plan esté por debajo de 9 o las preguntas abiertas bloqueen la codificación segura, detente y pregunta si replanificar o resolver preguntas primero.
 
@@ -249,3 +249,5 @@ Orquestar implementación de ticket — <TICKET-SLUG>
 ## Termina cuando
 
 Todas las fases requeridas están completadas, o el workflow se detuvo limpiamente en una puerta con bloqueadores documentados. Los artefactos existen en disco con puntuaciones ≥ 9 donde aplica, y la validación de Fase 7 está en verde — o se le preguntó al usuario en una puerta con una razón clara y la siguiente acción.
+
+**Límite de alcance**: este orquestador termina en Fase 7 (verificación) o, si el usuario pide PR, en Fase 8. No encadena automáticamente `actualizar-mapeo-contextos`, `revisar-cambios-locales` ni `revisar-cambios-implementados` — el ticket implementado queda con verificación en verde pero sin gate de revisión local ni validación post-implementación. Si el usuario los necesita antes de abrir PR, invócalos como pasos manuales adicionales después de Fase 7.

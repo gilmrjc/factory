@@ -119,7 +119,7 @@ Sigue la estructura canónica en [ticket-template.md](assets/ticket-template.md)
 - El out-of-scope explícito vence a la prosa larga.
 - Enlaza documentos relacionados por slug o ID genérico (no usar formatos específicos de herramienta).
 - Mantenlo escaneable: encabezados, párrafos cortos, tablas cuando sean útiles.
-- Nunca incluyas secrets, PHI, o PII de clientes; resume en su lugar.
+- Nunca incluyas secrets o PII de clientes; resume en su lugar.
 - Nunca dejes líneas de template vacías.
 
 **Estimación** — propone un valor usando [ticket-estimate-scale.md](references/ticket-estimate-scale.md) y muestra la T-shirt size correspondiente en el borrador. La estimación es independiente de la herramienta de gestión.
@@ -176,7 +176,7 @@ Sigue el protocolo en [export-protocol.md](references/export-protocol.md) cuando
 - No quedan líneas de template vacías ni stubs de placeholder.
 - Cada incógnita está en Preguntas abiertas; nada inventado como intención de producto.
 - Las secciones opcionales aparecen solo cuando la puerta estricta del INPUT de Fase B se cumple.
-- Sin secrets, PHI, o PII de clientes; resumido si hace falta.
+- Sin secrets o PII de clientes; resumido si hace falta.
 - Puntuación del borrador ≥ 9, o bloqueadores reportados después de 2 rondas.
 - Ready for es exactamente una acción de menú con justificación.
 - El borrador es agnóstico a herramientas específicas; no contiene metadatos o formatos exclusivos de ninguna herramienta.

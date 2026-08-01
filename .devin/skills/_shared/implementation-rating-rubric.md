@@ -9,7 +9,7 @@ Aplica los gates en orden. Asigna el puntaje más alto cuyos gates todos pasen.
 - **8**: Mayormente completo; gaps menores de AC o validación documentados en las notas
 - **7**: Parcial; gaps significativos o fallos documentados
 - **5–6**: Incompleto, validación en rojo, o drift de alcance sin explicación
-- **1–4**: Enfoque incorrecto enviado, regresión de auth/PHI, o contradice los AC del plan
+- **1–4**: Enfoque incorrecto enviado, regresión de auth/PII, o contradice los AC del plan
 
 Verificación rápida de 9 vs 8: si una revisión local puntuaría el cambio ≤ 8, la puntuación de implementación es ≤ 8.
 

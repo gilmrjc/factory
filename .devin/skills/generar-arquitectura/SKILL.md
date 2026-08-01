@@ -1,12 +1,12 @@
 ---
 name: generar-arquitectura
 description: >-
-  Genera documentación arquitectónica completa para un epic: diagramas de
-  componentes, flujos de datos, integraciones, trade-offs y decisiones.
-  Salida: docs/<domain>/<EPIC-SLUG>-architecture.md con diagramas Mermaid,
-  componentes, relaciones inter-servicio. Puente visual entre TRD y
-  implementación. Úsalo después de generar-trd para documentar la arquitectura
-  de forma visual.
+  Genera documentación arquitectónica con diagramas de componentes, flujos de
+  datos, integraciones y trade-offs. Salida: docs/<domain>/<EPIC-SLUG>-architecture.md
+  con diagramas Mermaid. Úsalo cuando el usuario pida generar, diseñar o
+  documentar arquitectura visualmente. No lo usas para especificar requisitos
+  técnicos detallados (usar generar-trd) ni para documentar decisiones
+  arquitectónicas (usar generar-adr).
 argument-hint: "[EPIC-SLUG | TRD-RUTA]"
 allowed-tools:
   - read

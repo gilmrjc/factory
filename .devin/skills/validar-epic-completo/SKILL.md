@@ -1,11 +1,12 @@
 ---
 name: validar-epic-completo
 description: >-
-  Orquestador que valida viabilidad y genera documentación completa de un
-  epic: validar-viabilidad-tecnica → generar-arquitectura → generar-test-strategy
-  → sugerir-test-cases. Ejecuta en secuencia y genera resumen de readiness.
-  Salida: docs/<domain>/<EPIC-SLUG>-complete-validation.md. Úsalo después de
-  dividir-epic para validar epic antes de crear tickets.
+  Orquesta validación completa de epic ejecutando validar-viabilidad-tecnica,
+  generar-arquitectura, generar-estrategia-testing y sugerir-casos-prueba en
+  secuencia. Salida: docs/<domain>/<EPIC-SLUG>-complete-validation.md con
+  resumen de readiness. Úsalo cuando el usuario pida validar, auditar o revisar
+  un epic completamente antes de crear tickets. No lo usas para ejecutar
+  validaciones individuales (invocar skills directamente).
 argument-hint: "[EPIC-PLAN-RUTA]"
 allowed-tools:
   - read
@@ -25,8 +26,8 @@ Orquestador que valida epic completo: viabilidad técnica, arquitectura, estrate
 **Workflow**:
 1. `validar-viabilidad-tecnica` → ¿Es viable técnicamente?
 2. `generar-arquitectura` → Diagramas y diseño
-3. `generar-test-strategy` (ZOMBIE methodology) → Estrategia de testing
-4. `sugerir-test-cases` → Casos concretos
+3. `generar-estrategia-testing` (ZOMBIE methodology) → Estrategia de testing
+4. `sugerir-casos-prueba` → Casos concretos
 5. Consolidar en reporte único de readiness
 
 > **Nota sobre ZOMBIE**: ZOMBIE es una metodología de testing para definir estrategia de cobertura. La documentación completa estará disponible en `_shared/zombie-methodology.md` cuando se cree.
@@ -68,7 +69,7 @@ Declara inputs resueltos: epic, plan de épics.
 
 ## Fase C — Ejecutar Generar Test Strategy (ZOMBIE methodology)
 
-1. Invoca `generar-test-strategy` con arquitectura
+1. Invoca `generar-estrategia-testing` con arquitectura
 2. Carga resultado: `docs/<domain>/<EPIC-SLUG>-test-strategy.md`
 3. Extrae:
    - Matriz de criticidad de componentes
@@ -77,14 +78,23 @@ Declara inputs resueltos: epic, plan de épics.
 
 ## Fase D — Ejecutar Sugerir Test Cases
 
-1. Invoca `sugerir-test-cases` con test strategy
+1. Invoca `sugerir-casos-prueba` con test strategy
 2. Carga resultado: `docs/<domain>/<EPIC-SLUG>-test-cases.md`
 3. Cuenta:
    - # de test cases sugeridos
    - Cobertura esperada
    - Prioridades
 
-## Fase E — Consolidar Readiness Report
+## Fase E — Gate Final de Validación
+
+Antes de consolidar el reporte, pregunta al humano: **¿Go/No-Go para aprobar este epic?**
+
+- Si **No-Go**: Detén el workflow, marca el epic como "Rejected" en el plan de acción y sugiere revisar arquitectura, viabilidad o requisitos antes de continuar.
+- Si **Go**: Procede a Fase F para consolidar el reporte.
+
+Este gate asegura que el humano aprueba la validación completa antes de proceder a crear tickets.
+
+## Fase F — Consolidar Readiness Report
 
 ```
 ### Epic Validation Summary
@@ -126,7 +136,7 @@ Declara inputs resueltos: epic, plan de épics.
 - Timeline: 5 weeks (coordinated with infrastructure setup)
 ```
 
-## Fase F — Matriz de Decisión
+## Fase G — Matriz de Decisión
 
 ```
 ### Decision Matrix: Proceder o No
@@ -145,7 +155,7 @@ Declara inputs resueltos: epic, plan de épics.
 **Veredicto**: ✅ READY FOR EPIC BREAKDOWN → create tickets
 ```
 
-## Fase G — Generar Plan de Acción (Próximos Pasos)
+## Fase H — Generar Plan de Acción (Próximos Pasos)
 
 ```
 ## Próximos Pasos
@@ -170,7 +180,7 @@ Declara inputs resueltos: epic, plan de épics.
 11. [ ] Retrospectiva y lecciones aprendidas
 ```
 
-## Fase H — Escribir Reporte de Validación Completo
+## Fase I — Escribir Reporte de Validación Completo
 
 Estructura:
 
@@ -192,8 +202,9 @@ Antes de generar el reporte final, verifica que todos los pasos se completaron:
 - [ ] Epic plan leído completamente
 - [ ] Validar-viabilidad-tecnica ejecutado y resultado cargado
 - [ ] Generar-arquitectura ejecutado y resultado cargado
-- [ ] Generar-test-strategy ejecutado y resultado cargado
-- [ ] Sugerir-test-cases ejecutado y resultado cargado
+- [ ] Generar-estrategia-testing ejecutado y resultado cargado
+- [ ] Sugerir-casos-prueba ejecutado y resultado cargado
+- [ ] Gate final de validación ejecutado (pregunta Go/No-Go al humano)
 - [ ] Matriz de decisión completada con veredicto
 - [ ] Plan de acción generado con próximos pasos
 - [ ] Riesgos residuales identificados

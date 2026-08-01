@@ -5,7 +5,7 @@ description: >-
   docs/<domain>/<TICKET-ID>-pr-<N>-review.md y …-pr-<N>-review-comments.md con bloques
   de comentarios postables en la plataforma de control de versiones. Solo análisis — sin correcciones de código,
   publicaciones en la plataforma ni merge. Establece Ready for en improve, merge-nits-only o blocked.
-  Úsalo cuando el usuario pida revisar un PR (checklist de AC, convenciones, hallazgos, readiness),
+  Úsalo cuando el usuario pida revisar, auditar, evaluar o puntuar un PR (checklist de AC, convenciones, hallazgos, readiness),
   y no para aplicar correcciones, publicar en la plataforma ni modificar código.
 argument-hint: "[PR-NUMBER] [TICKET-SLUG]"
 allowed-tools:
@@ -91,7 +91,7 @@ Sigue las secciones requeridas del brief listadas abajo contra el diff del PR y 
 4. Hallazgos por severidad (blocker, important, nit)
 5. Estado de validación (comandos ejecutados y pass/fail)
 6. Pase de convenciones (≥2 rutas hermanas citadas)
-7. Efectos de segundo orden (callers, jobs, flags, auth/PHI, mobile/legacy)
+7. Efectos de segundo orden (callers, jobs, flags, auth/PII, mobile/legacy)
 8. Puntuación del brief + breve justificación
 9. Ready for: `merge-nits-only` | `improve` | `blocked` — exactamente uno + por qué
 10. Preguntas abiertas (solo elementos sin resolver)

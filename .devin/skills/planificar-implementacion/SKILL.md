@@ -4,7 +4,7 @@ description: >-
   Genera un plan de implementación puntuado a partir de un context brief y un ticket.
   Úsalo cuando el usuario pida planificar cómo implementar un ticket antes de escribir código,
   y no para implementar, revisar o publicar en el repositorio. Después de generar el plan,
-  invoca predecir-impacto-cambio y sugerir-test-cases en paralelo para análisis pre-implementación.
+  invoca predecir-impacto-cambio y sugerir-casos-prueba en paralelo para análisis pre-implementación.
 argument-hint: "[CONTEXT-DOC-SLUG] [TICKET-SLUG]"
 allowed-tools:
   - read
@@ -98,7 +98,7 @@ Cuando los subagentes no estén disponibles, ejecuta secuencialmente:
 Redacta el contenido del plan en el chat (no escribas el archivo aún):
 
 1. Mapea cada criterio de aceptación a un paso del plan (tabla o checklist).
-2. Para cada paso mayor, lista efectos de segundo orden (callers, jobs, flags, auth/PHI, serializadores, mobile/legacy). Integra el hardening en el plan.
+2. Para cada paso mayor, lista efectos de segundo orden (callers, jobs, flags, auth/PII, serializadores, mobile/legacy). Integra el hardening en el plan.
 3. Pase de convenciones: encuentra 2–3 archivos/patrones similares en el repo y adapta el plan para que el código nuevo se vea nativo de este codebase.
 4. Produce una guía paso a paso (commits pequeños y revisables; cada commit tiene propósito + archivos + tests). Aplica ZOMBIES mientras redactas el orden de tests en Fase B; escribe descripciones de tests en lenguaje plano en el plan — no etiquetes tests con letras ZOMBIES ni menciones ZOMBIES en la guía de commits.
 5. Nombra los comandos de validación según [validation-commands.md](references/validation-commands.md). Nunca el suite completo.

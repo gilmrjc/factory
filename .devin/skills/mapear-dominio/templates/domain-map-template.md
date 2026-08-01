@@ -1,333 +1,120 @@
-# `<nombre del dominio o producto>` — mapa de dominio
+# Templates de mapa de dominio — Guía de referencia
 
-> **Variantes (elige una):**
->
-> - **`single`:** solo este archivo como `domain-map.md`. No uses la sección A por separado.
-> - **`by-domain` / `by-size`:** este archivo es el **índice** (`domain-map.md`); cuerpos en `domain-map/<dominio-slug>.md` y canvases pesados en `domain-map/bc-<contexto-slug>.md`.
->
-> Orden tras el `#`: **`Contexto y alcance`** → **`Lectura rápida`** → resto.
->
-> **Contrato del conjunto:** `mapState`, navegación, subdominios, canvases (+ interfaz, mensajes tipados, arqueología en Núcleo), ≥2 mapas por perspectiva (tabla 2 capas + Mermaid U→D; matriz si ≥5 BCs), ≥2 historias, bloques estructurales ≠ C4, polisemia, trazabilidad, decisiones, preguntas de estudio, evaluación. Documento **final**, **autocontenido**, preferir **AS_IS**.
+Este directorio contiene tres templates para mapas de dominio DDD estratégicos. Elige el template apropiado según la complejidad del dominio que vas a documentar.
 
-### Checklist de secciones mínimas
+## Templates disponibles
 
-- [ ] Contexto y alcance (`mapState`, fuentes, fuera de alcance)
-- [ ] Lectura rápida + Guía de estudio
-- [ ] Subdominios + criterios
-- [ ] Catálogo BC (Núcleo completo / Soporte ficha)
-- [ ] ≥2 mapas por perspectiva (leyenda + tabla 2 capas + Mermaid)
-- [ ] ≥2 historias (feliz + fallo/umbral)
-- [ ] Bloques estructurales ligeros
-- [ ] Polisemia / trazabilidad / decisiones / preguntas de estudio / supuestos
-- [ ] Evaluación de salida + un `Listo para`
+### 1. `domain-map-template-single.md`
 
----
+**Para:** Dominios simples con pocos bounded contexts (≤5)
+**Características:**
 
-# A — Índice (`domain-map.md`) cuando hay división
+- Todo en un solo archivo `domain-map.md`
+- Estructura simplificada
+- Ideal para documentación rápida o dominios bien delimitados
+- Sin división por subdominios o tamaño
 
-*En `single`, omite A: usa B en el mismo archivo.*
+**Usa este template cuando:**
 
-## Contexto y alcance
+- El dominio tiene 3-5 bounded contexts máximo
+- No necesitas dividir la documentación en múltiples archivos
+- La documentación será relativamente corta (<50 páginas)
+- El equipo prefiere un documento único para referencia
 
-- **mapState:** `AS_IS` \| `TO_BE`
-- Producto/áreas; fuentes; `splitMode`; qué queda fuera.
+### 2. `domain-map-template-divided.md`
 
-## Lectura rápida
+**Para:** Dominios complejos con muchos bounded contexts (>5) o subdominios múltiples
+**Características:**
 
-- Dominio en una frase.
-- Contextos / mapas clave.
-- Relación más sensible (tipo + roles).
-- Pendientes.
+- Índice principal (`domain-map.md`) + archivos de cuerpo (`domain-map/<dominio-slug>.md`)
+- Canvases pesados opcionales en archivos separados (`domain-map/bc-<contexto-slug>.md`)
+- Estructura jerárquica para navegación
+- Soporta división por subdominio (`by-domain`) o por tamaño (`by-size`)
 
-## Guía de estudio
+**Usa este template cuando:**
 
-1. **Pasada 1 (~5 min)**: Lectura rápida + historias + 1 mapa runtime
-   - Objetivo: Entender el flujo
-2. **Pasada 2 (~20 min)**: Subdominios + BCs Núcleo (+ arqueología)
-   - Objetivo: Límites y código de entrada
-3. **Pasada 3 (~40 min)**: Resto de mapas, bloques, polisemia, evaluación
-   - Objetivo: Cuestionar fronteras
+- El dominio tiene más de 5 bounded contexts
+- Hay múltiples subdominios con documentación extensa
+- Necesitas modularizar la documentación para diferentes equipos
+- El documento sería muy largo en un solo archivo (>50 páginas)
 
-## Índice de partes
+### 3. `domain-map-examples.md`
 
-- [`domain-map/<dominio-slug>.md`](./domain-map/<dominio-slug>.md)
-  - Alcance: Dominio …
-  - Contenido principal: …
+**Para:** Referencia de ejemplos completos
+**Características:**
 
-## Visión global
+- Ejemplos concretos basados en un sistema de checkout e-commerce
+- Muestra cómo completar cada sección con datos reales
+- Incluye ejemplos de tablas, diagramas, canvas, arqueología
+- Caso consistente para ilustrar todas las secciones
 
-*Una frase del ecosistema y por qué se partió el archivo.*
+**Usa este documento cuando:**
 
-## Mapas de contexto globales (por perspectiva)
+- Necesitas ver ejemplos concretos de cómo completar una sección
+- No estás seguro de qué nivel de detalle incluir
+- Quieres ver un caso completo de principio a fin
+- Estás entrenando a otros miembros del equipo en el uso de los templates
 
-### Pregunta 1 — `<…>` (perspectiva: `<runtime|modelo|semántica|planificación|ownership>`)
+## Cómo elegir el template correcto
 
-#### Leyenda aplicada
+### Decision tree simple
 
-*Solo tipos (capa 1) y roles (capa 2) usados en este mapa.*
-
-#### Relaciones (2 capas)
-
-- **Upstream (U)**
-- **Downstream (D)**
-- **Tipo (capa 1)**: UpstreamDownstream / CustomerSupplier / Partnership / SharedKernel / SeparateWays / BigBallOfMud
-- **Roles U / D (capa 2)**: p. ej. OHS+PL / ACL
-- **Qué fluye (tipo)**: comando / consulta / evento / documento/archivo / modelo
-- **Por qué (negocio)**
-- **Riesgo**
-
-#### Matriz U×D (si ≥5 BCs)
-
-- **BC-A** → BC-A: —; BC-B: ; BC-C:
-- **BC-B** → BC-A: ; BC-B: —; BC-C:
-- **BC-C** → BC-A: ; BC-B: ; BC-C: —
-
-*Celdas: tipo + roles abreviados, o vacío.*
-
-#### Diagrama (Mermaid — flecha U→D)
-
-```mermaid
-flowchart LR
-  Catalog["Catálogo"] -->|"U/D + OHS+PL"| Orders["Pedidos"]
-  Orders -->|"U/D + ACL"| Billing["Facturación"]
+```text
+¿El dominio tiene >5 bounded contexts?
+├─ Sí → usa `domain-map-template-divided.md`
+└─ No → ¿La documentación será >50 páginas?
+    ├─ Sí → usa `domain-map-template-divided.md`
+    └─ No → usa `domain-map-template-single.md`
 ```
 
-### Pregunta 2 — `<…>` (perspectiva: `<…>`)
+### Factores adicionales a considerar
 
-*(Misma subestructura.)*
+- **Tamaño del equipo:** Equipos grandes pueden beneficiarse de la estructura dividida
+- **Frecuencia de actualización:** Documentación que cambia frecuentemente puede ser más manejable dividida
+- **Auditoría:** Si diferentes equipos son responsables de diferentes partes, la estructura dividida facilita el ownership
+- **Onboarding:** Para nuevos miembros, un documento single puede ser más fácil de leer inicialmente
 
-## Historias de dominio (comportamiento en ejecución)
+## Flujo de trabajo recomendado
 
-### Historia 1 — `<nombre>` (camino feliz)
+1. **Revisa los ejemplos** en `domain-map-examples.md` para entender el nivel de detalle esperado
+2. **Elige el template** apropiado según los criterios arriba
+3. **Personaliza el template** con tu dominio específico
+4. **Completa las secciones** en orden: Contexto → Subdominios → BCs → Mapas → Historias → Evaluación
+5. **Valida la calidad** usando la rúbrica de evaluación al final
+6. **Itera** si la puntuación es <9 o el estado es `mejorar`/`bloqueado`
 
-1. `<Actor>` → `<acción>` → `<artefacto>`
-2. …
+## Convenciones comunes a todos los templates
 
-### Historia 2 — `<nombre>` (error / umbral)
+Todos los templates comparten estas convenciones:
 
-1. …
+- **mapState:** Usa `AS_IS` por defecto, `TO_BE` solo para rediseños explícitos
+- **Relaciones 2 capas:** Tipo (capa 1) + Roles (capa 2) para mapas con ≥3 bounded contexts
+- **Mermaid:** Dirección siempre U→D (upstream a downstream)
+- **Arqueología:** Obligatoria para BCs Núcleo, opcional para Soporte/Genérico
+- **Evaluación:** Siempre incluir bloque con rúbrica y estado `Listo para`
 
-## Bloques estructurales ligeros (estático)
+## Migración entre templates
 
-> Solo puntos de entrada → módulos (máx. 2 niveles) para arqueología. **No es C4 ni context map.**
+Si comenzaste con un template y necesitas cambiar:
 
-## Polisemia cruzada / Trazabilidad / Decisiones / Preguntas de estudio / Supuestos
+### De single → divided
 
-*(Tablas estándar; ver sección B.)*
+1. Crea el índice usando `domain-map-template-divided.md`
+2. Mueve las secciones de subdominios/BCs a archivos `domain-map/<slug>.md`
+3. Actualiza enlaces en el índice
+4. Mantiene mapas globales e historias en el índice
 
-## Evaluación de salida
+### De divided → single
 
-*(Ver bloque al final de B; en división vive en el índice.)*
+1. Crea nuevo archivo usando `domain-map-template-single.md`
+2. Copia contenido de los archivos divididos al archivo único
+3. Elimina secciones de índice y enlaces
+4. Ajusta estructura para flujo lineal
 
----
+## Soporte y preguntas
 
-# B — Mapa completo (`single`) o cuerpo `domain-map/<dominio-slug>.md`
+Para preguntas sobre el uso de estos templates:
 
-*Si es parte: enlace a [`../domain-map.md`](../domain-map.md). Lectura rápida larga solo en índice/`single`.*
-
-## Contexto y alcance
-
-- **mapState:** `AS_IS` \| `TO_BE`
-
-## Lectura rápida
-
-*(Obligatoria en `single`.)*
-
-## Guía de estudio
-
-1. **Pasada 1**: Lectura rápida + historias + mapa runtime
-   - Objetivo: Flujo
-2. **Pasada 2**: Subdominios + BCs Núcleo
-   - Objetivo: Límites + arqueología
-3. **Pasada 3**: Mapas restantes, bloques, polisemia, evaluación
-   - Objetivo: Estudio profundo
-
-## Visión del dominio
-
-## Subdominios (espacio de problema)
-
-| Subdominio | Tipo | Problema que cubre | Evidencia | Notas / tensiones |
-| --- | --- | --- | --- | --- |
-| | Núcleo (Core) / Soporte (Supporting) / Genérico (Generic) | | | |
-
-### Criterios de clasificación usados
-
-## Catálogo de bounded contexts
-
-### Canvas — `<Nombre>` (Núcleo: completo)
-
-- **Propósito**: *(lenguaje de negocio; sin detalle técnico)*
-- **Clasificación estratégica**: Núcleo (Core) / Soporte (Supporting) / Genérico (Generic)
-- **Evolución (opcional)**: genesis / custom / product / commodity — solo si aporta
-- **Subdominio(s)**
-- **Límites — dentro**
-- **Límites — fuera**
-- **Roles de dominio**: p. ej. ejecución, análisis, cumplimiento…
-- **Interfaz pública**: Qué pueden consumir/acoplar otros contextos (contratos estables)
-- **Ownership tentativo**
-- **Archivo dedicado**: *en este archivo* o enlace `bc-*.md`
-
-#### Lenguaje ubicuo
-
-| Término | Definición en este contexto | Anti-términos |
-| ---------| -----------------------------| ---------------|
-|         |                             |               |
-
-#### Comunicación de entrada / salida
-
-- **Entrada (inbound)**
-  - Contraparte
-  - Tipo de mensaje: comando / consulta / evento / documento/archivo
-  - Qué fluye
-  - Relación (tipo + roles)
-  - Contrato / notas
-- **Salida (outbound)**
-  - Contraparte
-  - Tipo de mensaje: comando / consulta / evento / documento/archivo
-  - Qué fluye
-  - Relación (tipo + roles)
-  - Contrato / notas
-
-#### Reglas de negocio en el límite
-
-- …
-
-#### Arqueología de código
-
-- **Entrar por**: Símbolo / archivo de entrada
-- **Leer después**: 1–3 archivos en orden
-- **Fósil / trampa**: Nombre engañoso, layout muerto, indicador sutil
-- **Ancla de contrato**: Prueba, schema, id de manifest, etc.
-
-#### Evidencia y supuestos
-
-- **Evidencia:** …
-- **Supuestos:** …
-- **Preguntas abiertas:** …
-
-### Ficha — `<Nombre>` (Soporte / Genérico: corta)
-
-- **Propósito**
-- **Dentro / fuera**
-- **Interfaz pública (1 línea)**
-- **Arqueología (1 línea)**: Entrar por …
-
----
-
-## Mapas de contexto (por perspectiva)
-
-> Varios mapas **pequeños**. No un diagrama «dios». Perspectivas distintas del catálogo de la skill.
-
-### Pregunta — `<texto>` (perspectiva: `<…>`)
-
-#### Leyenda aplicada
-
-#### Relaciones (2 capas)
-
-- **Upstream (U)**
-- **Downstream (D)**
-- **Tipo (capa 1)**
-- **Roles U / D (capa 2)**
-- **Qué fluye (tipo)**
-- **Por qué (negocio)**
-- **Riesgo**
-
-#### Matriz U×D (si ≥5 BCs)
-
-- **↓ U \\ D →**: …
-
-#### Diagrama
-
-```mermaid
-flowchart LR
-  U["ContextoU"] -->|"U/D + OHS+PL"| D["ContextoD"]
-  D -->|"U/D + Conformist"| E["ContextoE"]
-```
-
----
-
-## Historias de dominio (comportamiento en ejecución)
-
-> *Process walkthrough* — no sustituye EventStorming de taller.
-
-### Historia — `<título>`
-
-1. Actor → acción → artefacto
-2. …
-
----
-
-## Bloques estructurales ligeros
-
-> **No es C4 ni context map** — solo anclas de lectura de código.
-
-```mermaid
-flowchart TD
-  entry[punto de entrada] --> cmd[capa de comandos]
-  cmd --> core[núcleo / apply]
-```
-
-| Bloque | Responsabilidad | Rutas típicas |
-| --- | --- | --- |
-| | | |
-
----
-
-## Polisemia y glosario cruzado
-
-| Término | Contexto A | Contexto B | Riesgo / mitigación |
-| --- | --- | --- | --- |
-| | | | |
-
-## Trazabilidad subdominio ↔ bounded context
-
-| Subdominio | Bounded context(s) | Notas |
-| --- | --- | --- |
-| | | |
-
-## Decisiones de frontera
-
-| Decisión | Alternativa descartada | Motivo |
-| --- | --- | --- |
-| | | |
-
-## Preguntas de estudio (el mapa debe permitir responderlas)
-
-1. …
-2. …
-3. …
-
-## Supuestos y preguntas abiertas
-
-- …
-
-## Evaluación de salida
-
-> **`Listo para`** usa literales ES de esta skill (`fusionar-solo-detalles` \| `mejorar` \| `bloqueado`); no traducir. Equivalente conceptual a Ready for del workflow review; aquí no es veredicto de PR.
-
-| Criterio | Puntuación (1–10) | Evidencia en este documento |
-| --- | --- | --- |
-| Navegación / estudio | | |
-| Subdominios | | |
-| Canvases + arqueología | | |
-| Mapas de contexto | | |
-| Ejecución + bloques | | |
-| Lenguaje / polisemia | | |
-| Autocontención | | |
-| **Global** | | promedio |
-
-**Listo para:** `mejorar` \| `fusionar-solo-detalles` \| `bloqueado`
-
-**Huecos si no es `fusionar-solo-detalles`:**
-
-- …
-
----
-
-# C — Parte `domain-map/bc-<contexto-slug>.md`
-
-Enlaces: dominio [`./<dominio-slug>.md`](./<dominio-slug>.md) · índice [`../domain-map.md`](../domain-map.md).
-
-## Canvas — `<Nombre>`
-
-*(Misma estructura Núcleo de la sección B: interfaz pública, mensajes tipados, arqueología.)*
+- Revisa primero `domain-map-examples.md` para casos similares
+- Consulta el skill `mapear-dominio` para detalles del proceso
+- Verifica el SKILL.md del skill para criterios de calidad y evaluación

@@ -39,9 +39,9 @@ Review-brief Q6 falla cuando Ready for es `approve` pero cualquier gate anterior
 Usa blocker y important solo para hallazgos que afectan puntuación. Hallazgos optional no cambian dimensiones.
 
 - **blocker**: Violación de spec, routing roto, sección requerida faltante, o maintainer no puede actuar desde el skill solo
-  - ¿Afecta puntuación?: Sí — per [Hard caps](#hard-caps)
+  - ¿Afecta puntuación?: Sí — per [Hard caps](#hard-caps-techos-duros)
 - **important**: Revisor debe inferir una vez, colisión con hermano probable, o riesgo de orquestación/handoff si se shipped tal cual
-  - ¿Afecta puntuación?: Sí — per [Hard caps](#hard-caps)
+  - ¿Afecta puntuación?: Sí — per [Hard caps](#hard-caps-techos-duros)
 - **optional**: Preferencia de wording, sinónimo, alias, o formato; routing y handoff funcionan hoy sin el cambio
   - ¿Afecta puntuación?: No — lista bajo Mejoras opcionales cuando overall ≥ 9
 
@@ -79,7 +79,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
 
 ### Dimension 2 — Contrato When/How/What
 
-#### Gate de calidad
+#### Gate de calidad (Dimension 2)
 
 - **When**: ¿Declara cuándo sí y cuándo no usarlo con condiciones concretas?
   - Pass: Condiciones claras positivas y negativas
@@ -94,7 +94,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
   - Partial: Output presente pero vago
   - Fail: Sin qué producir
 
-#### Matriz de score
+#### Matriz de score (Dimension 2)
 
 - **10**: Pass; Todas las filas = pass; Cero blocker/important
 - **9**: Pass; Cero missing; ≤ 1 partial; Cero blocker/important
@@ -105,7 +105,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
 
 ### Dimension 3 — Estructura
 
-#### Gate de calidad
+#### Gate de calidad (Dimension 3)
 
 - **Tipo match**: ¿El cuerpo coincide con el tipo clasificado?
   - Pass: Todos los elementos esperados presentes
@@ -120,7 +120,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
   - Partial: Estructura presente pero confusa
   - Fail: Sin estructura clara
 
-#### Matriz de score
+#### Matriz de score (Dimension 3)
 
 - **10**: Pass; Todas las filas = pass; Cero blocker/important
 - **9**: Pass; Cero missing; ≤ 1 partial; Cero blocker/important
@@ -131,7 +131,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
 
 ### Dimension 4 — Accionabilidad
 
-#### Gate de calidad
+#### Gate de calidad (Dimension 4)
 
 - **Imperativo**: ¿Los pasos usan verbos imperativos?
   - Pass: Todos los pasos son imperativos
@@ -146,7 +146,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
   - Partial: Evidencia presente pero subjetiva
   - Fail: Sin evidencia
 
-#### Matriz de score
+#### Matriz de score (Dimension 4)
 
 - **10**: Pass; Todas las filas = pass; Cero blocker/important
 - **9**: Pass; Cero missing; ≤ 1 partial; Cero blocker/important
@@ -157,7 +157,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
 
 ### Dimension 5 — Completitud
 
-#### Gate de calidad
+#### Gate de calidad (Dimension 5)
 
 - **Done when**: ¿Done when permite actuar sin re-explorar fuentes?
   - Pass: Sí, handoff claro
@@ -172,7 +172,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
   - Partial: Autoevaluación parcial
   - Fail: Sin autoevaluación
 
-#### Matriz de score
+#### Matriz de score (Dimension 5)
 
 - **10**: Pass; Todas las filas = pass; Cero blocker/important
 - **9**: Pass; Cero missing; ≤ 1 partial; Cero blocker/important
@@ -183,7 +183,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
 
 ### Dimension 6 — Responsabilidad
 
-#### Gate de calidad
+#### Gate de calidad (Dimension 6)
 
 - **Única**: ¿El skill realiza una sola acción con un verbo clave?
   - Pass: Sí, responsabilidad única
@@ -194,7 +194,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
   - Partial: Un anti-patón menor
   - Fail: Múltiples anti-patrones
 
-#### Matriz de score
+#### Matriz de score (Dimension 6)
 
 - **10**: Pass; Todas las filas = pass; Cero blocker/important
 - **9**: Pass; Cero missing; ≤ 1 partial; Cero blocker/important
@@ -205,7 +205,7 @@ Puntúa el skill bajo revisión (no el doc de revisión). Para cada dimensión r
 
 ## Overall skill score
 
-Media aritmética de las seis dimensiones, un decimal (redondeo half-up). Aplica [Hard caps](#hard-caps) antes de mapear a banda:
+Media aritmética de las seis dimensiones, un decimal (redondeo half-up). Aplica [Hard caps](#hard-caps-techos-duros) antes de mapear a banda:
 
 - **10**: Cada dimensión = 10; sin blockers; serviría como anchor de convención de hermanos
 - **9**: Dimensión mín ≥ 9; sin blockers de layout; metadata ≥ 9; description ≥ 9; estructura ≥ 9

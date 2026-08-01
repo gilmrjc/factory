@@ -118,6 +118,27 @@ Ejemplos:
 
 Una vez que el contenido es directo y específico, preséntalo con el formato adecuado.
 
+### Uso de emojis
+
+No uses emojis en `SKILL.md`, `description` YAML, `references/`, `assets/` ni en los artefactos generados por los skills. Los emojis degradan la legibilidad en terminales, no renderizan uniformemente across editores, y añaden ruido visual sin valor semántico.
+
+**Reemplazos canónicos**:
+
+| Evitar (emoji) | Preferir (texto)          |
+|----------------|---------------------------|
+| `✅`           | `Pass` o `Sí`             |
+| `⚠️`           | `Partial` o `Parcial`     |
+| `❌`           | `Fail` o `No`             |
+| `🚫`           | `Bloqueado`               |
+| `📌`           | `Nota:` o `Importante:`   |
+| `💡`           | `Sugerencia:`             |
+| `🎯`           | `Objetivo:`               |
+
+**Excepciones**:
+
+- Símbolos tipográficos estándar (`→`, `—`, `≥`, `≤`) no son emojis y se permiten.
+- Si el dominio del usuario requiere emojis (ej. producto dirigido a comunicación casual), documéntalo explícitamente en el skill.
+
 ### Uso de tablas
 
 Usa tablas solo cuando cada celda contenga ≤50 caracteres y el número de filas sea acotado (≤10 filas). Para contenido extenso o con múltiples niveles de detalle, prefiere listas y sublistas.

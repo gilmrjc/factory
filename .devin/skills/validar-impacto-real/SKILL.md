@@ -1,11 +1,7 @@
 ---
 name: validar-impacto-real
 description: >-
-  Compara el impacto predicho en el análisis de impacto con el impacto real del código
-  implementado. Valida que los breaking changes fueron mitigados, que los servicios
-  downstream fueron notificados/actualizados, y detecta efectos secundarios no anticipados.
-  Salida: docs/<domain>/<TICKET-ID>-impact-validation.md con veredicto de validación.
-  Úsalo después de implementar-plan para validar que el impacto real coincide con el predicho.
+  Compara el impacto predicho en el análisis de impacto con el impacto real del código implementado validando que los breaking changes fueron mitigados, que los servicios downstream fueron notificados/actualizados y detectando efectos secundarios no anticipados para generar docs/<domain>/<TICKET-ID>-impact-validation.md con veredicto de validación. Úsalo cuando el usuario pida validar, comparar, verificar, revisar, auditar o evaluar el impacto real después de implementar-plan. No lo uses para predecir impacto antes de implementar — usa predecir-impacto-cambio para eso.
 argument-hint: "[PLAN-DOC | BRANCH]"
 allowed-tools:
   - read

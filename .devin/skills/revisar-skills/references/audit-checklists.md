@@ -77,7 +77,7 @@ Description score (1–10) — rúbrica en [description-guide.md](./description-
 - Evita fregadero de cocina (todo en uno)
 - Evita copia-y-pega de prompts sin adaptar
 - Evita plantilla rígida e inmodificable
-- Sin agujeros de seguridad (no expone secrets/PHI/migraciones)
+- Sin agujeros de seguridad (no expone secrets/PII/migraciones)
 - Incluye forma de probar trigger o autoevaluación
 
 ## Auditoría de resource layout

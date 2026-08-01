@@ -65,7 +65,7 @@ Redacta estas secciones en orden de historia para que la intuición preceda a lo
 1. **Antecedentes** — describe qué ya existía (modelos clave, servicios, flags, callers) y cita rutas de archivo.
 2. **Objetivo e intuición** — declara un objetivo en lenguaje llano y explica cualquier concepto no obvio en el que se apoya el cambio.
 3. **Recorrido narrativo** — recorre el cambio en orden de historia (no archivos alfabéticos). Incrusta snippets mínimos con citas de ruta y explica por qué existe cada paso.
-4. **Efectos de segundo orden** — cubre callers, jobs, serializadores, rutas mobile/legacy, límites de auth/PHI y feature flags.
+4. **Efectos de segundo orden** — cubre callers, jobs, serializadores, rutas mobile/legacy, límites de auth/PII y feature flags.
 5. **Mapeo de criterios de aceptación** — provee un checklist vinculado a los criterios de la fuente proporcionada.
 6. **Quiz de autoevaluación** — incluye al menos 5 preguntas y una clave de respuestas en el documento.
 

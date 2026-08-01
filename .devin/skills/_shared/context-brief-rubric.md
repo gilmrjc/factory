@@ -7,7 +7,7 @@ Puntúa el artefacto de investigación (separado del ticket).
 - **8**: Útil pero deps débiles, verificación de codebase escasa, u outline demasiado detallado
 - **7**: Cubre el ticket; la verificación cruzada o los non-goals necesitan revisión
 - **5–6**: Especulación, menos de 3 rutas sin listar el vacío, inventa intención, o secciones requeridas vacías
-- **1–4**: El brief contradice el ticket/codebase, omite AC declarados, o gaps de auth/PHI inseguros sin Preguntas abiertas
+- **1–4**: El brief contradice el ticket/codebase, omite AC declarados, o gaps de auth/PII inseguros sin Preguntas abiertas
 
 ## Gates de aprobación
 

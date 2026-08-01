@@ -9,7 +9,7 @@ Aplica los gates en orden. Asigna el puntaje más alto cuyos gates todos pasen.
 - **8**: Contenido sólido pero todavía parcialmente una lista de archivos, intuición débil, o un item de AC solo parcialmente mapeado
 - **7**: Cubre el cambio; la narrativa o el mapeo de AC necesita rework
 - **5–6**: Faltan criterios, quiz no respondible solo desde el documento, o intención de producto inventada sin entrada en Preguntas abiertas
-- **1–4**: Inusable para onboarding: flujo de datos incorrecto, contradice la fuente, u omite límites de auth/PHI
+- **1–4**: Inusable para onboarding: flujo de datos incorrecto, contradice la fuente, u omite límites de auth/PII
 
 Un documento debe cumplir estos estándares antes de poder puntuar ≥ 9:
 

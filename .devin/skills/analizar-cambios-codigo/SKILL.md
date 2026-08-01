@@ -1,13 +1,7 @@
 ---
 name: analizar-cambios-codigo
 description: >-
-  Orquestador que ejecuta análisis completo de cambios de código: detecta
-  documentación faltante, predice impacto, sugiere test cases. Ejecuta
-  detectar-documentacion-faltante → predecir-impacto-cambio →
-  sugerir-test-cases en secuencia y genera resumen consolidado. Úsalo en
-  workflows de epics (workflow 1) o cuando necesites análisis de impacto
-  predicho sin validación post-implementación. Para workflow 2 de tickets,
-  usa analizar-cambios-codigo-post que incluye validación de impacto real.
+  Orquesta el análisis completo de cambios de código ejecutando detectar-documentacion-faltante, predecir-impacto-cambio y sugerir-casos-prueba en secuencia para generar un resumen consolidado con hallazgos de documentación, impacto y test cases. Úsalo cuando el usuario pida analizar, auditar o evaluar cambios de código antes de implementar, o como chequeo liviano de epics (alternativa más rápida a validar-epic-completo). No lo uses para validar impacto real post-implementación — usa validar-impacto-real para eso. Para tickets ya implementados localmente, usa revisar-cambios-implementados que además valida impacto real vs. predicho.
 argument-hint: "[PLAN-DOC | BRANCH]"
 allowed-tools:
   - read
@@ -27,7 +21,7 @@ Orquestador que ejecuta análisis completo de código: documentación, impacto, 
 **Workflow**:
 1. `detectar-documentacion-faltante` → Qué documentación falta
 2. `predecir-impacto-cambio` → Qué se afecta downstream
-3. `sugerir-test-cases` → Qué testear para cubrir cambios
+3. `sugerir-casos-prueba` → Qué testear para cubrir cambios
 4. Consolidar hallazgos en reporte único
 
 Solo análisis: no modifica código. Gate de calidad antes de PR.
@@ -66,7 +60,7 @@ Declara inputs resueltos: ticket, archivos modificados.
 
 ## Fase C — Ejecutar Sugerir Test Cases
 
-1. Invoca `sugerir-test-cases` con entrada
+1. Invoca `sugerir-casos-prueba` con entrada
 2. Carga resultado: `docs/<domain>/<TICKET-ID>-test-cases.md`
 3. Extrae:
    - # de test cases recomendados

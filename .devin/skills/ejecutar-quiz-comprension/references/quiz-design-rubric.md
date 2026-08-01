@@ -4,14 +4,14 @@ Puntúa el set de preguntas antes de preguntar al humano — no las respuestas d
 
 Aplica los gates en orden. Asigna el puntaje más alto cuyos gates todos pasen.
 
-- **10**: 5–10 preguntas; cubre objetivo/objetivos excluidos, entry points, auth/PHI o flag crítico, modo de fallo, efecto de segundo orden; todas respondibles desde la fuente y el código; sin trivia; cada tema bloqueante cubierto; cada pregunta cita dónde mirar (ruta, sección o Pregunta abierta)
+- **10**: 5–10 preguntas; cubre objetivo/objetivos excluidos, entry points, auth/PII o flag crítico, modo de fallo, efecto de segundo orden; todas respondibles desde la fuente y el código; sin trivia; cada tema bloqueante cubierto; cada pregunta cita dónde mirar (ruta, sección o Pregunta abierta)
 - **9**: Igual cobertura que 10; solo nits triviales de redacción restantes
 - **8**: Temas sólidos pero punteros de evidencia débiles, una pregunta suave/trivia, o un tema bloqueante cubierto solo indirectamente
 - **7**: Cubre el cambio; omite un tema bloqueante o pregunta detalle no respondible sin marcar como Pregunta abierta
 - **5–6**: Trivia, múltiples preguntas no respondibles, o se basa en intención de producto no declarada en lugar de material citado
 - **1–4**: Set de preguntas no utilizable: sin temas bloqueantes, mayormente trivia, o contradice la fuente
 
-Temas bloqueantes — un miss en cualquiera reprueba la puerta de comprensión cuando el puntaje sería ≥ 9: límite de auth/PHI, entry point o flujo de datos principal incorrecto, criterio de aceptación omitido.
+Temas bloqueantes — un miss en cualquiera reprueba la puerta de comprensión cuando el puntaje sería ≥ 9: límite de auth/PII, entry point o flujo de datos principal incorrecto, criterio de aceptación omitido.
 
 Un set de preguntas debe cumplir estos estándares antes de poder puntuar ≥ 9:
 

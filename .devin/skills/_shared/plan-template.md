@@ -8,7 +8,7 @@ Secciones requeridas para un plan de implementación completo.
    - Tabla o checklist que mapea cada criterio de aceptación a un paso del plan
 
 2. **Efectos de segundo orden y hardening**
-   - Para cada paso mayor, lista efectos de segundo orden (callers, jobs, flags, auth/PHI, serializadores, mobile/legacy)
+   - Para cada paso mayor, lista efectos de segundo orden (callers, jobs, flags, auth/PII, serializadores, mobile/legacy)
    - Integra el hardening en el plan
 
 3. **Referencias de convención**

@@ -1,10 +1,7 @@
 ---
 name: detectar-documentacion-faltante
 description: >-
-  Analiza código nuevo y detecta documentación faltante: docstrings, examples,
-  edge cases, decisiones arquitectónicas. Salida:
-  docs/<domain>/<TICKET-ID>-documentation-gaps.md con lista de gaps y
-  sugerencias. Úsalo después de implementar-plan antes de revisar-cambios-locales.
+  Analiza código nuevo y detecta documentación faltante incluyendo docstrings, examples, edge cases y decisiones arquitectónicas para generar docs/<domain>/<TICKET-ID>-documentation-gaps.md con lista de gaps y sugerencias. Úsalo cuando el usuario pida detectar, analizar, revisar, auditar o evaluar documentación faltante, o después de implementar-plan antes de revisar-cambios-locales. No lo uses para escribir documentación — este skill solo detecta gaps que el desarrollador debe resolver.
 argument-hint: "[PLAN-DOC | BRANCH]"
 allowed-tools:
   - read

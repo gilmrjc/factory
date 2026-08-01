@@ -3,7 +3,7 @@ name: generar-prd
 description: >-
   Genera PRD formal consolidando: visión, personas, casos de uso, requisitos
   funcionales, no-funcionales, y CRITERIOS EXPERIMENTALES. Salida:
-  docs/<domain>/<REQ-SLUG>-prd.md con PRD completo. Criterios experimentales
+  docs/<domain>/initiatives/<PRD-SLUG>/prd.md con PRD completo. Criterios experimentales
   son estado-específicos (MVP: signups+surveys, Growth: A/B landing, Scale: A/B
   in-app). Úsalo después de mapear casos para generar PRD listo para
   planificación arquitectónica.
@@ -29,7 +29,7 @@ Solo documentación: no aprueba. Genera documento formal.
 Requerido: `REQ-SLUG` o `USE-CASES-RUTA`.
 
 Infiere desde:
-- Ruta: `docs/**/<REQ-SLUG>-use-cases.md`
+- Ruta: `docs/**/initiatives/**/use-cases.md`
 - Contenido pegado: si usuario pega casos de uso
 - Previo: busca archivo más reciente de `*-use-cases.md`
 
@@ -107,6 +107,8 @@ Estructura:
 ```
 
 ## Fase D — Definir Criterios Experimentales (CRÍTICO)
+
+**Gate de no-duplicación**: si `docs/<domain>/initiatives/<PRD-SLUG>/experiment-design.md` existe (generado por `disenar-experimentos`), **referenciarlo** en la sección 7 del PRD en vez de reescribir los criterios. Incluir solo un resumen de 1-2 líneas + link relativo. Los criterios detallados (hypothesis, primary metric, guardrail metrics, decision rules, sample size) viven en `experiment-design.md` — no los dupliques en el PRD. Solo si `experiment-design.md` NO existe (stage MVP con stub "Omitido", o se omitió `disenar-experimentos`), usar los criterios estado-específicos por defecto de abajo.
 
 **Los criterios deben ser apropiados al estado del producto:**
 
@@ -220,6 +222,8 @@ Usar MVP criteria (conservative). Upgrade después si growth evident.
 
 ## Fase F — Definir Go/No-Go Criteria
 
+**Gate de no-duplicación**: si `product-viability.md` ya definió condiciones de "Conditional Go" (sección 7 de ese artefacto), **no reescribir** esas condiciones en el PRD. Referenciar `product-viability.md` §7. El PRD solo declara los criterios Go/No-Go **post-release** (medición del éxito del MVP/release), no las condiciones de aprobación previa que ya viven en `product-viability.md`.
+
 ```
 ### Go/No-Go Decision Criteria
 
@@ -237,6 +241,10 @@ Usar MVP criteria (conservative). Upgrade después si growth evident.
 - If partially successful but unclear, extend test
 - OR pivot: change alert cadence, channels, targeting
 - Then re-evaluate in 2 weeks
+
+**Condiciones heredadas de Conditional Go** (si el veredicto de `product-viability.md` fue Conditional Go):
+→ Referenciar `product-viability.md` §7. No reescribir las condiciones aquí.
+→ Ej: "Ver [product-viability.md](product-viability.md) §7 para las 3 condiciones heredadas (2 de demanda en paralelo, 1 técnica como primera fase)."
 ```
 
 ## Fase G — Escribir PRD Formal
@@ -249,20 +257,35 @@ Estructura completa:
 4. **Use Cases**: Workflows principales y alternativas
 5. **Requisitos Funcionales**: Feature-by-feature
 6. **Requisitos No-Funcionales**: Performance, security, compliance
-7. **Requisitos Experimentales** (ESTADO-ESPECÍFICOS): 
+7. **Requisitos Experimentales** (ESTADO-ESPECÍFICOS):
    - Métrica primaria de éxito
    - Validación secundaria
    - Criterios go/no-go
    - Timeline de evaluación
+   - **Gate de no-duplicación**: si `experiment-design.md` existe, **referenciarlo** (1-2 líneas de resumen + link) en vez de reescribir los criterios. Si no existe, usar criterios estado-específicos por defecto (ver Fase D).
 8. **Out of Scope**: Qué NO se hace
-9. **Timeline**: Fechas principales
+9. **Timeline**: Restricción de timeline (NO descomponer en fases de implementación — eso es job de `planificar-epics`). Ver Fase H.
 10. **Recursos**: Equipo asignado
-11. **Riesgos y Mitigaciones**: Qué puede salir mal
+11. **Riesgos y Mitigaciones**: **Referenciar** `product-viability.md` §5 (matriz de riesgo) + `assumption-map.md` (assumptions críticos). No reescribir la matriz. Añadir solo riesgos nuevos no cubiertos upstream.
 12. **Sign-off**: Aprobaciones necesarias
+
+**Flexibilidad según stage**:
+- MVP: "Requisitos Experimentales", "Métricas de éxito" y "Go/No-Go criteria" pueden integrarse en Executive Summary cuando son simples (criterios cualitativos, dogfooding). No se requieren secciones separadas.
+- Growth/Scale: Estas secciones DEBEN ser separadas con detalle completo (A/B test design, sample size, decision rules).
+- Si `experiment-design.md` existe (de `disenar-experimentos`), **referenciarlo** en la sección de Requisitos Experimentales (no reescribir).
+- Si no existe, usar criterios estado-específicos por defecto (ver Fase D).
 
 ## Salida
 
-Escribe en: `docs/<domain>/<REQ-SLUG>-prd.md`
+Escribe en: `docs/<domain>/initiatives/<PRD-SLUG>/prd.md`
+
+**Header requerido** (al inicio del PRD):
+- Req slug
+- Dominio
+- Fecha
+- Skill: generar-prd
+- Stage (MVP/Growth/Scale)
+- Inputs: rutas de use-cases.md, personas-mapping.md, product-viability.md, requirements.md
 
 **Secciones requeridas**:
 - Executive Summary (1 pág)
@@ -278,12 +301,50 @@ Escribe en: `docs/<domain>/<REQ-SLUG>-prd.md`
 - Recursos
 - Riesgos
 - Sign-off
-- Ready for: `planificar-desde-prd` (architecture planning)
+- Ready for: `planificar-epics` (architecture planning)
+
+**Manejo de artefactos fuente faltantes**:
+- `assumption-map.md`: opcional. Si existe, referenciar en Personas/Use Cases. Si no, omitir.
+- `experiment-design.md`: opcional. Si existe, **referenciarlo** en Requisitos Experimentales (no reescribir). Si no, usar criterios estado-específicos.
+- `personas-mapping.md`: referenciar en vez de `personas.md` (modelo de personas canónicas).
 
 Ready for valores:
-- `planificar-desde-prd`: PRD aprobado, proceder a planificación arquitectónica
+- `planificar-epics`: PRD aprobado, proceder a planificación arquitectónica
 - `needs-review`: PRD completo pero necesita sign-off ejecutivo
 - `blocked`: Criterios experimentales insuficientes, aclarar primero
+
+### README de la iniciativa (índice del PRD)
+
+Como último skill del workflow de PRD, este skill es responsable de crear o actualizar el índice de la iniciativa en `docs/<domain>/initiatives/<PRD-SLUG>/README.md`.
+
+**Si no existe** `docs/<domain>/initiatives/<PRD-SLUG>/README.md`:
+- Créalo como índice de la iniciativa con enlaces a todos los artefactos generados.
+
+**Si existe** `docs/<domain>/initiatives/<PRD-SLUG>/README.md`:
+- Actualízalo con el enlace al PRD recién generado y cualquier artefacto nuevo.
+
+**README de iniciativa** (`docs/<domain>/initiatives/<PRD-SLUG>/README.md`):
+
+Secciones requeridas:
+1. Título y descripción de la iniciativa (PRD-SLUG + 1 oración)
+2. Tabla de artefactos del PRD por fase:
+   | Fase | Artefacto | Descripción |
+   |---|---|---|
+   | Requerimiento | requirements.md | ... |
+   | Viabilidad | product-viability.md | ... |
+   | Usuarios | personas-mapping.md | ... |
+   | Casos de uso | use-cases.md | ... |
+   | PRD | prd.md | ... |
+3. Tabla de epics (placeholder, se completa en workflow de epics):
+   | Epic | Slug | Estado | Artefactos |
+   |---|---|---|---|
+4. Estructura de cada epic validado (referencia)
+5. ADRs relacionados (referencia a `adr/`)
+6. Punto de entrada (link a epic-workflow-summary.md o roadmap.md)
+
+Notas:
+- Enlazar solo artefactos que EXISTEN. Si `assumption-map.md` o `experiment-design.md` no existen, omitir sus filas.
+- Los artefactos de epic (epic-prioritization.md, epic-workflow-summary.md) se agregan cuando se ejecuta el workflow de epics posterior.
 
 ---
 
@@ -316,3 +377,39 @@ Scale (Optimización)
 - ❌ Surveys solo en Scale (ineficiente, muestra sesgada)
 - ❌ Criterios no-específicos ("users love it" - indefinido)
 - ❌ Timeline de evaluación irreal (A/B test 1 semana = insuficiente)
+- ❌ **Descomponer la sección 9 (Timeline) en fases de implementación con dependencias** — eso es job de `planificar-epics`. El PRD solo declara la restricción de timeline.
+- ❌ **Reescribir** los criterios experimentales, condiciones heredadas o la matriz de riesgo en el PRD — referenciar `experiment-design.md`, `product-viability.md` §7 y §5, y `assumption-map.md`.
+
+## Fase H — Restricción de Timeline (NO decomposition en fases)
+
+**Gate anti-pre-especificación de implementación**: la sección 9 (Timeline) del PRD declara **solo la restricción de timeline**, no la decomposition en fases de implementación. La decomposition en epics/fases es job de `planificar-epics` (Workflow 2).
+
+**Permitido en sección 9**:
+- "MVP target: ~3-4 semanas"
+- "Buffer: +30%"
+- "Observación post-release: +2 semanas"
+- Restricciones de timing externas (ej: "antes de Q3 launch")
+
+**NO permitido en sección 9** (va en `planificar-epics`):
+- Tabla de fases internas con dependencias (Fase 1 → Fase 2 → Fase 3)
+- Duraciones por fase interna (ej: "Fase 1: 3-4 días, Fase 2: 3-4 días")
+- Orden de implementación de componentes
+
+**Si el PRD proviene de un `scope-roadmap.md` con fases internas** → referenciarlo: "Ver [scope-roadmap.md](../../idea/<IDEA-SLUG>/scope-roadmap.md) para el desglose interno de fases. La decomposition en epics se realiza en `planificar-epics`."
+
+## Autoevaluación (gate de no-duplicación y timeline)
+
+Antes de finalizar, verifica además:
+
+- [ ] **No-duplicación**: la sección 7 (Requisitos Experimentales) **referencia** `experiment-design.md` (no reescribe los criterios) cuando ese artefacto existe
+- [ ] **No-duplicación**: la sección 11 (Riesgos) **referencia** `product-viability.md` §5 y `assumption-map.md` (no reescribe la matriz de riesgo)
+- [ ] **No-duplicación**: las condiciones heredadas de Conditional Go **referencian** `product-viability.md` §7 (no se reescriben)
+- [ ] **Timeline**: la sección 9 declara solo la restricción de timeline (no descompone en fases de implementación con dependencias — eso es job de `planificar-epics`)
+
+## Workflow posterior
+
+Después de generar el PRD, el siguiente paso es `orquestar-epic-workflow` para cada PRD generado. El README de iniciativa se enriquecerá con:
+- `epic-prioritization.md` (priorización RICE de epics)
+- `epic-workflow-summary.md` (resumen del workflow de epics)
+- `epics/README.md` (plan de epics)
+- `epics/<epic-slug>/` (artefactos por epic)

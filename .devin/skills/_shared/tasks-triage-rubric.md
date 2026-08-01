@@ -5,7 +5,7 @@
 - **8**: Útil pero justificación de Primary débil o notas de segundo orden escasas
 - **7**: Cubre el trabajo; la división o el próximo paso necesita revisión
 - **5–6**: Todo Primary, próximo paso en lista, o inventa intención
-- **1–4**: La clasificación contradice las fuentes, recomienda codificar a pesar de bloqueadores, u omite riesgos de auth/PHI
+- **1–4**: La clasificación contradice las fuentes, recomienda codificar a pesar de bloqueadores, u omite riesgos de auth/PII
 
 ## Verificación rápida de 9 vs 8
 

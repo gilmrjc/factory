@@ -63,7 +63,7 @@ Declara las entradas resueltas en el chat, luego procede.
 Delega unidades de carga independientes en paralelo según [parallel-subagents.md](references/parallel-subagents.md). Cuando el host soporte delegación de subagentes, lanza todas las unidades aplicables en un solo mensaje.
 
 - **ticket-deps**: general-purpose → Campos del ticket, AC, attachments y comentarios, enlaces de dependencia con estados
-- **feasibility**: explore → ≥2 rutas de entry-point citadas, riesgos obvios de auth, PHI o flags
+- **feasibility**: explore → ≥2 rutas de entry-point citadas, riesgos obvios de auth, PII o flags
 - **conventions**: explore → ≥2 rutas de artefactos hermanos o tickets similares; patrones de AC y estructura a replicar
 
 Pasa la ruta del brief de investigación a cada unidad cuando esté presente. Los subagentes ponen incógnitas en Preguntas abiertas en lugar de inventar intención de producto.
@@ -109,7 +109,7 @@ Puntúa la calidad del ticket, no la calidad del código. No se espera un PR ni 
 4. **Dependencias** — ¿los tickets bloqueado-por están resueltos o explícitamente dispensados? ¿La secuencia con tickets relacionados es sensata?
 5. **Ajuste de estimación** — ¿el tamaño declarado o implícito coincide con el alcance (escala XS–XL)? Recomienda dividir cuando esté sobredimensionado o infraespecificado.
 6. **Testing y QA** — ¿hay expectativas de CI o pasos de staging cuando se necesiten? Cuando QA no es requerido, ¿está declarado?
-7. **Análisis de factibilidad** — ¿existen los entry-points citados? Nota riesgos obvios de arquitectura, auth, PHI o flags que el ticket omite.
+7. **Análisis de factibilidad** — ¿existen los entry-points citados? Nota riesgos obvios de arquitectura, auth, PII o flags que el ticket omite.
 8. **Anclajes de convención** — Nombra 1–2 patrones hermanos (rutas) que la implementación debería probablemente replicar.
 9. **Drift a plan de implementación** — ¿el ticket se limita a problema + enfoque de solución, o se desliza hacia un plan de implementación con detalles técnicos? Marca como drift material que pertenece a la fase de planificación:
    - Snippets de código, YAML, configs o comandos shell exactos.
@@ -130,7 +130,7 @@ Elige exactamente un valor Ready for de este menú y explica por qué. Mapea al 
 - `plan` — El ticket está listo para planificar; úsalo cuando el contexto exista o el alcance sea lo suficientemente pequeño para planificar inmediatamente. No lo uses cuando ya existe un plan de implementación puntuado — el orquestador reanuda en implementación.
 - `blocked` — Dependencia externa o bloqueador sin resolver; lista qué debe cambiar.
 
-Nota efectos de segundo orden que el ticket debería mencionar: callers, jobs, flags, auth/PHI, mobile/legacy. Escribe "none" cuando no apliquen.
+Nota efectos de segundo orden que el ticket debería mencionar: callers, jobs, flags, auth/PII, mobile/legacy. Escribe "none" cuando no apliquen.
 
 Puntúa la calidad del ticket y el brief de revisión según [ticket-review-rubric.md](_shared/ticket-review-rubric.md).
 

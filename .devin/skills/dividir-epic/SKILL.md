@@ -2,9 +2,10 @@
 name: dividir-epic
 description: >-
   Lee un epic del plan de epics y lo divide en tareas atómicas con AC,
-  estimaciones y dependencias. Salida: docs/<domain>/<EPIC-SLUG>-tasks.md con
-  desglose completo listo para crear tickets. Mapea artefactos de código que
-  cada tarea tocará. Úsalo para convertir epics en trabajo implementable.
+  estimaciones y dependencias. Salida: docs/<domain>/<EPIC-SLUG>-tasks.md.
+  Úsalo cuando el usuario pida dividir, desagregar, descomponer o breakdown
+  un epic en tareas. No lo usas para crear tickets en herramientas de gestión
+  (usar crear-ticket) ni para planificar epics desde PRD (usar planificar-epics).
 argument-hint: "[EPIC-SLUG | EPIC-PLAN-RUTA]"
 allowed-tools:
   - read

@@ -9,7 +9,7 @@ Aplica los gates en orden. Asigna el puntaje más alto cuyos gates todos pasen.
 - **8**: Borrador usable pero uno de: estimación desajustada vs alcance, AC delgados, límites de Alcance débiles, o Testing/QA vago cuando QA se necesita
 - **7**: El borrador existe pero secciones clave delgadas (Problema, Alcance o AC necesitan input del autor); o deps sin resolver sin Preguntas abiertas
 - **5–6**: Gaps materiales: AC o Alcance faltantes, stubs de placeholder, gaps de producto sin resolver no en Preguntas abiertas, o estimación claramente errónea para el alcance declarado
-- **1–4**: Ticket placeholder, contradice INPUT/fuentes, o alcance inseguro (auth/PHI) sin guardrails
+- **1–4**: Ticket placeholder, contradice INPUT/fuentes, o alcance inseguro (auth/PII) sin guardrails
 
 Un borrador debe cumplir estos estándares antes de poder puntuar ≥ 9:
 

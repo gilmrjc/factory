@@ -1,11 +1,12 @@
 ---
 name: generar-trd
 description: >-
-  Genera un Technical Requirements Document (TRD) a partir de un epic plan.
-  Especifica arquitectura, esquemas, APIs, integraciones y limites técnicos.
-  Salida: docs/<domain>/<EPIC-SLUG>-trd.md con diagramas, schemas y
-  constraints. Puente entre producto (epic) y implementación (tareas). Úsalo
-  antes de iniciar tareas para alineación técnica.
+  Genera un Technical Requirements Document (TRD) especificando arquitectura,
+  esquemas, APIs, integraciones y límites técnicos. Salida:
+  docs/<domain>/<EPIC-SLUG>-trd.md. Úsalo cuando el usuario pida generar,
+  crear o especificar requisitos técnicos antes de implementar. No lo usas para
+  generar diagramas arquitectónicos visuales (usar generar-arquitectura) ni para
+  documentar decisiones arquitectónicas (usar generar-adr).
 argument-hint: "[EPIC-SLUG | EPIC-TASKS-RUTA]"
 allowed-tools:
   - read
@@ -147,7 +148,16 @@ Documenta behaviors que afectan a testing/implementación:
 
 Usa el template en `references/risk-table-template.md` para documentar los riesgos técnicos.
 
-## Fase H — Escribir TRD
+## Fase H — Gate de Revisión de TRD
+
+Antes de finalizar el TRD, pregunta al humano: **¿Go/No-Go para continuar con arquitectura y validación técnica?**
+
+- Si **No-Go**: Detén el workflow, marca el TRD como "Needs revision" y sugiere revisar requisitos técnicos, arquitectura o alcance antes de continuar.
+- Si **Go**: Procede a Fase I para escribir el TRD final.
+
+Este gate asegura que el humano aprueba los requisitos técnicos antes de invertir en arquitectura y validación.
+
+## Fase I — Escribir TRD
 
 Estructura del documento:
 

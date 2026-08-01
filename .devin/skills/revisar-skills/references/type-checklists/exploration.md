@@ -10,7 +10,7 @@ Skills de ejecución desechable o riesgosa (spike, demo) con stop-and-approve an
 - Fase 0 — inputs; ruta de salida de notas cuando se escriben notas
 - Fase tras aprobación — ejecutar spike o demo
 - Fase C — escribir artefacto de notas (cuando aplica)
-- Solo datos sintéticos/fixture — sin PHI/secrets
+- Solo datos sintéticos/fixture — sin PII/secrets
 - Done when
 
 ## Checklist recomendado

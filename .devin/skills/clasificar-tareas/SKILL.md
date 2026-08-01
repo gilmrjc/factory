@@ -2,8 +2,8 @@
 name: clasificar-tareas
 description: >-
   Clasifica los ítems de trabajo de un ticket o context brief en Primary vs Secondary y elige un próximo paso.
-  Úsalo cuando el usuario pida dividir un ticket en trabajo prioritario/secundario y decidir qué hacer antes de implementar,
-  y no para implementar, revisar o crear un ticket.
+  Úsalo cuando el usuario pida dividir, triage, priorizar o categorizar un ticket en trabajo prioritario/secundario
+  antes de implementar. No implementa código, ni revisa ni crea tickets.
 argument-hint: "[TICKET-SLUG | CONTEXT-DOC-SLUG]"
 allowed-tools:
   - read
@@ -68,7 +68,7 @@ Declara las entradas resueltas en el chat, luego procede.
 ## Fase B — Clasificar y puntuar
 
 1. Divide cada ítem de trabajo concreto en:
-    - **Primary** — requiere juicio: diseño, lógica de dominio, límites de auth/PHI, contratos de API, decisiones de arquitectura. Ejemplo: dónde debería vivir la resolución de conflictos; si un flag controla una ruta de sync. Para cada ítem Primary anota: **por qué requiere juicio**, **archivos/áreas probablemente tocados**, y **riesgo si se equivoca** (auth/PHI, contrato de API, arquitectura, o datos).
+    - **Primary** — requiere juicio: diseño, lógica de dominio, límites de auth/PII, contratos de API, decisiones de arquitectura. Ejemplo: dónde debería vivir la resolución de conflictos; si un flag controla una ruta de sync. Para cada ítem Primary anota: **por qué requiere juicio**, **archivos/áreas probablemente tocados**, y **riesgo si se equivoca** (auth/PII, contrato de API, arquitectura, o datos).
     - **Secondary** — preparación/apalancamiento: mapas del codebase, plomería de fixtures, limpieza de lint/tipos con spec clara, docs, scaffolding de tests una vez que se conoce la forma. Ejemplo: listar callers de un servicio; añadir una factory una vez que se decide la forma del modelo. Para cada ítem Secondary anota: **por qué no requiere juicio**, **sync vs background OK**, y **qué Primary desbloquea**.
 2. Para cada ítem, anota dependencias (qué debe terminar antes de que el trabajo primary pueda empezar).
 3. Pon las incógnitas en Preguntas abiertas.
@@ -87,7 +87,7 @@ Declara las entradas resueltas en el chat, luego procede.
 - `planificar-implementacion` — La división Primary/Secondary es clara; planificar la implementación (ejecutar [planificar-implementacion](../planificar-implementacion/SKILL.md))
 - `blocked` — Detenerse por bloqueos (listarlos)
 
-Anota también **efectos de segundo orden** para ese próximo paso (callers, jobs, flags, auth/PHI, mobile/legacy) — incluso si el próximo paso es spike, demo, o detenerse. Escribe "none" cuando no apliquen.
+Anota también **efectos de segundo orden** para ese próximo paso (callers, jobs, flags, auth/PII, mobile/legacy) — incluso si el próximo paso es spike, demo, o detenerse. Escribe "none" cuando no apliquen.
 
 Puntúa la clasificación según [tasks-triage-rubric.md](references/tasks-triage-rubric.md).
 

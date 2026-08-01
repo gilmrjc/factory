@@ -19,7 +19,7 @@ triggers:
 
 Construye el contexto completo desde un ticket para que una sesión posterior pueda implementar o revisar sin re-investigar.
 
-**No** implementes código, crees commits ni abras un Pull Request. No inventes intención de producto — pon las incógnitas en Preguntas abiertas. Nunca incluyas secrets, PHI, o PII de clientes en el brief; resume en su lugar.
+**No** implementes código, crees commits ni abras un Pull Request. No inventes intención de producto — pon las incógnitas en Preguntas abiertas. Nunca incluyas secrets o PII de clientes en el brief; resume en su lugar.
 
 Este skill no puntúa la calidad del ticket. Para claridad de criterios de aceptación, alcance, dependencias y ajuste de estimación, ejecuta [revisar-ticket](../revisar-ticket/SKILL.md) primero.
 
@@ -129,7 +129,7 @@ Puntúa el brief según [context-brief-rubric.md](references/context-brief-rubri
 3. Notas de producto e historia (por qué ahora, intentos previos, resoluciones de brechas importantes; incluye decisiones de documentación cuando sea relevante)
 4. Estado actual del codebase (entry points, flujo de datos, flags relevantes, tests existentes; incluye los MIN_CONVENTION_ANCHORS–MAX_CONVENTION_ANCHORS anclajes de convención con rutas)
 5. Brechas vs criterios de aceptación (qué falta o está mal hoy)
-6. Riesgos y efectos de segundo orden (auth, PHI, performance, API mobile/legacy, jobs)
+6. Riesgos y efectos de segundo orden (auth, PII, performance, API mobile/legacy, jobs)
 7. Preguntas abiertas (solo elementos sin resolver)
 8. Outline de implementación sugerido (solo alto nivel; no un plan completo)
 9. Puntuación del brief + breve justificación (omítelo solo si se bloquea antes de escribir)

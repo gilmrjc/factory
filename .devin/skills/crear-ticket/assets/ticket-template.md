@@ -18,7 +18,7 @@ Añade estas secciones **solo cuando el INPUT las requiera** (no añadir "por si
 
 - **Feature flag / Acceso** — solo si el INPUT menciona un flag, rollout, o control de acceso
 - **Orden de rollout cross-repo** — solo si el INPUT abarca múltiples repos o el orden de deploy importa
-- **Metadatos de producción** (aplicación, ¿PHI/PII?, SecCom, runtime, comandos dry-run vs real-run) — solo si el INPUT es ops/migración/production run
+- **Metadatos de producción** (aplicación, ¿PII?, SecCom, runtime, comandos dry-run vs real-run) — solo si el INPUT es ops/migración/production run
 - **Causa raíz / Esperado vs Actual** — solo para defectos cuando el INPUT declara o implica un bug
 - **Link de diseño** (herramienta de diseño) — solo si el INPUT cita o requiere un diseño
 
@@ -29,5 +29,5 @@ Añade estas secciones **solo cuando el INPUT las requiera** (no añadir "por si
 - El out-of-scope explícito vence a la prosa larga.
 - Enlaza documentos relacionados por slug o ID genérico (no usar formatos específicos de herramienta).
 - Mantenlo escaneable: encabezados, párrafos cortos, tablas cuando sean útiles.
-- Nunca incluyas secrets, PHI, o PII de clientes; resume en su lugar.
+- Nunca incluyas secrets o PII de clientes; resume en su lugar.
 - Nunca dejes líneas de template vacías.

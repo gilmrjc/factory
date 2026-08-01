@@ -1,11 +1,7 @@
 ---
 name: actualizar-mapeo-contextos
 description: >-
-  Actualiza el mapa de dominios y contextos después de implementación. Lee el
-  diff de la tarea/epic y actualiza docs/<domain>/domain-map.md con nuevas
-  agregaciones, contextos limitados, y relaciones inter-contexto. Mantiene la
-  arquitectura del dominio sincronizada con el código. Úsalo como paso adicional
-  entre implementar-plan y revisar-cambios-locales.
+  Actualiza el mapa de dominios y contextos después de implementación leyendo el diff de la tarea/epic y modificando docs/<domain>/domain-map.md con nuevas agregaciones, contextos limitados y relaciones inter-contexto para mantener la arquitectura del dominio sincronizada con el código. Úsalo cuando el usuario pida actualizar, sincronizar o mapear el dominio después de implementar, o como paso entre implementar-plan y revisar-cambios-locales. No lo uses para crear documentación desde cero ni para revisar código — usa skills de documentación o revisión para eso.
 argument-hint: "[PLAN-DOC | DIFF-BRANCH]"
 allowed-tools:
   - read

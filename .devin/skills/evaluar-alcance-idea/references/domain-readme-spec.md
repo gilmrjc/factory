@@ -1,0 +1,1 @@
+../../analizar-idea/references/domain-readme-spec.md

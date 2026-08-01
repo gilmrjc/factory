@@ -5,7 +5,7 @@
 - **8**: Todo AC cumplido funcionalmente, pero ≥1 hallazgo important o desajuste repetido de convenciones vs patrones hermanos citados o validación no ejecutada cuando el diff claramente lo justifica.
 - **7**: Todo AC cumplido funcionalmente, pero deuda material de arquitectura/diseño (capa incorrecta, lógica duplicada, abstracción faltante) que no rompe el comportamiento hoy.
 - **5–6**: Cualquier AC parcial o faltante; o tests débiles/faltantes para comportamiento cambiado; o casos edge riesgosos no manejados sin una Pregunta abierta.
-- **1–4**: Enfoque incorrecto; comportamiento roto; inseguro para producción/PHI; o ≥1 hallazgo blocker.
+- **1–4**: Enfoque incorrecto; comportamiento roto; inseguro para producción/PII; o ≥1 hallazgo blocker.
 
 ## Verificación rápida de 9 vs 8
 

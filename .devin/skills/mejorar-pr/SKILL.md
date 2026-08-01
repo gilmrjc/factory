@@ -1,7 +1,8 @@
 ---
 name: mejorar-pr
 description: >-
-  Aplica mejoras a un PR para elevar su puntuación de revisión a ≥ 9. Úsalo cuando el usuario pida corregir un PR tras una revisión o una revisión fresca,
+  Aplica mejoras a un PR para elevar su puntuación de revisión a ≥ 9. Úsalo cuando el usuario pida
+  corregir, mejorar, arreglar o aplicar fixes a un PR tras una revisión o una revisión fresca,
   y no para solo revisar, explicar o publicar comentarios en la plataforma de código. Escribe notas de mejora en disco o las entrega en chat. No hace push a menos que se le pida.
 argument-hint: "[PR-NUMBER] [TICKET-SLUG] [REVIEW-DOC-SLUG]"
 allowed-tools:
@@ -75,7 +76,7 @@ Si `REVIEW-DOC-SLUG` falta y la fuente (`TICKET-SLUG`) carece de objetivo y crit
 - **8**: Todo AC cumplido funcionalmente, pero ≥1 hallazgo important o desajuste repetido de convenciones vs patrones hermanos citados o validación no ejecutada cuando el diff claramente lo justifica.
 - **7**: Todo AC cumplido funcionalmente, pero deuda material de arquitectura/diseño (capa incorrecta, lógica duplicada, abstracción faltante) que no rompe el comportamiento hoy.
 - **5–6**: Cualquier AC parcial o faltante; o tests débiles/faltantes para comportamiento cambiado; o casos edge riesgosos no manejados sin una Pregunta abierta.
-- **1–4**: Enfoque incorrecto; comportamiento roto; inseguro para producción/PHI; o ≥1 hallazgo blocker.
+- **1–4**: Enfoque incorrecto; comportamiento roto; inseguro para producción/PII; o ≥1 hallazgo blocker.
 
 Verificación rápida de 9 vs 8: si archivarías ≥1 comentario important antes de merge, puntúa ≤8. Si todo AC está cumplido, validación está verde, y solo nits opcionales permanecen, puntúa ≥9.
 

@@ -3,10 +3,11 @@ name: ejecutar-quiz-comprension
 description: >-
   Ejecuta una puerta de comprensión en vivo en el chat con 5–10 preguntas calificadas contra
   la fuente y el código. Reprueba la puerta cuando el humano falla un tema bloqueante: límites
-  de auth/PHI, entry points o flujo de datos incorrectos, o criterios de aceptación omitidos.
-  La salida permanece solo en el chat — ningún archivo durable. Recomendado antes de implementar
-  o revisar; omisible solo cuando el usuario aprueba explícitamente omitir la puerta.
-  Usa change-explainer para documentos didácticos.
+  de auth/PII, entry points o flujo de datos incorrectos, o criterios de aceptación omitidos.
+  La salida permanece solo en el chat — ningún archivo durable. Úsalo cuando el usuario pida
+  comprobar, validar, verificar o entender un cambio antes de implementar o revisar, o cuando
+  necesite una puerta de comprensión en vivo. No lo uses para documentos didácticos en disco
+  (usa explicar-cambio).
 argument-hint: "[CONTEXT-DOC-SLUG | PR-NUMBER | DIFF-PEGADO]"
 allowed-tools:
   - read
@@ -27,7 +28,7 @@ Mantén la salida solo en el chat. Pon la intención de producto desconocida en 
 
 **Temas bloqueantes** — un miss en cualquiera reprueba la puerta:
 
-- Límite de auth o PHI
+- Límite de auth o PII
 - Entry point o flujo de datos principal incorrecto
 - Criterio de aceptación omitido
 
@@ -71,11 +72,11 @@ Declara la fuente resuelta en el chat, luego procede.
 
 ## Fase A — Preparación
 
-1. Lee la fuente resuelta lo suficiente para calificar respuestas: objetivo, criterios de aceptación, objetivos excluidos, entry points, auth/PHI, modos de fallo, efectos de segundo orden.
+1. Lee la fuente resuelta lo suficiente para calificar respuestas: objetivo, criterios de aceptación, objetivos excluidos, entry points, auth/PII, modos de fallo, efectos de segundo orden.
 2. Redacta una lista de **5–10** preguntas que cubran al menos:
    - Objetivo y objetivos excluidos del ticket
    - Flujo de datos principal o entry points
-   - Flag crítico o límite de auth/PHI
+   - Flag crítico o límite de auth/PII
    - Un modo de fallo o edge case
    - Un efecto de segundo orden (jobs, serializadores, mobile o legacy)
 

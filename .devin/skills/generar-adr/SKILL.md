@@ -1,11 +1,13 @@
 ---
 name: generar-adr
 description: >-
-  Genera Architecture Decision Records (ADRs) a partir del TRD de un epic.
-  Documenta decisiones arquitectónicas clave, alternativas consideradas, y
-  trade-offs. Salida: docs/<domain>/adr/<EPIC-SLUG>-*.md (un ADR por decisión).
-  Útil para onboarding, auditoría y futuras decisiones similares. Úsalo
-  después de TRD para documentar el "por qué" técnico.
+  Genera Architecture Decision Records (ADRs) documentando decisiones
+  arquitectónicas clave, alternativas consideradas y trade-offs. Salida:
+  docs/<domain>/adr/<EPIC-SLUG>-*.md (un ADR por decisión). Úsalo cuando el
+  usuario pida documentar, registrar o capturar decisiones arquitectónicas y
+  su rationale. No lo usas para generar documentación arquitectónica visual
+  (usar generar-arquitectura) ni para especificar requisitos técnicos (usar
+  generar-trd).
 argument-hint: "[EPIC-SLUG | TRD-RUTA]"
 allowed-tools:
   - read

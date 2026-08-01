@@ -1,11 +1,7 @@
 ---
 name: revisar-cambios-locales
 description: >-
-  Revisa cambios locales de rama contra la rama base antes de abrir un PR. Explica resultados en chat
-  (puntuación, estado de AC, hallazgos, Ready for) y opcionalmente escribe
-  docs/<domain>/<TICKET-SLUG>-local-review.md. No hace push, abre PR ni publica en la plataforma de código.
-  Úsalo cuando la implementación está hecha localmente pero no existe PR aún — no para PRs abiertos
-  (usa pr-review).
+  Revisa cambios locales de rama contra la rama base antes de abrir un PR explicando resultados en chat (puntuación, estado de AC, hallazgos, Ready for) y opcionalmente escribiendo docs/<domain>/<TICKET-SLUG>-local-review.md. Úsalo cuando el usuario pida revisar, auditar, evaluar o validar cambios locales después de implementar pero antes de abrir un PR. No lo uses para PRs abiertos — usa pr-review para eso. No hace push, abre PR ni publica en la plataforma de código.
 argument-hint: "[TICKET-SLUG | CONTEXT-DOC-SLUG]"
 allowed-tools:
   - read
@@ -116,7 +112,7 @@ Mejora el brief de revisión en como máximo 2 rondas hasta que la puntuación d
 4. Hallazgos por severidad (blocker, important, nit)
 5. Estado de validación (comandos ejecutados y pass/fail)
 6. Pase de convenciones (≥2 rutas hermanas citadas)
-7. Efectos de segundo orden (callers, jobs, flags, auth/PHI, mobile/legacy)
+7. Efectos de segundo orden (callers, jobs, flags, auth/PII, mobile/legacy)
 8. Puntuación del brief + breve justificación
 9. Ready for: `open-pr` | `fix-locally` | `blocked` — exactamente uno + por qué
 10. Preguntas abiertas (solo elementos sin resolver)

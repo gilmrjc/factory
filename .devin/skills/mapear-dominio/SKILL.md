@@ -21,54 +21,31 @@ triggers:
 
 ## Uso rápido
 
-Invoca: `domain-mapping "<scope>" "<taskFolder>" ["<sourcesHint>"] [<mapState>] [<splitMode>]`
-
-Ejemplo: `domain-mapping "checkout" "docs/domain-maps/checkout" "src/sales, src/payments" "AS_IS"`
-
-- `taskFolder` es obligatoria; si falta, pídela.
-- `mapState` default: `AS_IS`; usa `TO_BE` solo si el usuario pide rediseño explícito.
-- `splitMode` se decide normalmente en la Fase B.1; no es obligatoria al inicio.
+Invoca el skill con los parámetros en el orden indicado: `domain-mapping "<scope>" "<taskFolder>" ["<sourcesHint>"] [<mapState>] [<splitMode>]`. Por ejemplo, `domain-mapping "checkout" "docs/domain-maps/checkout" "src/sales, src/payments" "AS_IS"` inicia el mapeo del dominio de checkout enfocándose en los directorios de ventas y pagos. El parámetro `taskFolder` es obligatorio y debes solicitarlo si no se proporciona, ya que nunca debes escribir en la raíz del repositorio. El estado del mapa (`mapState`) por defecto es `AS_IS` para documentar el estado actual, y solo debes usar `TO_BE` cuando el usuario solicite explícitamente un rediseño. El modo de división (`splitMode`) se determina durante la fase de inventario según el tamaño y complejidad del dominio, por lo que no es necesario definirlo al inicio.
 
 ## Propósito
 
-Elabora una guía de dominio DDD estratégica autocontenida y revisable en disco para un producto, módulo o área dada. No ejecuta workflows de refinement/execution/refactor ni cambia código de producto. La salida principal es `domain-map.md` (y partes enlazadas) dentro de un `taskFolder` acordado.
+Este skill elabora una guía de dominio DDD estratégica autocontenida y revisable en disco para un producto, módulo o área específica. El objetivo principal es crear una referencia persistente que capture subdominios, bounded contexts, mapas de contexto, lenguaje ubicuo, arqueología de código, comportamiento en ejecución y evaluación del dominio. Es importante destacar que este skill no ejecuta workflows de refinement, execution o refactor, ni modifica el código de producto. La salida principal es el archivo `domain-map.md` (y sus partes enlazadas) dentro de un `taskFolder` acordado con el usuario.
 
-**No** la uses para inventarios de deuda técnica, PRDs de features, deep-dive puntual del tipo "¿cómo funciona X?", mapas organizativos complejos o diseño táctico profundo como cuerpo principal.
+No debes utilizar este skill para inventarios de deuda técnica orientados a correcciones, ya que existen skills específicos para análisis de cambios. Tampoco está diseñado para responder preguntas puntuales sin generar un mapa persistente, para crear PRDs de features, para realizar diseño táctico profundo (agregados, entidades, repositorios detallados) como cuerpo principal, ni para elaborar mapas organizativos complejos o Team Topologies completos como objetivo principal, aunque puedes incluir un anexo breve si hay evidencia clara de equipos.
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí:** se necesita una guía de dominio persistente en disco: subdominios, bounded contexts, mapas de contexto, lenguaje ubicuo, arqueología de código, comportamiento en ejecución y evaluación.
-- **No:** inventario de deuda técnica orientado a correcciones → usa el skill apropiado para análisis de cambios.
-- **No:** cambiar código o ejecutar refactor.
-- **No:** pregunta puntual sin mapa persistente.
-- **No:** PRD / definición de feature.
-- **No:** diseño táctico profundo (agregados/entidades/repositorios detallados) como cuerpo principal.
-- **No:** mapa organizativo / Team Topologies completo como cuerpo principal (anexo breve solo si hay evidencia clara de equipos).
+Debes usar este skill cuando el equipo necesite una guía de dominio persistente en disco que incluya subdominios, bounded contexts, mapas de contexto, lenguaje ubicuo, arqueología de código, comportamiento en ejecución y evaluación. Esta guía sirve como referencia de estudio duradera para entender los límites del dominio y cómo los diferentes contextos interactúan entre sí.
 
-Si el pedido cae en **No**, aborta con una frase que contraste lo pedido con lo que hace este skill; para encontrar el atajo correcto usa `/help`.
+No debes usar este skill cuando el objetivo sea un inventario de deuda técnica orientado a correcciones, ya que para eso existen skills específicos de análisis de cambios. Tampoco es apropiado cuando se necesita modificar código o ejecutar refactor, ya que este skill es puramente analítico y documental. Si el usuario tiene una pregunta puntual sin interés en generar un mapa persistente, este skill no es el adecuado. Para PRDs o definición de features existen otros skills especializados, y este no debe usarse para diseño táctico profundo como cuerpo principal, aunque puede incluir anexos breves si es necesario. Finalmente, no está diseñado para crear mapas organizativos o Team Topologies completos como objetivo principal, aunque puedes incluir un anexo breve si hay evidencia clara de equipos.
+
+Si el pedido del usuario cae en alguna de las categorías de "No", debes abortar con una frase que contraste claramente lo pedido con lo que hace este skill, y para encontrar el atajo correcto puedes usar `/help`.
 
 ## Entrada y salida
 
-- **Entrada:**
-  - `scope` (string, obligatorio): producto, módulo o área a mapear.
-  - `taskFolder` (path, obligatorio): carpeta donde escribir; pídela si no se indica. No escribas en la raíz del repo.
-  - `sourcesHint` (string, opcional): rutas o temas a priorizar.
-  - `mapState` (`AS_IS` | `TO_BE`, opcional; default `AS_IS`). `TO_BE` solo si el usuario pide rediseño explícito.
-  - `splitMode` (`single` | `by-domain` | `by-size`, opcional; decidir en la fase de inventario).
-- **Salida:**
-  - **Canónico:** `domain-map.md` en la raíz de `taskFolder`.
-  - **Apoyos:** `domain_map_process/session.md`, `domain_map_process/context.md`.
-  - **Partes (opcionales):** `domain-map/<slug>.md` o `domain-map/bc-<slug>.md` enlazadas desde el índice.
-  - **Evaluación:** bloque `## Evaluación de salida` dentro de `domain-map.md` (o del índice) con rúbrica y `Listo para`.
+Las entradas requeridas para este skill son el `scope` (string obligatorio que define el producto, módulo o área a mapear) y el `taskFolder` (path obligatorio que indica la carpeta donde escribir la documentación, la cual debes solicitar si no se proporciona y nunca debe ser la raíz del repositorio). Opcionalmente puedes recibir un `sourcesHint` (string) para priorizar rutas o temas específicos, un `mapState` que puede ser `AS_IS` o `TO_BE` (con default `AS_IS`, usando `TO_BE` solo si el usuario solicita explícitamente un rediseño), y un `splitMode` que puede ser `single`, `by-domain` o `by-size` (el cual se decide durante la fase de inventario).
+
+La salida principal es el archivo canónico `domain-map.md` en la raíz de `taskFolder`, complementado con archivos de apoyo como `domain_map_process/session.md` y `domain_map_process/context.md`. Dependiendo del tamaño y complejidad del dominio, puedes generar partes opcionales como `domain-map/<slug>.md` o `domain-map/bc-<slug>.md` que se enlazan desde el índice. Finalmente, debes incluir un bloque de evaluación de salida dentro de `domain-map.md` (o del índice si hay división) que contenga la rúbrica de evaluación y el estado `Listo para`.
 
 ## Convenciones locales
 
-- Trabaja con archivos locales o el chat.
-- Si el usuario proporciona una ruta de archivo como fuente, léela con `read`.
-- Si falta `taskFolder`, pídela; nunca escribas el canónico en la raíz del repo.
-- Si falta `scope`, pídela; no inventes el dominio completo.
-- Persiste apoyos en `domain_map_process/` y el canónico en `domain-map.md`.
-- Usa `templates/domain-map-template.md` del skill como guía de secciones canónicas.
+Debes trabajar siempre con archivos locales o directamente en el chat. Cuando el usuario proporciona una ruta de archivo como fuente, debes leerla usando la herramienta `read`. Si falta el parámetro `taskFolder`, debes solicitarlo al usuario y nunca escribir el archivo canónico en la raíz del repositorio. De igual manera, si falta el `scope`, debes pedirlo al usuario en lugar de inventar el dominio completo. Los archivos de apoyo deben persistirse en el directorio `domain_map_process/` mientras que el archivo canónico debe ser `domain-map.md`. Para estructurar las secciones canónicas, debes usar como guía los templates en `templates/`, eligiendo entre `domain-map-template-single.md` (dominios simples), `domain-map-template-divided.md` (dominios complejos) o consultando `domain-map-examples.md` para referencias de ejemplos completos.
 
 ## Referencias compartidas
 
@@ -78,137 +55,65 @@ Si el pedido cae en **No**, aborta con una frase que contraste lo pedido con lo 
 
 ## Estrategia de fallo
 
-- **Sin `scope`**: Pedir alcance; no inventar el dominio.
-- **Sin `taskFolder`**: Pedir ruta; no escribir en la raíz del repo.
-- **Evidencia insuficiente**: Mapear lo observable; marcar supuestos; no inventar BC sin evidencia.
-- **Un solo contexto aparente**: Canvas completo + justificación de por qué no se parte.
-- **Mapa crece / ≥2 dominios**: Proponer división; migrar a `domain-map/`; índice actualizado.
-- **Parte sin enlace**: Corregir antes de cerrar.
-- **Usuario pide táctica profunda**: Anexo ≤10 líneas o diferir; no sustituir la guía.
-- **Usuario pide `TO_BE`**: Declarar `mapState=TO_BE`; no mezclar con `AS_IS` sin etiquetar.
-- **Diagrama ASCII o flechas D→U**: Reescribir Mermaid U→D antes de persistir.
-- **Todo etiquetado C/S**: Revisar capa 1; degradar a UpstreamDownstream si no hay backlog compartido.
-- **Evaluación `bloqueado`**: No cerrar como listo; listar huecos y completar una iteración.
-- **Puntuación no sube a ≥ 9 tras 2 rondas**: Detente e informa los bloqueos restantes; no iterar indefinidamente.
+Cuando te encuentres con situaciones que requieren manejo especial, sigue estas directrices. Si falta el `scope`, debes pedir el alcance al usuario en lugar de inventar el dominio. Si falta el `taskFolder`, solicita la ruta y nunca escribas en la raíz del repositorio. Cuando la evidencia sea insuficiente, mapea solo lo observable y marca claramente los supuestos, evitando inventar bounded contexts sin evidencia. Si parece haber un solo contexto, debes crear un canvas completo con justificación de por qué no se divide el dominio. Cuando el mapa crezca o haya dos o más dominios, debes proponer la división, migrar a la estructura `domain-map/` y actualizar el índice. Si alguna parte carece de enlace, debes corregirlo antes de cerrar. Si el usuario pide táctica profunda, puedes incluir un anexo de máximo 10 líneas o diferir la solicitud, pero nunca sustituir la guía principal. Si el usuario solicita `TO_BE`, debes declarar explícitamente `mapState=TO_BE` y no mezclarlo con `AS_IS` sin etiquetar claramente. Si encuentras diagramas ASCII o flechas D→U, debes reescribirlos como Mermaid con la dirección correcta U→D antes de persistir. Si todo está etiquetado como CustomerSupplier, debes revisar la primera capa y degradar a UpstreamDownstream si no hay backlog compartido. Si la evaluación resulta en `bloqueado`, no debes cerrar como listo, sino listar los huecos y completar una iteración. Finalmente, si la puntuación no sube a 9 o más tras dos rondas, debes detenerte e informar los bloqueos restantes en lugar de iterar indefinidamente.
 
 ## Resumen del flujo
 
-- **0 — Resolver entradas**: Validar y declarar parámetros obligatorios — `scope` y `taskFolder` resueltos
-- **A — Cargar**: Fijar alcance, carpeta y estado del mapa — `scope`, `taskFolder` y `mapState` declarados
-- **B — Elaborar**: Descubrir subdominios, bounded contexts, relaciones y comportamiento — Subdominios, canvases, ≥2 mapas, ≥2 historias
-- **C — Persistir**: Escribir `domain-map.md` (+ partes) y evaluar — Entregable en disco con `## Evaluación de salida`
+El flujo de trabajo se divide en cuatro fases principales. La Fase 0 consiste en resolver las entradas, validando y declarando los parámetros obligatorios `scope` y `taskFolder`. La Fase A carga el contexto, fijando el alcance, la carpeta y el estado del mapa, asegurando que `scope`, `taskFolder` y `mapState` estén declarados. La Fase B elabora el mapa descubriendo subdominios, bounded contexts, relaciones y comportamiento, produciendo subdominios, canvases, al menos dos mapas y al menos dos historias. Finalmente, la Fase C persiste los resultados escribiendo `domain-map.md` (y sus partes si aplica) y evaluando la calidad, entregando un documento en disco con la sección `## Evaluación de salida`.
 
 ## Fase 0 — Resolver entradas
 
-Requerido: `scope` (string) y `taskFolder` (path). Opcional: `sourcesHint` (string), `mapState` (`AS_IS` | `TO_BE`), `splitMode` (`single` | `by-domain` | `by-size`).
-
-Declara las entradas resueltas en el chat, luego procede.
+En esta fase debes validar que tienes los parámetros requeridos: `scope` (string) y `taskFolder` (path). Los parámetros opcionales incluyen `sourcesHint` (string), `mapState` (que puede ser `AS_IS` o `TO_BE`) y `splitMode` (que puede ser `single`, `by-domain` o `by-size`). Una vez resueltas las entradas, debes declararlas en el chat antes de proceder a la siguiente fase.
 
 ## Fase A — Cargar y arrancar
 
-1. Resolver `taskFolder` (absoluto o relativo). Crear `domain_map_process/{session,context}.md`.
-2. Si existe `domain-map.md` / `domain-map/` / `domain-map-*.md` previo, resumirlo y proponer 2–4 opciones (consolidar / reestructurar / empezar de nuevo + sugerida) usando `ask_user_question`.
-3. Fijar `scope`, `sourcesHint` y `mapState` (`AS_IS` default).
-
-**Criterio de salida A:** `scope` escrito; `taskFolder` válido; `mapState` declarado; decisión sobre legado en `session.md`.
+Comienza resolviendo la ruta `taskFolder` (que puede ser absoluta o relativa) y creando los archivos `domain_map_process/session.md` y `domain_map_process/context.md`. Si existe un `domain-map.md`, `domain-map/` o `domain-map-*.md` previo, debes resumirlo y proponer de dos a cuatro opciones al usuario usando la herramienta `ask_user_question`, las cuales pueden incluir consolidar, reestructurar, empezar de nuevo o una opción sugerida. Luego fija el `scope`, el `sourcesHint` y el `mapState` (con default `AS_IS`). El criterio de salida de esta fase es tener el `scope` escrito, un `taskFolder` válido, el `mapState` declarado y una decisión sobre el legado documentada en `session.md`.
 
 ## Fase B — Elaborar el mapa
 
 ### B.1 — Inventario y división
 
-1. Inventariar capacidades con evidencia (rutas, comandos, artefactos en disco).
-2. Decidir `splitMode`.
-3. Borrador de subdominios Núcleo / Soporte / Genérico + criterios.
-
-**Criterio B.1:** tabla de subdominios con evidencia; `splitMode` decidido.
+En esta subfase debes inventariar las capacidades del dominio recopilando evidencia concreta como rutas de código, comandos relevantes y artefactos existentes en disco. Con base en este inventario, debes decidir el `splitMode` más apropiado según el tamaño y complejidad del dominio. Luego elabora un borrador de subdominios clasificándolos como Núcleo, Soporte o Genérico junto con los criterios de clasificación utilizados. El criterio de salida de esta subfase es tener una tabla de subdominios con evidencia y el `splitMode` decidido.
 
 ### B.2 — Bounded contexts + arqueología
 
-1. Diseñar BCs (no "carpeta = contexto"): propósito, límites, clasificación, roles de dominio, **interfaz pública**, lenguaje ubicuo + anti-términos, comunicación entrada/salida tipada (comando | consulta | evento | documento/archivo), reglas de límite, ownership tentativo.
-2. En cada BC **Núcleo**, completar arqueología (entrar por, leer después, fósil/trampa, ancla de contrato/prueba).
-3. Soporte / Genérico: ficha corta (propósito + límites + 1 línea de arqueología).
-
-**Criterio B.2:** todo Núcleo tiene canvas (interfaz + mensajes tipados) + arqueología; Soporte al menos ficha; ninguno sin límites.
+Diseña los bounded contexts evitando la simplificación de "carpeta igual contexto", y en su lugar define cada contexto con su propósito, límites claros, clasificación estratégica, roles de dominio que desempeña, interfaz pública que expone, lenguaje ubicuo con sus anti-términos correspondientes, comunicación de entrada y salida tipada (que puede ser comando, consulta, evento o documento/archivo), reglas de negocio en el límite y ownership tentativo. Para cada bounded context clasificado como Núcleo, debes completar la arqueología de código que incluye cómo entrar al contexto, qué leer después, identificar fósiles o trampas potenciales, y encontrar el ancla de contrato o prueba. Para los contextos de Soporte y Genérico, basta con una ficha corta que incluya propósito, límites y una línea de arqueología. El criterio de salida es que todo contexto Núcleo tenga un canvas completo con interfaz y mensajes tipados más arqueología, los contextos de Soporte tengan al menos una ficha, y ningún contexto quede sin límites definidos.
 
 ### B.3 — Mapas de contexto por perspectiva
 
-1. Elegir ≥2 perspectivas distintas del catálogo; formular la pregunta de cada mapa.
-2. Por mapa: leyenda solo de tipos/roles usados + tabla 2 capas + Mermaid U→D; matriz U×D si ≥5 BCs.
-3. Discriminar CustomerSupplier vs UpstreamDownstream; apilar roles cuando aplique; demarcar BBoM si existe.
-
-**Criterio B.3:** ≥2 mapas de perspectivas distintas; cero ASCII; cada arista con tipo (capa 1) y roles si aplican (capa 2).
+Debes elegir al menos dos perspectivas distintas del catálogo disponible y formular la pregunta específica que cada mapa responderá. Para cada mapa, incluye una leyenda que contenga solo los tipos y roles utilizados en ese mapa específico, una tabla de dos capas que describa las relaciones, y un diagrama Mermaid con la dirección correcta de upstream a downstream. Si hay cinco o más bounded contexts, debes incluir también una matriz upstream por downstream. Es importante discriminar correctamente entre CustomerSupplier y UpstreamDownstream, apilar roles cuando sea aplicable, y demarcar claramente si existe un Big Ball of Mud. El criterio de salida es tener al menos dos mapas de perspectivas distintas, cero diagramas ASCII, y cada arista debe tener su tipo en la primera capa y roles si aplican en la segunda capa.
 
 ### B.4 — Ejecución, bloques estructurales, navegación
 
-1. ≥2 historias de dominio (actor → acción → artefacto); incluir error o umbral.
-2. Bloques estructurales ligeros (entrada → módulos, máx. 2 niveles). Aclarar que no son C4 ni context map.
-3. Guía de estudio (3 pasadas) + índice si el documento es largo.
-4. Polisemia, trazabilidad subdominio↔BC, decisiones de frontera, preguntas de estudio, supuestos.
-
-**Criterio B.4:** historias + bloques + guía de estudio; polisemia y trazabilidad completas; ≥3 preguntas de estudio.
+Debes crear al menos dos historias de dominio que sigan el patrón actor, acción y artefacto, e incluir al menos una historia que contenga un error o umbral. Los bloques estructurales deben ser ligeros, mostrando desde el punto de entrada hasta los módulos con máximo dos niveles de profundidad, y debes aclarar explícitamente que no son diagramas C4 ni context maps. Incluye una guía de estudio estructurada en tres pasadas y un índice si el documento es suficientemente largo. Finalmente, documenta la polisemia, la trazabilidad entre subdominios y bounded contexts, las decisiones de frontera, preguntas de estudio y supuestos. El criterio de salida es tener historias, bloques y guía de estudio completos, polisemia y trazabilidad completas, y al menos tres preguntas de estudio.
 
 ## Fase C — Persistir y evaluar
 
 ### C.1 — Persistir
 
-1. Escribir según `splitMode`. `domain-map.md` es documento final (sin narrativa del proceso).
-2. Actualizar `context.md` (`splitMode`, `mapState`, rutas, fecha).
-3. `domain-map.md` nunca desaparece; toda parte enlazada desde el índice.
-
-**Criterio C.1:** canónico (+ partes) en disco; enlaces íntegros; lectura rápida visible; `mapState` declarado.
+Escribe los documentos según el `splitMode` decidido, recordando que `domain-map.md` es el documento final y no debe incluir narrativa del proceso. Actualiza el archivo `context.md` con el `splitMode`, `mapState`, rutas y fecha. Es fundamental que `domain-map.md` nunca desaparezca y que toda parte enlazada esté accesible desde el índice. El criterio de salida es tener el archivo canónico y sus partes en disco, enlaces íntegros, lectura rápida visible y el `mapState` declarado.
 
 ### C.2 — Evaluación de salida
 
-1. Aplicar la rúbrica con evidencia citada del propio entregable.
-2. Asignar exactamente un `Listo para`.
-3. Si `bloqueado` o puntuación global < 7: volver a la fase con huecos; máximo 2 ciclos de mejora en la misma invocación.
-4. Registrar el resultado de la evaluación dentro de `domain-map.md`.
-
-**Criterio C.2:** bloque `## Evaluación de salida` completo; `Listo para` ≠ `bloqueado` o el usuario aceptó cerrar con huecos explícitos.
+Aplica la rúbrica de evaluación citando evidencia del propio entregable y asigna exactamente un estado `Listo para`. Si el resultado es `bloqueado` o la puntuación global es menor a 7, debes volver a la fase que tiene los huecos para corregirlos, con un máximo de dos ciclos de mejora en la misma invocación. Registra el resultado de la evaluación dentro del bloque `## Evaluación de salida` en `domain-map.md`. El criterio de salida es tener el bloque de evaluación completo y el `Listo para` diferente de `bloqueado`, o que el usuario haya aceptado cerrar con huecos explícitos.
 
 ## Contrato de contenido (el conjunto debe cumplirlo)
 
-1. **Navegación:** índice + Guía de estudio (3 pasadas).
-2. **Estado del mapa:** declarar `AS_IS` (default) o `TO_BE` en Contexto y alcance.
-3. **Subdominios:** Núcleo (Core) / Soporte (Supporting) / Genérico (Generic) + evidencia + criterios.
-4. **Bounded contexts:** canvas por contexto (Núcleo completo; Soporte ficha corta) con interfaz pública y mensajes tipados.
-5. **Arqueología** en cada BC **Núcleo:** entrar por / leer después / fósil o trampa / prueba o ancla de contrato.
-6. **Mapas de contexto pequeños (≥2)** por **perspectivas distintas**. Cada uno: leyenda aplicada + tabla de relaciones (2 capas) + Mermaid U→D; matriz U×D si ≥5 BCs.
-7. **Comportamiento en ejecución / historias de dominio (≥2):** actor → acción → artefacto (camino feliz + al menos un fallo o umbral).
-8. **Bloques estructurales ligeros:** puntos de entrada y módulos (máx. 2 niveles) solo para arqueología.
-9. **Polisemia**, **trazabilidad** subdominio↔BC, **decisiones de frontera**, **preguntas de estudio**, **supuestos**.
-10. **Evaluación de salida** con rúbrica y `Listo para`.
-
-Un entregable que solo liste carpetas no cumple. Un mapa que idealiza el futuro sin evidencia, presentado como `AS_IS`, no cumple.
+El entregable completo debe incluir navegación mediante índice y guía de estudio estructurada en tres pasadas. El estado del mapa debe declararse explícitamente como `AS_IS` (por defecto) o `TO_BE` en la sección de contexto y alcance. Los subdominios deben clasificarse como Núcleo, Soporte o Genérico con evidencia y criterios claros. Cada bounded context debe tener un canvas completo para los de Núcleo y una ficha corta para los de Soporte, incluyendo interfaz pública y mensajes tipados. La arqueología de código es obligatoria para cada bounded context de Núcleo, especificando cómo entrar, qué leer después, fósiles o trampas, y pruebas o anclas de contrato. Se requieren al menos dos mapas de contexto pequeños por perspectivas distintas, cada uno con leyenda aplicada, tabla de relaciones de dos capas y diagrama Mermaid con dirección upstream a downstream, más matriz upstream por downstream si hay cinco o más bounded contexts. El comportamiento en ejecución debe documentarse mediante al menos dos historias de dominio siguiendo el patrón actor, acción y artefacto, incluyendo el camino feliz y al menos un fallo o umbral. Los bloques estructurales deben ser ligeros, mostrando puntos de entrada y módulos con máximo dos niveles solo para propósitos de arqueología. Finalmente, se debe documentar la polisemia, trazabilidad entre subdominios y bounded contexts, decisiones de frontera, preguntas de estudio y supuestos, junto con una evaluación de salida que incluya rúbrica y estado `Listo para`. Un entregable que solo liste carpetas no cumple con el contrato, ni un mapa que idealice el futuro sin evidencia pero se presente como `AS_IS`.
 
 ## Semántica de context map (2 capas)
 
-Cada arista tiene **tipo de relación** (capa 1) y, si aplica, **roles de integración** apilables (capa 2). Los roles **no son mutuamente excluyentes**.
+Cada arista en el mapa de contexto tiene un tipo de relación en la primera capa y, si es aplicable, roles de integración apilables en la segunda capa. Es importante notar que los roles no son mutuamente excluyentes, por lo que una misma arista puede tener múltiples roles.
 
 ### Capa 1 — Tipo de relación
 
-- **Partnership**: El fallo de entrega de uno implica fallo del otro; coordinación bilateral (simétrica)
-- **SharedKernel**: Subconjunto de modelo/código explícito y pequeño; cambio = consulta bilateral (simétrica)
-- **UpstreamDownstream**: El U influye en el D; el D no empuja la planificación del U (asimétrica U→D)
-- **CustomerSupplier**: Como U→D, y las prioridades del D factorizan en el backlog del U (asimétrica U→D)
-- **SeparateWays**: Sin integración relevante (relación de equipo *Free*)
-- **BigBallOfMud**: Zona de modelos mezclados / fronteras rotas; demarcar, no propagar el modelo
+El tipo Partnership indica que el fallo de entrega de uno de los contextos implica el fallo del otro, requiriendo coordinación bilateral en una relación simétrica. SharedKernel representa un subconjunto explícito y pequeño de modelo o código compartido, donde cualquier cambio requiere consulta bilateral en una relación también simétrica. UpstreamDownstream describe una relación asimétrica donde el upstream influye en el downstream, pero el downstream no empuja la planificación del upstream. CustomerSupplier es similar a UpstreamDownstream pero con la diferencia de que las prioridades del downstream factorizan en el backlog del upstream, manteniendo la asimetría. SeparateWays indica que no hay integración relevante entre los contextos, correspondiendo a una relación de equipo tipo Free. Finalmente, BigBallOfMud representa una zona de modelos mezclados o fronteras rotas que debe demarcarse claramente sin propagar el modelo.
 
 ### Capa 2 — Roles de integración (apilables)
 
-- **OHS** (U): Protocolo/API estable abierto a varios consumidores — Catálogo expone API de productos a Pedidos y Facturación
-- **PL** (U): Lenguaje/formato publicado de intercambio — JSON Schema / Protobuf / iCal entre contextos
-- **Conformist** (D): El D adopta el modelo del U sin traducir — Notificaciones usa el payload de Pedidos tal cual
-- **ACL** (D): El D traduce/protege su modelo frente al U — Checkout adapta un ERP legado a su propio modelo
+El rol OHS (Open Host Service) en el upstream indica un protocolo o API estable abierto a varios consumidores, como cuando el contexto de Catálogo expone su API de productos a los contextos de Pedidos y Facturación. El rol PL (Published Language) en el upstream representa un lenguaje o formato publicado de intercambio, como JSON Schema, Protobuf o iCal entre contextos. El rol Conformist en el downstream significa que este adopta el modelo del upstream sin traducirlo, como cuando el contexto de Notificaciones usa el payload de Pedidos tal cual. El rol ACL (Anti-Corruption Layer) en el downstream indica que este traduce o protege su modelo frente al upstream, como cuando Checkout adapta un ERP legado a su propio modelo.
 
-**Reglas duras:**
-
-1. No etiquetes todo como CustomerSupplier: sin influencia en planificación del U → UpstreamDownstream (+ Conformist o ACL).
-2. Partnership / SharedKernel no fuerzan U/D falso; si hay asimetría real, usa UpstreamDownstream o CustomerSupplier.
-3. SharedKernel: declara alcance; prioriza piezas de baja volatilidad; si crece sin consulta → riesgo (hacia BBoM o acoplamiento).
-4. Una arista puede llevar varios roles (`OHS+PL`, `Conformist` → evolución a `ACL`).
-5. Partnership coordina equipos/contextos; evita ciclos runtime de dependencias duras.
-6. Mapa organizacional / Team Topologies solo como anexo ≤15 líneas si hay evidencia de equipos.
+Las reglas duras para la semántica de context map son las siguientes. No debes etiquetar todo como CustomerSupplier, ya que si no hay influencia real en la planificación del upstream debes usar UpstreamDownstream, posiblemente con Conformist o ACL. Partnership y SharedKernel no deben forzar una distinción upstream/downstream falsa, por lo que si hay asimetría real debes usar UpstreamDownstream o CustomerSupplier. Para SharedKernel debes declarar su alcance claramente y priorizar piezas de baja volatilidad, ya que si crece sin consulta se convierte en un riesgo hacia BigBallOfMud o acoplamiento excesivo. Una arista puede llevar varios roles simultáneos, como OHS+PL, o evolucionar de Conformist a ACL con el tiempo. Partnership sirve para coordinar equipos y contextos, pero debes evitar ciclos runtime de dependencias duras. Finalmente, los mapas organizacionales o Team Topologies solo deben incluirse como anexo de máximo 15 líneas si hay evidencia clara de equipos.
 
 ### Catálogo de perspectivas (elige ≥2 distintas)
 

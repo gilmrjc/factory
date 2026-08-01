@@ -3,7 +3,7 @@ name: mapear-casos-uso
 description: >-
   Mapea casos de uso concretos para cada persona. Define: happy path, alternativa
   paths, edge cases, precondiciones y postcondiciones. Salida:
-  docs/<domain>/<REQ-SLUG>-use-cases.md con matriz de casos y flujos.
+  docs/<domain>/initiatives/<PRD-SLUG>/use-cases.md con matriz de casos y flujos.
   Úsalo después de definir usuarios para entender workflows específicos.
 argument-hint: "[REQ-SLUG | PERSONAS-RUTA]"
 allowed-tools:
@@ -27,9 +27,10 @@ Solo documentación: no diseña, no decide. Mapea usos reales.
 Requerido: `REQ-SLUG` o `PERSONAS-RUTA`.
 
 Infiere desde:
-- Ruta: `docs/**/<REQ-SLUG>-personas.md`
+- Ruta: `docs/**/initiatives/**/personas-mapping.md` (preferido) o `docs/**/initiatives/**/personas.md` (legacy)
+- Ruta: `docs/**/initiatives/**/personas-mapping.md`
 - Contenido pegado: si usuario pega definición de personas
-- Previo: busca archivo más reciente de `*-personas.md`
+- Previo: busca archivo más reciente de `*-personas-mapping.md` o `*-personas.md`
 
 Pregunta cuando falta: "¿Qué requerimiento? (ruta o slug)"
 
@@ -176,54 +177,108 @@ Si aplica (CS, Support, etc.):
 
 ## Fase F — Crear Matriz de Casos de Uso
 
-Tabla consolidada:
+Tabla consolidada (usa IDs UC1, UC2, ... para trazabilidad):
 
 ```
 ## Matriz de Casos de Uso
 
-| ID | Persona | Trigger | Precondiciones | Happy Path | Edge Cases | Éxito? |
-|----|---------|---------|----------------|-----------|-----------|--------|
-| UC1 | María | Inactividad 7d | Telemetry OK | Alert→Action→Reeng | Stale data, deleted user | 60%+ |
-| UC2 | María | Multiple alerts | >3 in 1h | Batch digest | Rate limiting OK | 50%+ |
-| UC3 | João | At-risk user | Dashboard open | View→Action→Track | User churned before action | 40%+ |
-| UC4 | Admin | Monitor health | Dashboard | See alerts statistics | System down | N/A |
-
-**Criterio de éxito**: ¿Qué métrica determina si use case is working?
-- UC1: 30%+ re-engagement rate
-- UC2: User satisfaction (not overwhelmed)
-- UC3: CS efficiency (tickets reduced 15%)
+| ID | Persona | Trigger | Precondiciones | Happy Path | Edge Cases | Success Metric | Measurement | Éxito? |
+|----|---------|---------|----------------|-----------|-----------|----------------|-------------|--------|
+| UC1 | María | Inactividad 7d | Telemetry OK | Alert→Action→Reeng | Stale data, deleted user | 30%+ re-engagement | telemetría | 60%+ |
+| UC2 | María | Multiple alerts | >3 in 1h | Batch digest | Rate limiting OK | No se siente abrumada (encuesta) | survey | 50%+ |
+| UC3 | João | At-risk user | Dashboard open | View→Action→Track | User churned before action | Tickets -15% | telemetría | 40%+ |
+| UC4 | Admin | Monitor health | Dashboard | See alerts statistics | System down | N/A | no-medible-en-MVP | N/A |
 ```
+
+### Gate de métrica medible (Fase F)
+
+**Cada success metric debe declarar un campo `measurement`** con uno de estos valores:
+
+- `telemetría` — medición automática vía instrumentación del producto. Threshold numérico firme permitido (ej: "30%+ re-engagement").
+- `survey` — medición vía encuesta post-interacción. Threshold **cualitativo** (ej: "Gil reporta 0 pérdidas en 2 semanas de uso"), no numérico firme.
+- `auto-reporte` — medición vía auto-reporte del usuario en conversación/entrevista. Threshold **cualitativo**.
+- `manual` — medición vía cronometraje/observación manual. Threshold **cualitativo** (ej: "teammate reporta < 5 min en encuesta post-onboarding").
+- `no-medible-en-MVP` — la métrica no se puede medir en el stage MVP. Se marca como "observación post-MVP" y **no cuenta para Go/No-Go** del PRD.
+
+**Reglas**:
+- Si `measurement ∈ {survey, auto-reporte, manual}` → el threshold debe ser cualitativo, no numérico firme. Un threshold como "0 customizaciones perdidas" sin plan de medición es inválido; reformular como "Gil reporta 0 pérdidas en 2 semanas de uso" (`auto-reporte`).
+- Si `measurement = no-medible-en-MVP` → la métrica se documenta como observación post-MVP y se excluye de los criterios Go/No-Go del PRD.
+- Si no puedes declarar un `measurement` creíble para una métrica → marcarla `no-medible-en-MVP` o reformular la métrica. No dejar métricas con threshold numérico firme sin plan de medición.
+
+**Criterio de éxito**: ¿Qué métrica determina si use case is working? (con `measurement` declarado)
+- UC1: 30%+ re-engagement rate (`telemetría`)
+- UC2: User satisfaction — "no se siente abrumada" (`survey`)
+- UC3: CS efficiency — tickets reduced 15% (`telemetría`)
 
 ## Fase G — Escribir Mapeo de Casos de Uso
 
 Estructura:
 
-1. **Resumen ejecutivo**: # casos, personas cubiertas
-2. **Happy path por persona**: Flujo ideal paso a paso
-3. **Alternative paths**: Variaciones comunes
-4. **Edge cases y errores**: Qué pasa si algo falla
+1. **Resumen ejecutivo**: # casos, personas cubiertas, lista de casos de uso identificados (UC1, UC2, ... con persona y trigger)
+2. **Happy path por persona**: Flujo ideal paso a paso (con ID UC)
+3. **Alternative paths**: Variaciones comunes (referenciando ID UC)
+4. **Edge cases y errores**: Qué pasa si algo falla (referenciando ID UC)
 5. **Actores secundarios**: CS, Support, Admin si aplica
-6. **Matriz de casos**: Tabla consolidada con success metrics
+6. **Matriz de casos**: Tabla estructurada con columnas fijas (ID, Persona, Trigger, Precondiciones, Happy Path, Edge Cases, Success Metric, Measurement, Éxito?) y success metrics con campo `measurement` declarado por métrica (ver gate de métrica medible en Fase F)
 7. **Completitud**: ¿Todos los workflows cubiertos?
-8. **Ready for**: `generar-prd`
+8. **Ready for**: `disenar-experimentos` (stage Growth/Scale) | `generar-prd` (stage MVP, con stub de omisión de `disenar-experimentos`) — con ruta relativa del siguiente artefacto. La condicionalidad se resuelve leyendo el stage desde `personas-mapping.md` o `product-viability.md` (campo stage del PRD); si no se puede determinar, alertar al usuario.
 
 ## Salida
 
-Escribe en: `docs/<domain>/<REQ-SLUG>-use-cases.md`
+Escribe en: `docs/<domain>/initiatives/<PRD-SLUG>/use-cases.md`
+
+**Header requerido** (al inicio del documento):
+- Req slug
+- Dominio
+- Fecha
+- Skill: mapear-casos-uso
+- Input: ruta del artefacto fuente (personas-mapping.md o personas.md legacy)
 
 **Secciones requeridas**:
-- Resumen ejecutivo
+- Header requerido
+- Resumen ejecutivo: lista de casos de uso identificados (UC1, UC2, ... con persona y trigger)
 - Happy path por cada persona primaria (paso a paso)
 - Alternative paths (por persona)
 - Edge cases y error handling
 - Actores secundarios (si aplica)
-- Matriz de casos de uso (tabla con success metrics)
+- Matriz de casos de uso (tabla estructurada con success metrics y campo `measurement` por métrica)
 - Completitud check
-- Ready for (`generar-prd`, `blocked`)
+- Autoevaluación (checklist de validación) — incluye gate de métrica medible
+- Ready for (`disenar-experimentos` si stage Growth/Scale, `generar-prd` si stage MVP con stub de omisión, `blocked`)
+
+**IDs de casos de uso**:
+Asigna identificadores únicos a cada caso de uso: UC1, UC2, UC3, etc. Usa el mismo ID en el happy path, alternative paths, edge cases y la matriz consolidada para trazabilidad.
+
+**Matriz de casos de uso (tabla estructurada)**:
+Prescribe una tabla con columnas fijas:
+
+| ID | Persona | Trigger | Precondiciones | Happy Path | Edge Cases | Success Metric | Measurement | Éxito? |
+|----|---------|---------|----------------|-----------|-----------|----------------|-------------|--------|
+| UC1 | ... | ... | ... | ... | ... | ... | telemetría/survey/auto-reporte/manual/no-medible-en-MVP | ... |
+| UC2 | ... | ... | ... | ... | ... | ... | ... | ... |
+
+**Autoevaluación (checklist de validación)**:
+- [ ] Cada caso de uso tiene ID único (UC1, UC2, ...)
+- [ ] Happy path definido paso a paso por cada persona primaria
+- [ ] Alternative paths mapeados por persona
+- [ ] Edge cases y error handling cubiertos
+- [ ] Actores secundarios mapeados (si aplica)
+- [ ] Matriz de casos de uso en tabla estructurada con success metrics
+- [ ] **Métrica medible**: toda success metric tiene campo `measurement` declarado (telemetría / survey / auto-reporte / manual / no-medible-en-MVP)
+- [ ] **Métrica medible**: las métricas con `measurement ∈ {survey, auto-reporte, manual}` tienen thresholds cualitativos (no numéricos firmes sin plan de medición)
+- [ ] **Métrica medible**: las métricas `no-medible-en-MVP` se marcan como observación post-MVP y se excluyen de Go/No-Go
+- [ ] Precondiciones y postcondiciones explícitas
+- [ ] Ready for definido correctamente
+- [ ] Documento de salida accionable
 
 Ready for valores:
-- `generar-prd`: Casos de uso mapeados, proceder a PRD
+- `disenar-experimentos`: Casos de uso mapeados y stage del PRD es Growth/Scale (data suficiente para A/B testing). Proceder al diseño riguroso del experimento antes del PRD.
+- `generar-prd`: Casos de uso mapeados y stage del PRD es MVP (A/B no apropiado). Se omite `disenar-experimentos` con un stub `experiment-design.md` con veredicto "Omitido por stage MVP" para preservar trazabilidad.
 - `blocked`: Workflows no claros o incompletos, aclarar primero
+
+**Resolución del stage**: Antes de fijar el `Ready for`, lee el stage del PRD desde `docs/<domain>/initiatives/<PRD-SLUG>/personas-mapping.md` (campo stage) o `docs/<domain>/initiatives/<PRD-SLUG>/product-viability.md`. Si el stage no puede determinarse, alerta al usuario y pide confirmación antes de elegir la rama.
+
+En la sección Ready for, incluye la ruta relativa del siguiente artefacto esperado (ej: `docs/<domain>/initiatives/<PRD-SLUG>/experiment-design.md` para Growth/Scale, o `docs/<domain>/initiatives/<PRD-SLUG>/prd.md` para MVP).
 
 ---
 

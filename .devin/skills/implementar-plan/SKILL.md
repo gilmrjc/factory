@@ -1,10 +1,7 @@
 ---
 name: implementar-plan
 description: >-
-  Ejecuta un plan de implementación puntuado localmente paso a paso para un ticket, dejando solo cambios locales en archivos.
-  Úsalo cuando el usuario tenga un plan aprobado (puntuación ≥ 9, Ready for=implement) y pida implementar localmente,
-  y no para planear, revisar o publicar en el repositorio. No lo uses para "trabajar en ticket" o "implementar TASK-XXX" sin un plan —
-  usa el orquestador del workflow en su lugar.
+  Ejecuta un plan de implementación puntuado localmente paso a paso para un ticket dejando solo cambios locales en archivos. Úsalo cuando el usuario tenga un plan aprobado (puntuación ≥ 9, Ready for=implement) y pida implementar, ejecutar, construir o desarrollar localmente. No lo uses para planear, revisar o publicar en el repositorio, ni para "trabajar en ticket" o "implementar TASK-XXX" sin un plan — usa el orquestador del workflow en su lugar.
 argument-hint: "[PLAN-DOC-SLUG] [TICKET-SLUG]"
 allowed-tools:
   - read
@@ -62,7 +59,7 @@ Declara las entradas resueltas en el chat, luego procede.
 
 Antes de la Fase A, aplica los gates de readiness del plan según [plan-gates-overlay.md](references/plan-gates-overlay.md). Cuando `PLAN-DOC-SLUG` falta o falla un gate de readiness, detente y sugiere ejecutar `planning-implementation` primero — no improvises codificación ni saltes pasos upstream.
 
-Antes de la Fase A, recomienda [ejecutar-quiz-comprension](../ejecutar-quiz-comprension/SKILL.md) cuando el ticket toque auth/PHI, dominios desconocidos o flujo de datos complejo. Procede solo si el usuario aprueba explícitamente saltar el quiz.
+Antes de la Fase A, recomienda [ejecutar-quiz-comprension](../ejecutar-quiz-comprension/SKILL.md) cuando el ticket toque auth/PII, dominios desconocidos o flujo de datos complejo. Procede solo si el usuario aprueba explícitamente saltar el quiz.
 
 ## Fase A — Cargar
 

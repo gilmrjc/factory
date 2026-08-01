@@ -49,7 +49,9 @@ Incluye sustantivos de tarea y sinónimos que el usuario podría usar:
 
 ### Routing test
 
-*"¿Ganaría sobre skills hermanos para los triggers declarados?"*
+#### Pregunta de routing
+
+¿Ganaría sobre skills hermanos para los triggers declarados?
 
 Si la respuesta es no o ambigua, la description score ≤ 7.
 

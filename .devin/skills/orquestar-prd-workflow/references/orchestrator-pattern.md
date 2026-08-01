@@ -1,0 +1,1 @@
+../../_shared/orchestrator-pattern.md

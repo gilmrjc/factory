@@ -1,13 +1,7 @@
 ---
 name: construir-demo
 description: >-
-  Construye un demo interactivo temporal y autónomo conectado a rutas de código reales
-  para hacer visible el comportamiento en tiempo de ejecución — state machines, sync, edge cases,
-  flujos multi-paso — cuando los diffs por sí solos son insuficientes. Escribe un artefacto ejecutable
-  (archivo HTML, demo CLI o carpeta de scripts pequeña) y docs/<domain>/<TICKET-SLUG>-harness-notes.md.
-  La disposición por defecto es eliminar; no es un spike ni un walkthrough de tests.
-  Úsalo cuando el usuario deba manejar el comportamiento para entender un sistema antes de planificar,
-  revisar o implementar.
+  Construye un demo interactivo temporal y autónomo para hacer visible el comportamiento en runtime (state machines, sync, edge cases, flujos multi-paso) cuando los diffs son insuficientes. Úsalo cuando el usuario pida ver, manejar, explorar o validar comportamiento complejo mediante un demo ejecutable. No lo usas para responder preguntas de diseño con bocetos (usa construir-spike), implementar la feature real ni crear código mergeable.
 argument-hint: "[TICKET-SLUG | CONTEXT-DOC-SLUG]"
 allowed-tools:
   - read
@@ -29,7 +23,7 @@ Entregables: un artefacto ejecutable (archivo HTML, demo CLI o carpeta de script
 
 Persigue un solo objetivo de visibilidad por demo. Divide las solicitudes multi-objetivo en demos separadas.
 
-Usa solo fixtures sintéticos — nunca datos reales de clientes, IDs reales de clientes, PHI, credenciales de producción, ni capturas de producción con PHI en fixtures, seeds, logs, o output del demo.
+Usa solo fixtures sintéticos — nunca datos reales de clientes, IDs reales de clientes, PII, credenciales de producción, ni capturas de producción con PII en fixtures, seeds, logs, o output del demo.
 
 Los tests automatizados (pytest, rspec, etc.) son para aserciones automatizadas, no para aprendizaje visual paso a paso. Ver [demo-mediums.md](references/demo-mediums.md) para los medios permitidos.
 
