@@ -4,11 +4,11 @@ description: >-
   Inicia un chat interactivo para esbozar y pulir una idea de producto bruta
   hasta convertirla en un esbozo ligero y bien formado que sirve como entrada
   a analizar-idea. Conduce un diálogo de ida y vuelta enfocado en el resultado
-  deseado (sin soluciónizar), beneficiarios y motivación, sin entrar en
-  viabilidad, alcance, priorización ni detalles técnicos. Salida:
-  docs/drafts/<IDEA-SLUG>/esbozo.md. Úsalo cuando el usuario tenga una idea
+  deseado (sin soluciónizar) y beneficiarios, sin entrar en
+  viabilidad, alcance, priorización ni detalles técnicos. Úsalo cuando el usuario tenga una idea
   muy verde o vaga que no está lista para analizar-idea, y quiera darle forma
-  interactiva antes de avanzar. No lo usas para evaluar viabilidad (usa
+  interactiva antes de avanzar. Triggers comunes: esbozar, dar forma a, pulir,
+  redactar o aclarar una idea. No lo usas para evaluar viabilidad (usa
   analizar-idea), estructurar requerimientos formales (usa
   capturar-requerimiento), dividir alcance (usa evaluar-alcance-idea) ni
   generar PRDs (usa generar-prd o orquestar-prd-workflow).
@@ -16,14 +16,16 @@ description: >-
 
 # Esbozador de Ideas
 
-Inicia un chat interactivo que esboza y pule una idea bruta hasta dejarla lista para `analizar-idea`. El esbozo es deliberadamente ligero: declara el resultado deseado sin mencionar la solución, quién se beneficia y por qué ahora — nada más. El detalle (viabilidad, alcance, priorización, personas, casos de uso, PRD) es trabajo de skills posteriores.
+Inicia un chat interactivo que esboza y pule una idea bruta. El esbozo es deliberadamente ligero: declara el resultado deseado sin mencionar la solución y quién se beneficia — nada más. El detalle (viabilidad, alcance, priorización, personas, casos de uso, PRD) es trabajo de skills posteriores.
 
-Solo formulación interactiva: no evalúa viabilidad, no aprueba, no estructura requerimientos formales. Prepara la idea para que `analizar-idea` pueda evaluarla sin tener que reformularla primero.
+Solo formulación interactiva: no evalúa viabilidad, no aprueba, no estructura requerimientos formales.
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: el usuario tiene una idea muy verde o vaga que no está lista para `analizar-idea`, y quiere pulirla interactivamente antes de avanzar. También cuando el usuario pide "esbozar", "dar forma a", "pulir", "redactar" o "aclarar" una idea.
-- **No**: para evaluar viabilidad (usa `analizar-idea`), estructurar requerimientos formales (usa `capturar-requerimiento`), dividir alcance (usa `evaluar-alcance-idea`), priorizar (usa `priorizar-roadmap`), definir personas (usa `definir-usuarios`) o generar PRDs (usa `generar-prd` o `orquestar-prd-workflow`). Tampoco para reanudar trabajo ya iniciado — si ya existe un `idea-analysis.md` producido por `analizar-idea`, este skill no aplica.
+Triggers y fronteras base están en el frontmatter. Complementos operativos:
+
+- **Sí**: la idea está muy verde o vaga, no lista para `analizar-idea` — el usuario quiere pulirla interactivamente antes de avanzar.
+- **No (adicionales al frontmatter)**: priorizar (usa `priorizar-roadmap`), definir personas (usa `definir-usuarios`). Tampoco para reanudar trabajo ya iniciado — si ya existe un `idea-analysis.md` producido por `analizar-idea`, este skill no aplica.
 
 ## Fase 0 — Resolver entrada
 
@@ -32,11 +34,9 @@ Requerido: `IDEA-DESCRIPCION` (texto libre, por vago que sea).
 Infiere desde:
 - Descripción pegada: si el usuario pega la idea/solicitud/fragmento de chat/email.
 - Idea expresada en el mensaje: "Quiero algo para que la gente exporte reportes", "estaría bueno notificar a los usuarios", "modo oscuro".
-- Archivo abierto en el IDE: si la metadata lista un archivo abierto cuyo contenido es una idea bruta no estructurada, úsalo y cita la ruta.
+- Archivo referenciado en el mensaje: si el usuario menciona un archivo que contiene la idea, úsalo y cita la ruta.
 
-Pregunta cuando falta: "¿Cuál es la idea que quieres esbozar? (puede ser vaga — la puliremos juntos)"
-
-Declara inputs resueltos: idea capturada (preserva el texto original del usuario para la sección "Resumen de la idea").
+Si no se puede inferir la idea, pregunta: "¿Cuál es la idea que quieres esbozar? (puede ser vaga — la puliremos juntos)"
 
 Genera `IDEA-SLUG` en kebab-case a partir del resultado o, si el resultado aún no está claro, de la frase más representativa de la idea (ej. "exportar reportes a PDF" → `exportar-reportes-pdf`). El slug puede refinarse en la Fase C si el diálogo aclara el resultado.
 
@@ -44,135 +44,86 @@ Genera `IDEA-SLUG` en kebab-case a partir del resultado o, si el resultado aún 
 
 Devuelve al usuario un eco breve de lo que entendiste y un diagnóstico inicial de qué tan lista está la idea para pasar a `analizar-idea`.
 
-**Diagnóstico** (clasifica la idea en uno de estos estados):
+**Diagnóstico de madurez** (clasifica la idea en uno de estos estados):
 
 - **Verde**: solo una frase suelta, sin resultado claro ni beneficiario. Necesita diálogo completo.
 - **Borrador**: hay un resultado implícito y algún beneficiario, pero está mezclado con solución o falta claridad. Necesita diálogo focalizado.
-- **Casi lista**: el resultado está claro y sin solución, hay beneficiario y motivación. Diálogo mínimo de confirmación.
+- **Casi lista**: el resultado está claro y sin solución, hay beneficiario. Diálogo mínimo de confirmación.
 
-Presenta el diagnóstico al usuario y confirma que quiere pulirla antes de avanzar. Si el usuario ya trae una idea bien formada (estado "Casi lista"), ofrece saltar directamente a `analizar-idea` en lugar de forzar el diálogo.
+**Diagnóstico de nivel** (clasifica la idea en uno de estos niveles — ajusta cuántas dimensiones de enriquecimiento se exploran en la Fase B):
+
+- **Producto**: idea de producto completo, nuevo producto o iniciativa nueva que define su propio espacio. Las dimensiones de enriquecimiento (carácter, espacio abierto, contexto organizacional, alternativas) son relevantes — el producto necesita declarar qué lo distingue y qué decisiones están abiertas.
+- **Feature**: idea de funcionalidad nueva dentro de un producto existente. El contexto del repo ya constriñe muchas decisiones (stack, organización, convenciones). Las dimensiones de enriquecimiento se reducen: inferir del repo lo que se pueda, marcar "No aplica" cuando el contexto existente lo absorbe, y explorar solo lo que aporta valor sobre lo ya conocido.
+
+Criterios para distinguir nivel:
+
+- **Producto**: no hay producto previo, O la idea define un espacio nuevo (no extiende uno existente), O el usuario describe algo fundacional ("un instalador de paquetes", "una plataforma de X").
+- **Feature**: hay un producto/codebase existente y la idea lo extiende ("modo oscuro", "exportar reportes", "notificaciones push", "agregar autenticación con Google").
+
+Presenta ambos diagnósticos al usuario y confirma que quiere pulirla antes de avanzar. Si el usuario ya trae una idea bien formada (madurez "Casi lista"), ofrece pasar directamente a `analizar-idea` en lugar de forzar el diálogo y genera la plantilla con la información disponible.
 
 ## Fase B — Diálogo de pulido interactivo
 
 Conduce un diálogo de ida y vuelta con el usuario. **No soluciónices**: el objetivo es clarificar el resultado deseado, no diseñar la solución. Si el usuario empieza a proponer solución, redirígelo al resultado ("¿Qué quieres lograr con eso?").
 
-Haz **como máximo 3 rondas** de preguntas. Cada ronda agrupa 1–3 preguntas relacionadas. No interroges al usuario con un cuestionario largo de una sola vez — el pulido es conversacional.
+Lee la guía de diálogo según el nivel diagnosticado en la Fase A:
 
-### Preguntas núcleo (cubren el mínimo para pasar a `analizar-idea`)
+- **Producto**: [references/dialogue-guide-producto.md](references/dialogue-guide-producto.md) — 5 rondas máx, 3 preguntas núcleo + 6 de enriquecimiento, ejemplos de reformulación y reglas del diálogo.
+- **Feature**: [references/dialogue-guide-feature.md](references/dialogue-guide-feature.md) — 3 rondas máx, 3 preguntas núcleo + 2 de enriquecimiento + 4 dimensiones inferidas del repo, ejemplos de reformulación y reglas del diálogo.
 
-1. **Resultado deseado**: ¿Qué resultado o estado quieres lograr? (describe el estado deseado, no la funcionalidad). Criterio de resultado válido (mismo que `analizar-idea` Fase A):
-   - Describe el resultado/estado, no la funcionalidad
-   - Es medible u observable
-   - No menciona tecnología o implementación
-   - Responde a "¿Qué queremos lograr?" no "¿Qué vamos a construir?"
+No interroges al usuario con un cuestionario largo de una sola vez — el pulido es conversacional. No todas las dimensiones necesitan una pregunta explícita: muchas pueden inferirse del diálogo o del contexto del repo.
 
-   Si el usuario no puede formularlo sin solución, ayúdalo a reformular con ejemplos (ver abajo). Si tras 2 intentos no se logra, marca como "necesita reformulación" y documenta en Preguntas abiertas — el esbozo puede escribirse igual con el resultado marcado como pendiente, y `analizar-idea` lo detectará.
+Durante el diálogo, genera preguntas abiertas de estas categorías cuando aplique. Cada una declara su severidad y quién la resuelve:
 
-2. **Beneficiarios**: ¿Quién se beneficia de ese resultado? (light — un rol o segmento, no personas detalladas; las personas formales las define `definir-usuarios`).
+- **¿El resultado puede formularse sin mencionar solución?** — Crítica: bloquea el avance.
+- **¿El problema tiene síntomas observables?** — Importante: `analizar-idea` puede avanzar con valor por defecto conservador.
+- **¿El beneficiario está claro?** — Importante: `analizar-idea` puede avanzar con valor por defecto conservador.
+- **¿La idea contiene múltiples funcionalidades?** — Importante: la resuelve `evaluar-alcance-idea`.
+- **¿El carácter de la idea está ambiguo o mezclado con diseño de solución?** — Menor: no condiciona el avance; `analizar-idea` puede avanzar.
+- **¿Una suposición clave está confirmada?** — Menor: la trabaja `mapear-assumptions` posteriormente.
+- **¿El contexto organizacional está claro?** — Menor: no condiciona el avance.
 
-3. **Motivación**: ¿Por qué ahora? (light y opcional — fecha límite, bloqueante, oportunidad sensible al tiempo, o "puede esperar". No es el análisis de urgencia de `analizar-idea`, solo el contexto que el usuario tenga a mano).
-
-### Preguntas opcionales (solo si surgen naturalmente del diálogo)
-
-4. **Fuera de alcance**: ¿Hay algo que explícitamente NO incluye esta idea? (light — ayuda a `evaluar-alcance-idea` a no inflar el PRD).
-
-5. **Contexto adicional**: cualquier nota, referencia o restricción que el usuario quiera registrar sin desarrollar.
-
-### Ejemplos de reformulación de solución → resultado
-
-- Solución: "Implementar sistema de notificaciones" → Resultado: "Los usuarios están informados sobre eventos importantes en tiempo real"
-- Solución: "Agregar modo oscuro" → Resultado: "Los usuarios pueden usar el producto cómodamente en ambientes con poca luz"
-- Solución: "Hacer un export a PDF" → Resultado: "Los usuarios pueden llevarse un registro durable de sus datos fuera del producto"
-
-### Reglas del diálogo
-
-- **No soluciónices**: si el usuario propone "quiero un dashboard con X", pregunta "¿Qué decisión o acción quieres que alguien pueda tomar con eso?".
-- **No evalúes viabilidad**: no juzgues si la idea es viable, alineada o prioritaria — eso es `analizar-idea`. Tu trabajo es que el resultado esté claro, no que sea buena idea.
-- **No dividas alcance**: si la idea parece contener múltiples funcionalidades, no la dividas — documenta la sospecha en Preguntas abiertas y deja que `evaluar-alcance-idea` haga el split.
-- **No profundices en personas/casos de uso/métricas**: un rol o segmento basta. Lo demás es de skills posteriores.
-- **Mantén ligereza**: el esbozo no debe tener muchos detalles. Si el usuario empieza a detallar requisitos, redirígelo: "eso lo trabaja el skill siguiente — aquí lo dejamos como nota".
+Las preguntas generadas aquí alimentan directamente el gate de la Fase D. No se avanza con preguntas Críticas sin resolver.
 
 ## Fase C — Consolidar esbozo
 
-Tras el diálogo, consolida el esbozo en el artefacto usando el template en `assets/esbozo-template.md`. Estructura:
+Consolida el esbozo usando el template en [esbozo-template.md](assets/esbozo-template.md). El template especifica frontmatter, secciones núcleo, secciones de enriquecimiento (condicionales al nivel), convenciones de formato, distinciones clave entre secciones y qué contenido NO va en el esbozo. Síguelo literalmente.
 
-1. **Header**: Idea slug, Fecha, Skill: esbozar-idea, Input: texto original del usuario (preserva el input literal).
-2. **Resumen de la idea**: el input original del usuario, sin reformular (para contexto).
-3. **Resultado deseado**: 1–2 frases del resultado/estado deseado, sin mención de solución. Si no pudo formularse sin solución, marcar como "necesita reformulación" y dejar el mejor intento.
-4. **Beneficiarios**: rol o segmento (light).
-5. **Motivación**: por qué ahora (light, opcional — "no especificada" es un valor válido).
-6. **Fuera de alcance**: lo que explícitamente no incluye (light, opcional).
-7. **Notas adicionales**: contexto o restricciones breves del usuario (opcional).
-8. **Preguntas abiertas**: incógnitas que el usuario no resolvió en el diálogo y que hereda el skill siguiente (clasificadas por severidad Crítico/Importante/Menor). Usar el template en `assets/open-questions-template.md` para el formato.
-9. **Ready for**: `analizar-idea` / `orquestar-prd-workflow` / `bloqueado` (ver Fase D).
+Para referencia de formato, consulta el ejemplo canónico correspondiente al nivel:
+- **Producto**: [references/examples/example-producto.md](references/examples/example-producto.md) — esbozo de "exportar-reportes-pdf" con todas las secciones de enriquecimiento desarrolladas.
+- **Feature**: [references/examples/example-feature.md](references/examples/example-feature.md) — esbozo de "modo-oscuro" con secciones de enriquecimiento marcadas "No aplica".
 
-**Convenciones de formato**: sin emojis. Usa texto (`Sí`/`Parcial`/`No`, `Pass`/`Partial`/`Fail` cuando aplique). Símbolos tipográficos estándar (`→`, `—`) permitidos.
+Refina `IDEA-SLUG` si el diálogo aclaró el resultado desde la Fase 0.
+
+Para las Preguntas Abiertas, usa el formato definido en la sección "Preguntas Abiertas" más abajo.
 
 ## Fase D — Gate de listo para `analizar-idea`
 
-**Gate obligatorio.** Antes de fijar el `Ready for` y escribir el documento final, verifica que el esbozo está listo para pasar a `analizar-idea`.
+**Gate obligatorio.** Antes de fijar `status` y `next` en el frontmatter y escribir el documento final, verifica que el esbozo está listo para pasar a `analizar-idea`.
 
-### Criterios de readiness
+Consulta [references/gate-guide.md](references/gate-guide.md) para la lógica completa de severidad, estados de avance, flujo del gate y reglas. Resumen operativo:
 
-- **Resultado claro**: el resultado está formulado sin mención de solución Y es medible/observable → avanza libre.
-- **Resultado parcial**: el resultado está formulado pero mezcla solución, o es observable pero ambiguo → avanza condicionado (documenta en Preguntas abiertas; `analizar-idea` Fase A lo detectará y reformulará).
-- **Resultado bloqueado**: no pudo formularse ningún resultado sin solución tras 2 intentos → `bloqueado`. El esbozo se escribe igual (con el mejor intento y la marca "necesita reformulación"), pero el `Ready for` es `bloqueado` y se invita al usuario a reformular manualmente antes de reintentar.
-
-### Mapeo a Ready for
-
-- Avance libre → `analizar-idea` (o `orquestar-prd-workflow` si el usuario prefiere orquestar). Link relativo al siguiente artefacto: `../../<domain>/idea/<IDEA-SLUG>/idea-analysis.md` (a crear por `analizar-idea`).
-- Avance condicionado → `analizar-idea (condicionado)`. Las preguntas Importantes pendientes se heredan en `analizar-idea`.
-- Bloqueado → `bloqueado`. No avanza hasta reformular.
-
-### Documentación del gate
-
-Añade al esbozo una subsección "Gate de avance (Fase D)" que registre:
-- Estado del resultado (claro / parcial / bloqueado) con justificación.
-- Preguntas abiertas identificadas (críticas/importantes/menores) con su estado (resueltas inline / pendientes).
-- Estado final de avance (libre / condicionado / bloqueado) que justifica el `Ready for`.
-
-El gate se documenta siempre, incluso si el resultado está claro y no hay preguntas pendientes (inventario vacío, avance libre).
+1. **Decisión de status**: evalúa el resultado y el inventario de preguntas abiertas. `ready` si el resultado está claro y no hay Críticas/Importantes sin resolver. `conditional` si hay Importantes sin resolver (el usuario fue alertado y eligió avanzar). `blocked` si el resultado no pudo formularse sin solución tras 2 intentos.
+2. **Decisión de next**: si `status` es `ready` o `conditional`, pregunta al usuario: "¿Quieres invocar `analizar-idea` directamente o orquestar el workflow completo con `orquestar-prd-workflow`?". Default si no responde: `analizar-idea`. Si `blocked`, `next` se omite. Enlace relativo al siguiente artefacto: `../../<domain>/idea/<IDEA-SLUG>/idea-analysis.md` (a crear por `analizar-idea`).
+3. **Documentación del gate**: añade al esbozo una subsección "Gate de avance (Fase D)" que registre estado del resultado (claro / parcial / bloqueado), inventario de preguntas (críticas/importantes/menores) con estado de resolución, y estado final de avance. Obligatoria incluso si el resultado está claro y no hay preguntas pendientes.
 
 ## Salida
 
 Escribe en: `docs/drafts/<IDEA-SLUG>/esbozo.md`
 
-Es un **artefacto temporal de staging**: vive fuera de `docs/<domain>/` porque la idea aún no está comprometida con un dominio. Cuando `analizar-idea` se ejecute, producirá el artefacto durable `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`; el esbozo puede mantenerse como trazabilidad del diálogo previo o eliminarse a discreción del usuario.
-
-Para la estructura completa del artefacto (header, secciones, convenciones, valores de `Ready for` con links), usa el template en `assets/esbozo-template.md`.
-
-### README del dominio (índice)
-
-Este skill **no** crea ni actualiza `docs/<domain>/README.md` — el esbozo es pre-dominio y temporal. La creación del índice de dominio es responsabilidad de `analizar-idea`.
+Es un **artefacto temporal de transición**: vive fuera de `docs/<domain>/` porque la idea aún no está comprometida con un dominio. Cuando `analizar-idea` se ejecute, producirá el artefacto durable `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`; el esbozo puede mantenerse como trazabilidad del diálogo previo o eliminarse a discreción del usuario.
 
 ## Checklist de salida
 
-Antes de marcar el skill como terminado, verifica cada ítem. Si alguno es "No", revisa y completa antes de terminar.
+Verificación interna del agente — no se incluye en el artefacto. Antes de terminar, verifica contra el template en [esbozo-template.md](assets/esbozo-template.md):
 
-### Contenido
-
-1. Resultado deseado formulado (o marcado como "necesita reformulación" tras 2 intentos)
-2. Resultado, cuando está formulado, no menciona solución ni tecnología
-3. Beneficiarios registrados (al menos un rol o segmento, o "no especificado")
-4. Input original del usuario preservado en "Resumen de la idea"
-5. `Ready for` correcto según el estado de avance de la Fase D
-
-### Formato
-
-6. Header incluye línea `Input:` con el texto original del usuario
-7. Sin emojis en el documento (usa texto: `Sí`/`Parcial`/`No`, `Pass`/`Partial`/`Fail`)
-8. Sección **"Gate de avance (Fase D)"** presente y documentada con estado del resultado, inventario de preguntas y estado final de avance — obligatoria incluso si el resultado está claro
-9. `Ready for` incluye link relativo al siguiente artefacto (cuando no es `bloqueado`)
-10. El esbozo es ligero: no contiene requisitos formales, personas detalladas, casos de uso, métricas ni diseño de solución (esos son de skills posteriores)
+- Todas las secciones núcleo presentes (frontmatter, resumen, resultado, problema, beneficiarios, situaciones, suposiciones, gate, preguntas abiertas)
+- Secciones de enriquecimiento presentes para producto; para feature, marcadas "No aplica" con razón (no omitidas)
+- Frontmatter con `level`, `status` y `next` correctos según Fase D (`next` ausente si `blocked`)
+- Sección "Gate de avance (Fase D)" documentada con estado, inventario de preguntas y estado final — obligatoria incluso si el resultado está claro
+- Sin emojis, sin contenido de skills posteriores (ver "Ligereza: qué NO va" en el template)
+- `status` y `next` van en el frontmatter, no como sección del body
 
 ## Preguntas Abiertas
 
-Usa el template en `assets/open-questions-template.md` para documentar incógnitas no resueltas durante el diálogo. Estas preguntas se heredan en `analizar-idea` y alimentan su gate de avance.
-
-**Categorías comunes para este skill**:
-- El resultado no pudo formularse sin mencionar solución (Crítico — bloquea el avance)
-- El beneficiario no está claro (Importante — `analizar-idea` puede avanzar con default conservador)
-- La motivación/temporización no está especificada (Menor — no condiciona el avance)
-- Sospecha de múltiples funcionalidades en una sola idea (Importante — lo resuelve `evaluar-alcance-idea`)
-
-**Importante**: las preguntas abiertas generadas en la Fase B alimentan directamente el gate de la Fase D. No se avanza con preguntas Críticas sin resolver.
+Usa el template en [open-questions-template.md](assets/open-questions-template.md) para el formato. La lógica de severidad y decisión de avance se define en la Fase D. Estas preguntas se heredan en `analizar-idea` y alimentan su gate de avance.
