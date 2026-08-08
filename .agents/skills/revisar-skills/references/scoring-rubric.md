@@ -1,6 +1,18 @@
 # Rúbrica de puntuación
 
-Dimensiones, hard caps, approve gates y matriz de puntuación para `review-skills`.
+Dimensiones, hard caps, approve gates y matriz de puntuación para `revisar-skills`.
+
+## Contenido
+
+- [Hard caps (techos duros)](#hard-caps-techos-duros)
+- [Approve gates](#approve-gates)
+- [Impacto de hallazgos](#impacto-de-hallazgos)
+- [Dimensiones (1–10 cada una)](#dimensiones-110-cada-una)
+- [Overall skill score](#overall-skill-score)
+- [Formato de hallazgos](#formato-de-hallazgos)
+- [Ready for (exactamente uno)](#ready-for-exactamente-uno)
+- [Contrato de output de revisión](#contrato-de-output-de-revisión)
+- [Review brief rating (1–10)](#review-brief-rating-110)
 
 ## Hard caps (techos duros)
 

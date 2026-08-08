@@ -1,6 +1,6 @@
 # Checklists por tipo de skill
 
-Checklists específicos para cada tipo de skill clasificado en `review-skills`.
+Checklists específicos para cada tipo de skill clasificado en `revisar-skills`.
 
 ## Sistema de clasificación de tipos
 
@@ -44,7 +44,7 @@ Clasifica el skill en exactamente un tipo primario. Aplica en orden — primer m
 - [Domain-guide](./domain-guide.md)
 - [Workflow-step](./workflow-step.md)
 
-## Uso en review-skills
+## Uso en revisar-skills
 
 En Phase A del skill de revisión:
 

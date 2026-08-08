@@ -1,6 +1,19 @@
 # Checklists de auditoría
 
-Checklists canónicos para `review-skills` Phase B. Llena cada fila pass | partial | missing (o n/a donde se note). Rúbricas de score:
+Checklists canónicos para `revisar-skills` Phase B. Llena cada fila pass | partial | missing (o n/a donde se note). Rúbricas de score:
+
+## Contenido
+
+- [Auditoría de metadata](#auditoría-de-metadata)
+- [Auditoría de contrato When/How/What](#auditoría-de-contrato-whenhowwhat)
+- [Auditoría de estructura](#auditoría-de-estructura)
+- [Auditoría de accionabilidad](#auditoría-de-accionabilidad)
+- [Auditoría de completitud](#auditoría-de-completitud)
+- [Auditoría de responsabilidad](#auditoría-de-responsabilidad)
+- [Auditoría de resource layout](#auditoría-de-resource-layout)
+- [Auditoría de DRY & assets](#auditoría-de-dry--assets)
+- [Auditoría de escritura directa](#auditoría-de-escritura-directa)
+- [Auditoría de convenciones (comparación con hermanos)](#auditoría-de-convenciones-comparación-con-hermanos)
 
 - Metadata — [naming-guide.md](./naming-guide.md) + [description-guide.md](./description-guide.md)
 - Resource layout — [resource-layout-guide.md](./resource-layout-guide.md)
@@ -52,6 +65,7 @@ Description score (1–10) — rúbrica en [description-guide.md](./description-
 - Fases/headings son skimmables con estructura clara
 - Referencias usan `references/` bajo skill root o `_shared/` symlink
 - Divulgación progresiva — contenido largo no inlinado cuando archivo de referencia aplica
+- Fases-subproceso completas extraídas a `references/` con resumen operativo en `SKILL.md`
 
 ## Auditoría de accionabilidad
 
@@ -67,8 +81,8 @@ Description score (1–10) — rúbrica en [description-guide.md](./description-
 - Done when (o equivalente de tipo) permite actuar sin re-explorar fuentes
 - Estrategia de fallo completa para todas las fases
 - Autoevaluación antes de terminar presente
-- Handoff block estructurado si es parte de workflow
-- Referencias compartidas relevantes citadas en tabla
+- Handoff estructurado si es parte de workflow — block explícito, gate con `status`/`next` en frontmatter del artefacto, o equivalente
+- Referencias compartidas relevantes citadas (en sección, lista, o inline con rol declarado)
 
 ## Auditoría de responsabilidad
 
@@ -85,10 +99,13 @@ Description score (1–10) — rúbrica en [description-guide.md](./description-
 Per [resource-layout-guide.md](./resource-layout-guide.md).
 
 - Refs bundled usan `references/`, `assets/`, o `scripts/` bajo skill root
-- Links desde `SKILL.md` son un nivel de profundidad (`references/foo.md`)
+- Links desde `SKILL.md` usan `references/` o `assets/` bajo skill root (subdirectorios permitidos); sin links directos a `../_shared/`
 - Docs compartidos usan symlink `references/` → `<skills-root>/_shared/<doc>.md` en vez de link directo
 - Sin links directos `../_shared/…` desde `SKILL.md`
 - Divulgación progresiva — contenido largo no inlineado cuando aplica archivo de referencia
+- Fases-subproceso completas (>30 líneas con reglas propias) extraídas a `references/` con resumen operativo en `SKILL.md`
+- Archivos de referencia >100 líneas incluyen TOC
+- Archivos de `references/` sin menciones directas a skills específicos (routing vive en `SKILL.md`)
 
 Cualquier fila blocker — impacto en puntuación per [scoring-rubric.md](./scoring-rubric.md).
 
@@ -96,7 +113,7 @@ Cualquier fila blocker — impacto en puntuación per [scoring-rubric.md](./scor
 
 Corre scan de inventario en [dry-assets-guide.md](./dry-assets-guide.md).
 
-- Inventario de assets listado (`references/`, `assets/`, `scripts/` — o documentado ninguno)
+- Inventario de assets listado (`references/`, `references/examples/`, `assets/`, `scripts/` — o documentado ninguno)
 - Cada archivo del inventario enlazado con rol declarado desde `SKILL.md` o desde una referencia enlazada
 - Rúbricas/checklists/templates largos en carpeta correcta — no inlineados cuando `references/`/`assets/` aplica
 - `assets/` usado para templates/schemas; `scripts/` usado cuando helper ejecutable aplica (o n/a)
@@ -130,7 +147,7 @@ Para cada hit grep partial o fail, agrega hallazgo important con reemplazo direc
 
 ## Auditoría de convenciones (comparación con hermanos)
 
-Lee al menos 2 skills hermanos del mismo tipo en `.devin/skills/`:
+Lee al menos 2 skills hermanos del mismo tipo bajo el skills root resuelto en Fase 0:
 
 - Estructura de fases consistente con hermanos del mismo tipo
 - Naming consistente con hermanos (patrones de verbos/sufijos)

@@ -100,7 +100,7 @@ Ejemplo de patrón bien documentado:
 Pon lo desconocido en Preguntas abiertas. Antes de puntuar, haz una pregunta enfocada si faltan criterios de aceptación.
 ```
 
-Inaceptable: una prohibición aislada sin instrucción "ask", "stop" o Preguntas abiertas en el mismo párrafo.
+Inaceptable: una prohibición aislada sin instrucción "preguntar", "detener" o Preguntas abiertas en el mismo párrafo.
 
 ### Idioma y localización
 
@@ -121,7 +121,7 @@ Una vez que el contenido es directo y específico, preséntalo con el formato ad
 
 ### Uso de emojis
 
-No uses emojis en `SKILL.md`, `description` YAML, `references/`, `assets/` ni en los artefactos generados por los skills. Los emojis degradan la legibilidad en terminales, no renderizan uniformemente across editores, y añaden ruido visual sin valor semántico.
+No uses emojis en `SKILL.md`, `description` YAML, `references/`, `assets/` ni en los artefactos generados por los skills. Los emojis degradan la legibilidad en terminales, no renderizan uniformemente en todos los editores, y añaden ruido visual sin valor semántico.
 
 **Reemplazos canónicos**:
 
@@ -199,7 +199,7 @@ npm install
 ```
 ````
 
-Esto habilita syntax highlighting y claridad de contexto.
+Esto habilita resaltado de sintaxis y claridad de contexto.
 
 ### Headings y estructura jerárquica
 
@@ -216,13 +216,15 @@ Reglas:
 - Cada heading debe ser único en el documento
 - Los headings deben ser descriptivos y autónomos (el lector debe entender el contenido solo leyendo el heading)
 - Evita headings genéricos como "Información adicional" o "Notas"
+- Archivos de referencia >100 líneas incluyen un TOC al inicio (sección `## Contenido` con anchors a cada `##`)
 
 ### Referencias y links
 
 - Usa rutas relativas para archivos del mismo proyecto: `[documento](./references/doc.md)`
 - Usa URLs completas para recursos externos: `[Herramienta](https://example.com)`
 - Para referencias cruzadas dentro del mismo documento, usa anchors: `[sección](#heading)`
-- Evita links rotados: verifica que cada link funcione
+- Evita links rotos: verifica que cada link funcione
+- Los archivos de `references/` evitan menciones directas a skills específicos por nombre — el routing y las fronteras entre skills viven en `SKILL.md`, no en las referencias. Las referencias describen lógica de proceso, no orquestación
 
 Cuando referencies un archivo externo, incluye su relevancia:
 
@@ -232,11 +234,11 @@ Ver [file-discovery.md](references/file-discovery.md) para el protocolo de resol
 
 ## Proceso de revisión
 
-### Checklist de escritura directa (para review-skills)
+### Checklist de escritura directa (para revisar-skills)
 
 Llena la tabla del checklist en [audit-checklists.md](./audit-checklists.md#auditoría-de-escritura-directa). Aplica el scan y verificación a todos los archivos del skill (SKILL.md, references/, assets/, scripts/). Requisito para pasar dimensión 4 y límites estrictos: [scoring-rubric.md](./scoring-rubric.md).
 
-### Formato de hallazgo fix
+### Formato de corrección de hallazgo
 
 Cuando se marque texto vago, la corrección debe ser una oración de reemplazo lista para pegar, no "sé más directo":
 
@@ -273,5 +275,6 @@ Antes de considerar un skill completo, verifica todos sus archivos:
 - [ ] Bloques de código con lenguaje
 - [ ] Links verificados
 - [ ] Headings jerárquicos y únicos
+- [ ] TOC presente en archivos de referencia >100 líneas
 - [ ] Tablas cortas o convertidas a listas
 - [ ] Idioma consistente (español para dominio, inglés para técnico)

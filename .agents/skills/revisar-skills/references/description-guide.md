@@ -1,6 +1,11 @@
 # Guía de descripciones
 
-Especificación de descripciones para skills y rúbrica de auditoría para `review-skills`.
+Especificación de descripciones para skills y rúbrica de auditoría para `revisar-skills`.
+
+## Contenido
+
+- [Especificación de descripciones](#especificación-de-descripciones)
+- [Rúbrica de auditoría de descripciones (1–10)](#rúbrica-de-auditoría-de-descripciones-110)
 
 ## Especificación de descripciones
 
@@ -97,7 +102,7 @@ Si la respuesta es no o ambigua, la description score ≤ 7.
 - **5–6**: Fail; Cualquier fila fail, o 2+ missing; Cualquier blocker
 - **1–4**: Fail; Descripción rompe spec o es engañosa; —
 
-### Auditoría para review-skills
+### Auditoría para revisar-skills
 
 Usa este checklist en Phase B del skill de revisión:
 

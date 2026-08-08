@@ -2,6 +2,11 @@
 
 Especificación de nombres para skills y rúbrica de auditoría para `revisar-skills`.
 
+## Contenido
+
+- [Especificación de nombres](#especificación-de-nombres)
+- [Rúbrica de auditoría de nombres (1–10)](#rúbrica-de-auditoría-de-nombres-110)
+
 ## Especificación de nombres
 
 ### Formato

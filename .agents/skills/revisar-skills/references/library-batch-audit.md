@@ -1,6 +1,6 @@
 # Auditoría de biblioteca / batch
 
-Hallazgos cross-skill cuando el scope de `review-skills` es `library` o `batch`. Corre después de la Fase B por skill; resume en el chat cuando todos los archivos de revisión están en disco.
+Hallazgos cross-skill cuando el scope de `revisar-skills` es `library` o `batch`. Corre después de la Fase B por skill; resume en el chat cuando todos los archivos de revisión están en disco.
 
 Las revisiones por skill siguen usando [audit-checklists.md](./audit-checklists.md) y [scoring-rubric.md](./scoring-rubric.md). Esta guía cubre patrones visibles solo entre hermanos.
 

@@ -24,6 +24,6 @@ Skills de ejecución desechable o riesgosa (spike, demo) con stop-and-approve an
 
 ## Anti-patrones
 
-- ❌ Sin gate de aprobación explícito antes de ejecutar
-- ❌ Frontera desechable ausente (¿el spike puede crear PRs?)
-- ❌ Alcance múltiple mezclado (debe haber una pregunta/meta principal)
+- Sin gate de aprobación explícito antes de ejecutar
+- Frontera desechable ausente (¿el spike puede crear PRs?)
+- Alcance múltiple mezclado (debe haber una pregunta/meta principal)

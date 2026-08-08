@@ -16,6 +16,6 @@ Skills cuyo entregable es chat-only con veredicto pass/fail o readiness.
 
 ## Anti-patrones
 
-- ❌ Criterios de decisión ambiguos
-- ❌ Veredicto Ready for genérico
-- ❌ Chat sin estructura clara
+- Criterios de decisión ambiguos
+- Veredicto Ready for genérico
+- Chat sin estructura clara

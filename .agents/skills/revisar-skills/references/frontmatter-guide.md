@@ -21,7 +21,7 @@ Un buen `name` con un `description` débil igual falla el routing. Corrige prime
 
 Campos opcionales (cuando aplica): `allowed-tools`, `triggers`, `argument-hint`.
 
-Ejemplos de `name`: válido `review-skills`, `plan-ticket-implementation`; inválido `ReviewSkill`, `-review`, `review--skill`, nombre ≠ directorio.
+Ejemplos de `name`: válido `revisar-skills`, `plan-ticket-implementation`; inválido `ReviewSkill`, `-review`, `review--skill`, nombre ≠ directorio.
 
 ## Regla de prioridad
 

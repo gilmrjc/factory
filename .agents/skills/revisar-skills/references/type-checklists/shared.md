@@ -14,5 +14,8 @@ Aplica en toda auditoría de cuerpo, independientemente del tipo clasificado:
 - **Links de recursos — `references/foo.md`, no `../_shared/` desde `SKILL.md`** (requerido)
   - Ver [resource-layout-guide.md](../resource-layout-guide.md)
 
+- **Desacoplamiento de referencias — `references/` sin menciones directas a skills específicos** (recomendado)
+  - El routing y las fronteras entre skills viven en `SKILL.md`; las referencias describen lógica de proceso
+
 - **Links a skills hermanos cuando está en una cadena de workflow** (recomendado)
   - Requerido para orchestrator y composite

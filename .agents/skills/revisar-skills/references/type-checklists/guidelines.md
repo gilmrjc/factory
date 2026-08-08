@@ -17,6 +17,6 @@ Skills que proveen reglas prescriptivas durante implementación.
 
 ## Anti-patrones
 
-- ❌ Reglas sin ejemplos
-- ❌ Guidelines sin self-check
-- ❌ Reglas contradictorias
+- Reglas sin ejemplos
+- Guidelines sin self-check
+- Reglas contradictorias

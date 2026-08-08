@@ -20,6 +20,6 @@ Skills que coordinan múltiples pasos o skills hijos con gates entre ellos.
 
 ## Anti-patrones
 
-- ❌ Workflow sin gates o gates ambiguos
-- ❌ Delegación sin handoff estructurado
-- ❌ Mezcla de orquestación con implementación directa
+- Workflow sin gates o gates ambiguos
+- Delegación sin handoff estructurado
+- Mezcla de orquestación con implementación directa

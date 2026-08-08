@@ -16,6 +16,6 @@ Skills de referencia o guía de convenciones sin estructura prescriptiva.
 
 ## Anti-patrones
 
-- ❌ Guía sin propósito claro
-- ❌ Estructura desorganizada
-- ❌ Mezcla de referencia con prescripción
+- Guía sin propósito claro
+- Estructura desorganizada
+- Mezcla de referencia con prescripción

@@ -15,10 +15,13 @@ Skills que producen un artefacto principal o realizan un análisis con estructur
 
 - Referencias compartidas relevantes
 - Autoevaluación antes de terminar
-- Handoff block si es parte de workflow
+- Handoff estructurado (block, gate con `status`/`next`, o equivalente) si es parte de workflow
+- Fases-subproceso completas extraídas a `references/` con resumen operativo en `SKILL.md`
+- Ejemplos canónicos del artefacto en `references/examples/`
+- Archivos de referencia >100 líneas con TOC
 
 ## Anti-patrones
 
-- ❌ Fases sin output claro
-- ❌ Estrategia de fallo incompleta
-- ❌ Done when vago o ausente
+- Fases sin output claro
+- Estrategia de fallo incompleta
+- Done when vago o ausente

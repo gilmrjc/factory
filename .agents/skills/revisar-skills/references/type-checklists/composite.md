@@ -23,6 +23,6 @@ Skills que principalmente enrutan a skills hijos; el cuerpo evita duplicar fases
 
 ## Anti-patrones
 
-- ❌ Cuerpo que duplica fases hijas (indica que debería ser `orchestrator`)
-- ❌ Sin links a skills hijos
-- ❌ Mezcla de delegación con implementación directa
+- Cuerpo que duplica fases hijas (indica que debería ser `orchestrator`)
+- Sin links a skills hijos
+- Mezcla de delegación con implementación directa

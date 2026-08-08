@@ -238,7 +238,7 @@ Para scope library o batch: cada skill objetivo tiene archivo de revisión en di
 Termina el mensaje final con este bloque de handoff:
 
 ```markdown
-## Handoff — review-skills
+## Handoff — revisar-skills
 - SKILL-PATH: …
 - Skills root: …
 - Scope: single | library | batch

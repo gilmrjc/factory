@@ -4,24 +4,25 @@ Rúbrica de auditoría para divulgación progresiva, carpetas de assets alineada
 
 ## Layout de assets
 
-- **`references/`** — Docs suplementarios cargados bajo demanda (rúbricas, checklists, guías)
-  - Evitar: Pegar rúbricas largas inline en `SKILL.md`
-
+- **`references/`** — Docs suplementarios cargados bajo demanda (rúbricas, checklists, guías de proceso, gates)
+  - Evitar: Pegar rúbricas largas o fases-subproceso completas inline en `SKILL.md`
+- **`references/examples/`** — Ejemplos canónicos del artefacto de salida (un archivo por ejemplo)
+  - Evitar: Inlinear ejemplos completos del artefacto en `SKILL.md` o en `assets/`
 - **`assets/`** — Templates, schemas, archivos estáticos que el agente copia o rellena
   - Evitar: Bloques de ejemplo grandes que pertenecen a un template
-
 - **`scripts/`** — Helpers ejecutables (validadores, generadores)
   - Evitar: One-liners de shell repetidos en prosa cuando un script aplica
 
 ## Scan requerido en toda revisión
 
-1. **Inventario** — lista cada archivo bajo `references/`, `assets/`, y `scripts/` (o documenta ninguno).
+1. **Inventario** — lista cada archivo bajo `references/`, `assets/`, y `scripts/` (incluye subdirectorios como `references/examples/`; o documenta ninguno).
 2. **Accesibilidad** — cada archivo en el inventario está enlazado desde `SKILL.md` o desde un doc `references/` enlazado (un salto).
 3. **Claridad de rol** — cada asset enlazado tiene un rol declarado en la tabla de referencias o en la lista de carga de Fase A (sin archivos huérfanos).
 4. **Inline vs externo** — marca rúbricas, checklists, templates, o tablas de gate pegadas en `SKILL.md` cuando un archivo `references/` aplica.
-5. **Duplicación intra-skill** — grep por números de threshold repetidos, filas de checklist, o bloques de fase en `SKILL.md` y refs bundled; nota si hay un archivo canónico.
-6. **Duplicación en skill hijo** — para tipos `composite`/`orchestrator`, marca checklists de Fase A/B/C de skills hijos copiados en el cuerpo del padre.
-7. **Candidatos extract-shared** — nota contenido duplicado vs hermanos o vs `<skills-root>/_shared/` que debería ser canónico + symlinkeado.
+5. **Fases-subproceso** — marca fases del skill que son subprocesos completos (>30 líneas con reglas propias) inlineadas en `SKILL.md` cuando deberían extraerse a `references/` con un resumen operativo.
+6. **Duplicación intra-skill** — grep por números de threshold repetidos, filas de checklist, o bloques de fase en `SKILL.md` y refs bundled; nota si hay un archivo canónico.
+7. **Duplicación en skill hijo** — para tipos `composite`/`orchestrator`, marca checklists de Fase A/B/C de skills hijos copiados en el cuerpo del padre.
+8. **Candidatos extract-shared** — nota contenido duplicado vs hermanos o vs `<skills-root>/_shared/` que debería ser canónico + symlinkeado.
 
 Registra hallazgos en la sección DRY & assets audit de la revisión. Lista candidatos extract-shared con ruta canónica propuesta y consumidores, o `none`.
 
