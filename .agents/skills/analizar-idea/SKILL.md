@@ -6,9 +6,11 @@ description: >-
   disponibilidad de recursos y genera recomendación Proceder/Proceder
   condicional/No proceder. Salida:
   docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md. Úsalo como gate preliminar
-  de viabilidad antes de evaluar-alcance-idea. Solo análisis: no implementa,
-  no aprueba, no evalúa alcance (usa evaluar-alcance-idea). Para
-  implementación usa implementar-plan o implementar-ticket.
+  de viabilidad antes de evaluar-alcance-idea. Triggers comunes: analizar,
+  evaluar, validar viabilidad, hacer un gate preliminar, decidir si proceder
+  con una idea. Solo análisis: no implementa, no aprueba, no evalúa alcance
+  (usa evaluar-alcance-idea). Para implementación usa implementar-plan o
+  implementar-ticket.
 ---
 
 # Analizador de Ideas
@@ -19,21 +21,24 @@ Solo análisis: no implementa, no aprueba. Prepara punto de control de aprobaci�
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: Gate preliminar de viabilidad antes de invertir tiempo en evaluación de alcance
-- **No**: Para implementar funcionalidades (usa implementar-plan), para aprobación final (usa validar-viabilidad-producto), para análisis técnico profundo (usa evaluar-conectividad-tecnica)
+Triggers y fronteras base están en el frontmatter. Complementos operativos:
+
+- **Sí**: Gate preliminar de viabilidad antes de invertir tiempo en evaluación de alcance.
+- **No (adicionales al frontmatter)**: para aprobación final (usa `validar-viabilidad-producto`), para análisis técnico profundo (usa `evaluar-conectividad-tecnica`). Tampoco para reanudar trabajo ya iniciado — si ya existe un `scope-roadmap.md` producido por `evaluar-alcance-idea`, este skill no aplica como paso inicial.
 
 ## Fase 0 — Resolver entrada
 
 Requerido: `IDEA-DESCRIPCION`.
 
 Infiere desde:
-- Descripción pegada: si el usuario pega la idea/solicitud de funcionalidad
-- Contenido breve: "Agregar modo oscuro", "Sistema de notificaciones", "Exportar a PDF"
-- Email o fragmento de chat: si el usuario copia descripción informal
+- Descripción pegada: si el usuario pega la idea/solicitud de funcionalidad.
+- Contenido breve: "Agregar modo oscuro", "Sistema de notificaciones", "Exportar a PDF".
+- Email o fragmento de chat: si el usuario copia descripción informal.
+- Artefacto upstream: si existe `docs/drafts/<IDEA-SLUG>/esbozo.md` (producido por `esbozar-idea`), leerlo para contexto y decisiones resueltas heredadas.
 
 Pregunta cuando falta: "¿Cuál es la idea que analizo? (descripción breve o completa)"
 
-Declara inputs resueltos: idea capturada.
+Genera `IDEA-SLUG` en kebab-case a partir del resultado o, si el resultado aún no está claro, de la frase más representativa de la idea.
 
 ## Fase A — Definir Resultado Deseado
 
@@ -54,7 +59,7 @@ Extrae el resultado sin mencionar la solución:
 **Si no puede definir resultado sin solución**:
 - Marcar como "necesita reformulación"
 - Sugerir reformulación de la idea
-- Ready for: bloqueado con instrucciones
+- `status: blocked` con instrucciones
 
 ## Fase B — Evaluar Alineación Estratégica
 
@@ -100,144 +105,69 @@ Verificación rápida de viabilidad:
 
 ## Fase E — Generar Recomendación Preliminar
 
-Usar template en `assets/decision-matrix-template.md` para estructurar la decisión.
+Usar template en [decision-matrix-template.md](assets/decision-matrix-template.md) para estructurar la decisión. El template especifica la matriz de scoring (4 columnas, justificaciones en lista debajo), sistema de scoring, umbrales de decisión, detección de `profile` (full/lite) y ejemplo canónico. Síguelo literalmente.
 
-**Matriz de decisión** (resumen, mismo esquema que el template — justificaciones en lista, no en celdas):
+**Resumen operativo**:
 
-| Criterio | Status | Weight | Score |
-|-------|--------|--------|-------|
-| Resultado claro | Pass - Partial - Fail | 25% | 25% - 12.5% - 0% |
-| Alineación estratégica | Pass - Partial - Fail | 25% | 25% - 12.5% - 0% |
-| Urgencia | Pass - Partial - Fail | 25% | 25% - 12.5% - 0% |
-| Recursos básicos | Pass - Partial - Fail | 25% | 25% - 12.5% - 0% |
+- La matriz evalúa 4 criterios: resultado claro, alineación estratégica, urgencia, recursos básicos (25% cada uno por defecto).
+- La recomendación (Proceder/Proceder condicional/No proceder) se mapea a `status` y `next` según los umbrales del template, refinado por la Fase G según preguntas abiertas.
+- Declara `profile` (full/lite) según los criterios del template. El orquestador lo consume para activar shortcuts lite.
 
-**Reglas de formato de la matriz** (no opcionales):
-
-- La tabla tiene **exactamente 4 columnas**: `Criterio | Status | Weight | Score`. No añadas una 5ª columna `Justificación` a la tabla — las celdas deben quedar ≤50 chars.
-- Las justificaciones van en **lista debajo de la tabla**, una por criterio (ver abajo).
-- `Status` usa **texto**, no emojis: `Pass` / `Partial` / `Fail` (o `Sí` / `Parcial` / `No`). No uses `✅` / `⚠️` / `❌` — degradan legibilidad en terminales y no renderizan uniformemente.
-
-**Justificaciones** (una por criterio, en lista debajo de la tabla):
-
-- **Resultado claro**: Por qué este status
-- **Alineación estratégica**: Por qué este status
-- **Urgencia**: Por qué este status
-- **Recursos básicos**: Por qué este status
-
-**Recomendación**:
-- **Proceder**: Todos los criterios afirmativos o mayoría afirmativos
-- **Proceder condicional**: Algunos parciales, necesita aclaración
-- **No proceder**: Criterios críticos negativos (resultado no claro, desalineado, no viable)
-
-**Mapeo a Ready for** (refinado por la Fase G según preguntas abiertas):
-- Proceder → `evaluar-alcance-idea` (avance libre, sin preguntas Críticas/Importantes sin resolver)
-- Proceder condicional → `evaluar-alcance-idea (condicionado)` o `bloqueado` según severidad de preguntas abiertas
-- No proceder → `bloqueado`
-
-**Detección de `profile` (full / lite)**: además del veredicto, declara un campo `profile` que el orquestador (`orquestar-prd-workflow` Fase 0) consume para activar shortcuts lite. Criterios:
-
-- `profile: lite` cuando **al menos 2** de:
-  - dogfooding O internal tool (no producto externo)
-  - 1-2 personas
-  - greenfield (sin codebase de producto previo)
-  - stage MVP con N=1 funcionalidad
-- `profile: full` cuando:
-  - producto externo, O
-  - stage Growth/Scale, O
-  - N>1 funcionalidades, O
-  - requiere validación de demanda externa
-
-El `profile` no reemplaza el veredicto (Proceder/Condicional/No proceder) — es una señal ortogonal sobre cuánta ceremonia aplica el workflow downstream. Un PRD puede ser `Proceder` con `profile: lite` (dogfooding) o `Proceder` con `profile: full` (producto externo Growth).
-
-Para detalles completos de sistema de scoring, umbrales y customización por contexto, consultar el template.
+**Mapeo recomendación → status/next** (refinado por la Fase G):
+- Proceder → `status: ready`, `next: evaluar-alcance-idea` (avance libre, sin preguntas Críticas/Importantes sin resolver)
+- Proceder condicional → `status: conditional`, `next: evaluar-alcance-idea` (o `status: blocked` según severidad de preguntas abiertas)
+- No proceder → `status: blocked` (next se omite)
 
 ## Fase F — Escribir Análisis Preliminar
 
-Estructura:
+Consolida el análisis usando el template en [idea-analysis-template.md](assets/idea-analysis-template.md). El template especifica frontmatter requerido, secciones requeridas, convenciones de formato, nota opcional de relación con downstream, "Qué NO va en este análisis" y "Distinciones clave para no confundir secciones". Síguelo literalmente.
 
-1. **Declaración de resultado**: 1-2 frases del resultado deseado
-2. **Validación de resultado**: Si es válido o necesita reformulación
-3. **Alineación estratégica**: ¿Encaja con visión?
-4. **Urgencia y momento**: ¿Por qué ahora?
-5. **Disponibilidad de recursos**: Verificación básica de viabilidad
-6. **Recomendación preliminar**: Proceder/Proceder condicional/No proceder con justificación
-7. **Profile**: `full` o `lite` (con justificación — ver criterios en Fase E). El orquestador lo consume para activar shortcuts lite (stub RICE N=1, connectivity short-form, 1 persona, experiment-design omitido).
-8. **Ready for**: `evaluar-alcance-idea`, `evaluar-alcance-idea (condicionado)` o `bloqueado`
+Para referencia de formato, consulta el ejemplo canónico correspondiente al veredicto:
+- **Proceder**: [references/examples/example-proceder.md](references/examples/example-proceder.md) — análisis de "notificaciones-push" con `status: ready`, gate resuelto inline.
+- **Proceder condicional**: [references/examples/example-condicional.md](references/examples/example-condicional.md) — análisis de "marketplace-interno" con `status: conditional`, gate con alerta al usuario.
+
+**Resumen de secciones requeridas** (ver template para detalle):
+- Frontmatter (incluyendo `input`, `profile`, `status` y `next`)
+- (Opcional) Nota de relación con artefactos downstream
+- Resumen de la idea, Declaración de resultado, Validación de resultado
+- Alineación estratégica, Urgencia y momento, Disponibilidad de recursos
+- Recomendación preliminar, Profile, Matriz de decisión
+- Observaciones de diseño (Fase F): insights que no son parte del gate pero aceleran `evaluar-alcance-idea`
+- Gate de avance (Fase G) — **obligatoria** incluso si todas las preguntas se resolvieron inline
+- Preguntas Abiertas (resueltas/pendientes), Checklist de salida
+
+**Convenciones clave** (ver template para detalle):
+- Sin emojis: usa `Pass`/`Partial`/`Fail` o `Sí`/`Parcial`/`No`
+- Matriz de decisión: 4 columnas, justificaciones en lista debajo
+- `status` y `next` van en el frontmatter, no como sección del body
 
 ## Fase G — Gate de Avance Condicionado (Preguntas Abiertas)
 
-**Gate obligatorio.** Después de completar el análisis (Fases A–F) y antes de fijar el `Ready for` y escribir el documento final, ejecuta este gate. El documento **no está completo** hasta que Fase G se ejecuta y se documenta, incluso si todas las preguntas se resolvieron inline durante las Fases B/C/D.
+**Gate obligatorio.** Después de completar el análisis (Fases A–F) y antes de fijar `status` y `next` en el frontmatter y escribir el documento final, ejecuta este gate. El documento **no está completo** hasta que Fase G se ejecuta y se documenta, incluso si todas las preguntas se resolvieron inline durante las Fases B/C/D.
 
-**Principio**: Las preguntas abiertas no bloquean automáticamente el avance, pero el usuario debe ser alertado y tener la opción de responderlas antes de avanzar. El avance es **condicionado**, no automático. La alerta ocurre **antes de comenzar** la siguiente etapa (fijar el `Ready for` y avanzar a `evaluar-alcance-idea`), no después.
+Consulta [references/gate-guide.md](references/gate-guide.md) para la lógica completa de severidad, estados de avance, flujo del gate y reglas. Resumen operativo:
 
-### Estados de avance
-
-1. **Inventariar preguntas abiertas**: Reúne todas las preguntas generadas en las estrategias de fallo de las Fases B, C y D, clasificadas por severidad (Crítico / Importante / Menor). Incluye también las preguntas que se resolvieron inline durante el análisis — el inventario debe reflejar todo lo que se identificó, con su estado de resolución.
-
-2. **Clasificar el estado de avance**:
-   - **Avance bloqueado**: Hay preguntas Críticas sin resolver → `Ready for: bloqueado`
-   - **Avance condicionado**: Hay preguntas Importantes sin resolver → `Ready for: evaluar-alcance-idea (condicionado)`. Alerta al usuario con el inventario; ofrece responder ahora o avanzar con default conservador.
-   - **Avance libre**: Solo hay preguntas Menores o todas las Críticas/Importantes están resueltas → `Ready for: evaluar-alcance-idea`
-
-3. **Documentar la ejecución del gate**: Con independencia del resultado, añade al documento una subsección "Gate de avance (Fase G)" que registre:
-   - Inventario de preguntas identificadas (críticas/importantes/menores) con su estado (resuelta inline / resuelta en gate / pendiente).
-   - Si hubo alerta: confirma que se presentó al usuario y qué decidió.
-   - Estado final de avance (bloqueado / condicionado / libre) que justifica el `Ready for`.
-
-### Reglas
-
-- **Nunca** omitir la alerta cuando hay preguntas Críticas o Importantes sin resolver.
-- **Nunca** marcar `Ready for: evaluar-alcance-idea` (libre) si hay preguntas Importantes o Críticas sin resolver.
-- **Nunca** omitir la subsección "Gate de avance (Fase G)" del documento — es la evidencia de que el gate se ejecutó.
-- Las preguntas Menores no requieren alerta ni condicionan el avance; se documentan para seguimiento.
-- Si todas las preguntas se resolvieron inline durante B/C/D, el gate sigue documentándose (inventario con estado "resuelta inline", avance libre) — el gate no se omite, se registra como ejecutado sin alerta necesaria.
-
-### Ejemplo canónico — Gate con todas resueltas inline
-
-Cuando todas las preguntas se resolvieron inline durante B/C/D (caso más común en ideas bien formadas), la subsección "Gate de avance (Fase G)" del documento se ve así:
-
-```markdown
-## Gate de avance (Fase G)
-
-- **Inventario de preguntas identificadas**:
-  - [Importante] ¿El instalador debe ser agnóstico al agente destino? — Estado: resuelta inline
-  - [Importante] ¿Cómo entregar las instructions al agente? — Estado: resuelta inline
-  - [Menor] ¿Canal de publicación del paquete npm? — Estado: resuelta inline
-- **Alerta al usuario**: No necesaria — todas las Críticas/Importantes se resolvieron inline durante el análisis.
-- **Estado final de avance**: Libre — `Ready for: evaluar-alcance-idea`
-```
-
-Para el flujo detallado del gate (formato de alerta, manejo de respuestas del usuario, herencia de preguntas pendientes en el siguiente skill, best practices), consultar `assets/open-questions-template.md` sección "Integración con Ready For — Avance Condicionado".
+1. **Decisión de status**: evalúa el inventario de preguntas abiertas. `ready` si no hay Críticas/Importantes sin resolver. `conditional` si hay Importantes sin resolver (el usuario fue alertado y eligió avanzar). `blocked` si hay Críticas sin resolver.
+2. **Decisión de next**: si `status` es `ready` o `conditional`, `next: evaluar-alcance-idea`. Si `blocked`, `next` se omite. Enlace relativo al siguiente artefacto: `../<IDEA-SLUG>/scope-roadmap.md` (o `../<IDEA-SLUG>-scope-roadmap.md` en formato legacy) (a crear por `evaluar-alcance-idea`).
+3. **Documentación del gate**: añade al análisis una subsección "Gate de avance (Fase G)" que registre inventario de preguntas (críticas/importantes/menores) con estado de resolución, evidencia de alerta (si hubo), y estado final de avance. Obligatoria incluso si todas las preguntas se resolvieron inline.
 
 ## Salida
 
 Escribe en (formato principal): `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md` (subdirectorio)
 Compatibilidad legacy: `docs/<domain>/idea/<IDEA-SLUG>-idea-analysis.md` (prefijo)
 
-Para la estructura completa del artefacto (header requerido, secciones requeridas, convenciones de formato, nota opcional de relación con downstream, y valores de `Ready for` con links), usa el template en `assets/idea-analysis-template.md`.
-
-**Resumen de secciones requeridas** (ver template para detalle):
-- Header (incluyendo línea `Input:`)
-- Resumen de la idea, Declaración de resultado, Validación de resultado
-- Alineación estratégica, Urgencia y momento, Disponibilidad de recursos
-- Recomendación preliminar, Fase F (observaciones de diseño)
-- Gate de avance (Fase G) — **obligatoria** incluso si todas las preguntas se resolvieron inline
-- Preguntas Abiertas (resueltas/pendientes), Checklist de salida, Ready for con link relativo
-
-**Convenciones clave** (ver template para detalle):
-- Sin emojis: usa `Pass`/`Partial`/`Fail` o `Sí`/`Parcial`/`No`
-- Matriz de decisión: 4 columnas, justificaciones en lista debajo
+Para la estructura completa del artefacto (frontmatter requerido, secciones requeridas, convenciones de formato, nota opcional de relación con downstream, "Qué NO va" y "Distinciones clave"), usa el template en [idea-analysis-template.md](assets/idea-analysis-template.md).
 
 ### README del dominio (índice)
 
-Como primer skill del Workflow 0, este skill es responsable de crear o actualizar el índice del dominio en `docs/<domain>/README.md`. La estructura requerida (título, puntos de entrada, árbol, convenciones) está especificada en `references/domain-readme-spec.md` — ese spec es compartido con otros skills del workflow que actualizan el README.
+Como primer skill del Workflow 0, este skill es responsable de crear o actualizar el índice del dominio en `docs/<domain>/README.md`. La estructura requerida (título, puntos de entrada, árbol, convenciones) está especificada en [domain-readme-spec.md](references/domain-readme-spec.md) — ese spec es compartido con otros skills del workflow que actualizan el README.
 
 - **Si no existe**: créalo con la estructura completa del spec.
 - **Si existe**: actualiza la tabla de "Puntos de entrada" con `idea/<IDEA-SLUG>/idea-analysis.md` y el árbol de estructura si hay nuevos archivos.
 
 ## Checklist de salida
 
-Antes de marcar el skill como terminado, verifica cada ítem. Si alguno es "No", revisa y completa antes de terminar — el documento no está completo hasta que todos pasan.
+Verificación interna del agente — no se incluye en el artefacto. Antes de terminar, verifica contra el template en [idea-analysis-template.md](assets/idea-analysis-template.md):
 
 ### Contenido
 
@@ -247,19 +177,20 @@ Antes de marcar el skill como terminado, verifica cada ítem. Si alguno es "No",
 4. Urgencia justificada
 5. Recursos básicos evaluados
 6. Recomendación preliminar justificada
-7. `Ready for` correcto según el estado de avance de la Fase G
+7. `profile` declarado con justificación
+8. `status` y `next` correctos según el estado de avance de la Fase G
 
 ### Formato (verificación de convenciones)
 
-8. Header incluye línea `Input:` (no la omitas aunque el input sea texto libre del usuario)
-9. Matriz de decisión tiene **exactamente 4 columnas** (`Criterio | Status | Weight | Score`) — sin 5ª columna `Justificación` en la tabla; las justificaciones van en lista debajo
-10. `Status` usa **texto** (`Pass`/`Partial`/`Fail` o `Sí`/`Parcial`/`No`) — sin emojis (`✅`/`⚠️`/`❌`) en matriz, validación ni checklist de salida
-11. Sección **"Gate de avance (Fase G)"** presente y documentada con inventario de preguntas, evidencia de alerta (si hubo) y estado final de avance — **obligatoria incluso si todas las preguntas se resolvieron inline**
-12. `Ready for` incluye link relativo al siguiente artefacto
+9. Frontmatter incluye `input`, `profile`, `status` y `next` (`next` ausente si `blocked`)
+10. Matriz de decisión tiene **exactamente 4 columnas** (`Criterio | Status | Weight | Score`) — sin 5ª columna `Justificación` en la tabla; las justificaciones van en lista debajo
+11. `Status` usa **texto** (`Pass`/`Partial`/`Fail` o `Sí`/`Parcial`/`No`) — sin emojis (`✅`/`⚠️`/`❌`) en matriz, validación ni checklist de salida
+12. Sección **"Gate de avance (Fase G)"** presente y documentada con inventario de preguntas, evidencia de alerta (si hubo) y estado final de avance — **obligatoria incluso si todas las preguntas se resolvieron inline**
+13. `status` y `next` van en el frontmatter, no como sección del body
 
 ## Preguntas Abiertas
 
-Usar template en `assets/open-questions-template.md` para documentar información faltante. El flujo de avance condicionado está definido en la **Fase G** y detallado en la sección "Integración con Ready For — Avance Condicionado" del template.
+Usa el template en [open-questions-template.md](assets/open-questions-template.md) para el formato. La lógica de severidad y decisión de avance se define en la Fase G y está detallada en [references/gate-guide.md](references/gate-guide.md).
 
 **Categorías comunes para este skill**:
 - Si la visión/plan de trabajo de producto no está clara
@@ -267,6 +198,4 @@ Usar template en `assets/open-questions-template.md` para documentar informació
 - Si la disponibilidad de recursos es desconocida
 - Si el resultado no puede definirse sin mencionar solución
 
-Para estructura completa, severidad levels, flujo del gate de avance condicionado y best practices, consultar el template.
-
-**Importante**: Las preguntas abiertas generadas en las estrategias de fallo de las Fases B, C y D alimentan directamente el gate de la Fase G. No se avanza al siguiente skill sin pasar por ese gate.
+Las preguntas abiertas generadas en las estrategias de fallo de las Fases B, C y D alimentan directamente el gate de la Fase G. No se avanza al siguiente skill sin pasar por ese gate.
