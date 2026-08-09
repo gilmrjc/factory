@@ -1,6 +1,6 @@
 # Guía del gate de avance
 
-Lógica completa para evaluar el estado del esbozo y decidir `status` y `next` en el frontmatter. Referencia única para el gate de la Fase D — SKILL.md delega aquí.
+Lógica completa para evaluar el estado del esbozo.
 
 ## Contenido
 
