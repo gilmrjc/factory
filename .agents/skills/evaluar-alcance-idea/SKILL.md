@@ -23,6 +23,8 @@ Solo análisis y planificación, no implementa ni modifica código, prepara la i
 - **Sí**: existe una descripción del producto para evaluar su viabilidad preliminar y determinar si la idea requiere múltiples PRDs o uno solo
 - **No**: para describir el producto, para viabilidad de negocio a fondo con matriz de decisión, para priorizar funcionalidades, para conectividad técnica, para implementar
 
+NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutar tareas en paralelo o para ejecutarlas de forma consecutiva pero aprovechando el subagente especializado.
+
 ## Fase 0: Resolver entrada
 
 Requerido: `IDEA-DESCRIPCION`.
@@ -31,7 +33,7 @@ Infiere desde:
 - Contenido breve: "Agregar dark mode", "Sistema de notificaciones", etc.
 - Artefacto: si existe `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md` (producido por `analizar-idea`), leerlo para heredar la descripción del producto, problema, estado final, beneficiarios y decisiones resueltas
 
-Pregunta cuando falta: "¿Cuál es la idea que evalúo? (descripción breve o completa)"
+Pregunta cuando falta: "¿Cuál es la idea que evalúo? (descripción breve o completa)" y detente a esperar la respuesta.
 
 ## Fase A: Eco y diagnóstico inicial
 
@@ -53,7 +55,7 @@ Criterios para distinguir nivel:
 - **Producto**: no hay producto previo o la idea define un espacio nuevo (no extiende uno existente). Requiere crear módulos nuevos y no existe un punto claro del sistema que pueda absorber la idea.
 - **Feature**: hay un módulo en el producto existente que se puede usar como base para realizar una función específica ("modo oscuro", "exportar reportes", "notificaciones push", "agregar autenticación con Google"). Generalmente se expresa como una extensión para mejorar la experiencia del usuario.
 
-Presenta ambos diagnósticos y confirma que quiere evaluar el alcance antes de avanzar. Si el diagnóstico de madurez es "Verde", redirige a `analizar-idea` primero.
+Presenta ambos diagnósticos y confirma que quiere evaluar el alcance antes de avanzar. Si el diagnóstico de madurez es "Verde", redirige a `analizar-idea` primero. En cualquier caso detente y espera la confirmación.
 
 ## Fase B: Gate preliminar de viabilidad
 

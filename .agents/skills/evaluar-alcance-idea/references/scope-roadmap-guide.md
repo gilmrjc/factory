@@ -87,7 +87,7 @@ Responder estas 4 preguntas fundamentales:
 
 ### 4. Desglose por Funcionalidad
 
-**Propósito**: Para cada funcionalidad, definir fases de implementación y decisiones clave.
+**Propósito**: Para cada funcionalidad, definir fases de implementación y decisiones clave. Realiza la división de la forma más comprensiva posible, generando todas las sub funcionalidades o dividiendo el trabajo de forma que se pueda desarrollar de forma progresiva en pasos pequeños y autocontenidos.
 
 **Formato**:
 
@@ -108,7 +108,7 @@ Responder estas 4 preguntas fundamentales:
 - Mínimo 2 fases por funcionalidad (MVP + expansión)
 - Las descripciones de fase deben ser específicas y detalladas (ej: "Infraestructura de envío: Configuración de SendGrid, setup de templates, sistema de colas")
 - Cada fase debe representar un entregable tangible con valor incremental
-- Decisiones resueltas incluyen fecha y rationale
+- Decisiones resueltas incluyen fecha y justificación
 - Decisiones pendientes alimentan la sección 5
 
 ### 5. Decisiones Pendientes y Next Steps

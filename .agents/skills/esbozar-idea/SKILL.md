@@ -30,7 +30,7 @@ Infiere desde:
 - Idea expresada en el mensaje: "Quiero algo para que la gente exporte reportes", "estaría bueno notificar a los usuarios", "modo oscuro".
 - Archivo referenciado en el mensaje: si el usuario menciona un archivo que contiene la idea, úsalo y cita la ruta.
 
-Si no se puede inferir la idea, pregunta: "¿Cuál es la idea que quieres esbozar? (puede ser vaga, la puliremos juntos)"
+Si no se puede inferir la idea, pregunta: "¿Cuál es la idea que quieres esbozar? (puede ser vaga, la puliremos juntos)" y detente a esperar la respuesta.
 
 Genera `IDEA-SLUG` en kebab-case a partir del resultado o, si el resultado aún no está claro, de la frase más representativa de la idea (ej. "exportar reportes a PDF" → `exportar-reportes-pdf`). El slug puede refinarse en la Fase C si el diálogo aclara el resultado.
 
@@ -54,7 +54,7 @@ Criterios para distinguir nivel:
 - **Producto**: no hay producto previo, O la idea define un espacio nuevo (no extiende uno existente), O el usuario describe algo fundacional ("un instalador de paquetes", "una plataforma de X"). Requiere crear módulos nuevos que y no existe un punto claro del sistema que pueda absorber la idea.
 - **Feature**: hay un producto/codebase existente y la idea lo extiende ("modo oscuro", "exportar reportes", "notificaciones push", "agregar autenticación con Google"). Generalmente se expresa como una extensión para mejorar la experiencia del usuario.
 
-Presenta ambos diagnósticos y confirma que quiere pulirla antes de avanzar. Si el usuario ya trae una idea bien formada (madurez "Casi lista"), ofrece generar la plantilla con la información disponible.
+Presenta ambos diagnósticos y confirma que quiere pulirla antes de avanzar. Si el usuario ya trae una idea bien formada (madurez "Casi lista"), ofrece generar la plantilla con la información disponible. En cualquiera de los dos casos detente a esperar la respuesta.
 
 ## Fase B — Diálogo de pulido interactivo
 

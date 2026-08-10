@@ -21,6 +21,8 @@ Toma una idea que contenga el problema a resolver y redacta una descripción nar
 - **Sí**: la idea ya describe un problema claro y se necesita explicar qué producto lo resuelve antes de avanzar a formalización. El objetivo es pintar el producto y la experiencia, no la implementación.
 - **No**: esbozar el resultado sin solución, evaluar viabilidad o generar go/no-go, estructurar requerimientos formales, dividir alcance, definir personas o casos de uso, o generar el PRD. Detener si la descripción empieza a incluir stack técnico, esquemas de datos o detalles de implementación.
 
+NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutar tareas en paralelo o para ejecutarlas de forma consecutiva pero aprovechando el subagente especializado.
+
 ## Fase 0 — Resolver entrada
 
 Requerido: `IDEA-DESCRIPCION` (texto con la idea, por vago que sea el producto).
@@ -29,7 +31,7 @@ Infiere desde:
 - Idea expresada en el mensaje: "Quiero algo para que la gente exporte reportes", "estaría bueno notificar a los usuarios", "modo oscuro".
 - Archivo referenciado en el mensaje: si el usuario menciona un archivo que contiene la idea, úsalo y cita la ruta.
 
-Si no se puede inferir la idea o el resultado no está claro, pregunta: "¿Cuál es la idea y qué resultado quieres lograr? (si no queda claro el problema a resolver, usa `esbozar-idea` primero)"
+Si no se puede inferir la idea o el resultado no está claro, pregunta: "¿Cuál es la idea y qué resultado quieres lograr? (si no queda claro el problema a resolver, usa `esbozar-idea` primero)" y detente a esperar la respuesta.
 
 ## Fase A — Eco y diagnóstico inicial
 
@@ -51,7 +53,7 @@ Criterios para distinguir nivel:
 - **Producto**: no hay producto previo o la idea define un espacio nuevo (no extiende uno existente). Requiere crear módulos nuevos y no existe un punto claro del sistema que pueda absorber la idea.
 - **Feature**: hay un módulo en el producto existente que se puede usar como base para realizar una función específica ("modo oscuro", "exportar reportes", "notificaciones push", "agregar autenticación con Google"). Generalmente se expresa como una extensión para mejorar la experiencia del usuario.
 
-Presenta ambos diagnósticos y confirma que quiere describir la funcionalidad antes de avanzar. Si el usuario ya trae una idea con producto visible (madurez "Casi lista"), ofrece generar la descripción con la información disponible.
+Presenta ambos diagnósticos y confirma que quiere describir la funcionalidad antes de avanzar. Si el usuario ya trae una idea con producto visible (madurez "Casi lista"), ofrece generar la descripción con la información disponible. En cualquiera de los casos detente y espera la respuesta
 
 ## Fase B - Resolución de dominio
 
