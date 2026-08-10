@@ -10,7 +10,6 @@ Lógica completa para evaluar el estado del esbozo.
 - [Reglas](#reglas)
 - [Mejores prácticas](#mejores-prácticas)
 - [Ejemplo completo](#ejemplo-completo)
-- [Ejemplo canónico — Gate con todas resueltas inline](#ejemplo-canónico--gate-con-todas-resueltas-inline)
 
 ## Niveles de severidad
 
