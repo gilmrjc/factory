@@ -115,12 +115,12 @@ Consulta [references/gate-guide.md](references/gate-guide.md) para la lógica co
 
 ## Salida
 
-Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`
-
-Adicionalmente, gestiona el índice del dominio siguiendo [references/domain-readme-spec.md](references/domain-readme-spec.md):
+Comienza por generar el espacio de trabajo. Genera el readme del dominio siguiendo [references/domain-readme-spec.md](references/domain-readme-spec.md):
 
 - **Si no existe `docs/<domain>/README.md`**: créalo con la estructura completa del spec. En esta primera ejecución del workflow, la única fila con artefacto real en "Puntos de entrada" es `idea/<IDEA-SLUG>/idea-analysis.md`; las demás (roadmap, personas, ADRs, PRD, epics) quedan como placeholders pendientes que los skills posteriores poblarán.
 - **Si ya existe `docs/<domain>/README.md`**: actualiza la tabla de "Puntos de entrada" con el enlace al `idea-analysis.md` recién generado.
+
+Al finalizar escribe el documento final en: `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`
 
 ## Checklist de salida
 

@@ -104,28 +104,17 @@ Estas variantes son decisiones de experiencia que definen la forma final del pro
 
 ## Gate de avance
 
-- **Inventario de preguntas identificadas**:
-  - [Crítica] ¿El producto conecta el problema y el estado final?: Estado: resuelta (la notificación conecta el revisar manual con el aviso automático al terminar).
-  - [Crítica] ¿El producto se describe en términos de experiencia, no de implementación?: Estado: resuelta (la narrativa describe recibir un aviso y volver al reporte sin stack ni canal concreto).
-  - [Importante] ¿El beneficiario está claro?: Estado: resuelta (primario: usuario que genera reportes; secundarios: dependiente y organización).
-  - [Importante] ¿La idea contiene múltiples funcionalidades?: Estado: resuelta (es una sola funcionalidad: notificar al terminar. Las variantes son decisiones de la misma funcionalidad, no funcionalidades separadas; la sospecha de un "centro de notificaciones" más amplio se documenta como frontera, no como división).
-  - [Importante] ¿El aviso debe ser email, push in-app, o ambos?: Estado: resuelta (el resultado no especifica canal).
-  - [Menor] ¿Frecuencia de reportes lo suficientemente alta para justificar notificaciones?: Estado: resuelta (feedback recurrente lo confirma).
-- **¿Alertae al usuario?**: No. Todas las preguntas Críticas/Importantes se resolvieron durante el análisis.
-- **Estado final de avance**: Libre (`status: ready`, `next: evaluar-alcance-idea`)
+### Criterios de calidad del análisis
 
-## Preguntas Abiertas (resueltas/pendientes)
+- **Crítico**: ¿El producto conecta claramente el problema con el resultado? — Sí. La notificación conecta el revisar manual (olvido, revisión compulsiva, incertidumbre) con el aviso automático al terminar.
+- **Crítico**: ¿Se describe en términos de experiencia, no de implementación? — Sí. La narrativa describe recibir un aviso y volver al reporte sin stack ni canal concreto.
+- **Importante**: ¿Los comportamientos clave son descomponibles en épicas/tareas? — Sí. Cada comportamiento (reaccionar al cierre, dirigir aviso, entregar en momento, conducir de vuelta, informar qué reporte) es una unidad de producto descomponible.
 
-### Resueltas
+### Inventario de preguntas abiertas
 
-- **Pregunta**: ¿El aviso debe ser email, push in-app, o ambos?
-- **Impacto**: Define el alcance del canal de notificación.
-- **Severidad**: Importante
-- **Propuesta**: El resultado no especifica canal.
-- **Estado**: Resuelta (se delega a análisis posterior).
+Sin preguntas abiertas (el artefacto está completo para esta etapa).
 
-- **Pregunta**: ¿Frecuencia de reportes lo suficientemente alta para justificar notificaciones?
-- **Impacto**: No bloquea la descripción.
-- **Severidad**: Menor
-- **Propuesta**: Revisar en analisis posterior.
-- **Estado**: Resuelta (feedback recurrente lo confirma; se hereda como observación).
+### Estado final de avance
+
+**Status**: `ready` — No hay preguntas Críticas ni Importantes sin resolver.
+**Next**: `evaluar-alcance-idea`

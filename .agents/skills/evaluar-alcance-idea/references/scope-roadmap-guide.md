@@ -87,7 +87,7 @@ Responder estas 4 preguntas fundamentales:
 
 ### 4. Desglose por Funcionalidad
 
-**Propósito**: Para cada funcionalidad, definir fases de implementación y decisiones clave. Realiza la división de la forma más comprensiva posible, generando todas las sub funcionalidades o dividiendo el trabajo de forma que se pueda desarrollar de forma progresiva en pasos pequeños y autocontenidos.
+**Propósito**: Para cada funcionalidad, definir fases de implementación y decisiones clave. Realiza la división de la forma más granular posible, generando sub-fases que se puedan desarrollar de forma progresiva en pasos pequeños y autocontenidos.
 
 **Formato**:
 
@@ -97,17 +97,34 @@ Responder estas 4 preguntas fundamentales:
 ### Fases
 1. **[Fase 1]**: [descripción]
 2. **[Fase 2]**: [descripción]
+3. **[Fase 3]**: [descripción]
+...
 
 ### Decisiones
 - **Resuelta ([fecha])**: [decisión] - [rationale]
 - **Pendiente**: [decisión] - [opciones con trade-offs]
 ```
 
-**Instrucciones**:
+**Instrucciones para división de fases**:
 
-- Mínimo 2 fases por funcionalidad (MVP + expansión)
-- Las descripciones de fase deben ser específicas y detalladas (ej: "Infraestructura de envío: Configuración de SendGrid, setup de templates, sistema de colas")
-- Cada fase debe representar un entregable tangible con valor incremental
+- **Granularidad**: Cada fase debe ser un sub-conjunto de trabajo completable en un ciclo de desarrollo razonable (1-2 semanas típico). Una fase que contiene múltiples componentes independientes (ej: "módulo A + módulo B + módulo C") es demasiado grande y debe dividirse.
+- **Valor incremental**: Cada fase debe entregar valor tangible y verificable. Evita fases que son "infraestructura completa" o "setup inicial" sin entregables intermedios.
+- **Dependencias secuenciales**: Ordena fases según dependencias naturales. Una fase que depende de múltiples componentes anteriores debe dividir esos componentes en fases previas.
+- **MVP fragmentado**: El MVP (valor mínimo viable) rara vez es una sola fase. Divídelo en sub-fases que entreguen partes del MVP incrementalmente (ej: "Fase 1: Componente base", "Fase 2: Integración core", "Fase 3: Flujo completo").
+- **Mínimo 3 fases**: Para funcionalidades de tamaño medio/grande, usa 3+ fases para asegurar granularidad adecuada. Solo 2 fases (MVP + expansión) es aceptable solo para funcionalidades muy simples.
+- **Especificidad**: Las descripciones de fase deben ser específicas y detalladas (ej: "Sistema de autenticación con login básico y recuperación de contraseña" vs "Sistema de autenticación").
+- **Entregables tangibles**: Cada fase debe tener un entregable claro y verificable (ej: "API que acepta requests y valida datos", no "infraestructura de API").
+
+**Patrones de división por tipo de funcionalidad**:
+
+- **Herramientas/CLI**: Estructura base → Procesamiento de entrada → Validación → Lógica principal → Output → Expansión
+- **Features de usuario**: UI básica → Lógica core → Integración con datos → Edge cases → Expansión
+- **Integraciones externas**: Setup básico → Primer endpoint → Manejo de errores → Optimización → Expansión
+- **Sistemas de datos**: Schema/modelo → CRUD básico → Queries complejas → Optimización → Expansión
+- **Procesos batch**: Configuración → Procesamiento unitario → Manejo de errores → Procesamiento masivo → Expansión
+
+**Instrucciones generales**:
+
 - Decisiones resueltas incluyen fecha y justificación
 - Decisiones pendientes alimentan la sección 5
 

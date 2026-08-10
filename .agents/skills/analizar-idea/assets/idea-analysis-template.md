@@ -102,12 +102,12 @@ Formato: lista con guiones, una decisión por ítem, descrita en términos de pr
 
 ### Gate de avance
 
-Cierre operacional. **Obligatoria** incluso si todos los criterios pasaron y todas las preguntas se resolvieron.
+Cierre operacional. **Obligatoria** incluso si todo parece estar listo.
 
 El gate evalúa si la descripción está lista para pasar a `evaluar-alcance-idea` usando dos tipos de criterios:
 
-1. **Criterios de calidad del análisis**: Validaciones internas que el skill debe cumplir (ej: ¿el producto conecta problema y resultado?, ¿se describe en términos de experiencia?). Si un criterio Crítico falla, el skill debe corregir el análisis antes de avanzar.
-2. **Preguntas abiertas/incógnitas**: Información faltante que requiere resolución externa (ej: disponibilidad de recursos, dependencias externas).
+1. **Criterios de calidad del análisis**: Validaciones internas que el skill debe cumplir. Si un criterio Crítico falla, el skill debe corregir el análisis antes de avanzar.
+2. **Preguntas abiertas/incógnitas**: Información faltante que requiere resolución externa (ej: disponibilidad de recursos, dependencias externas). **IMPORTANTE**: No repetir aquí las decisiones diferidas ya listadas en la sección "Decisiones diferidas al análisis posterior".
 
 La lógica completa del gate (criterios, severidad, estados de avance, flujo, reglas y ejemplos) está en [references/gate-guide.md](../references/gate-guide.md).
 
@@ -116,48 +116,21 @@ Formato:
 ```markdown
 ## Gate de avance
 
-- **Criterios de calidad del análisis**:
-  - [Crítico] ¿El producto conecta el problema y el estado final? — Estado: pasó/falló
-  - [Crítico] ¿El producto se describe en términos de experiencia, no de implementación? — Estado: pasó/falló
-  - [Importante] ¿El beneficiario está claro? — Estado: pasó/falló
-  - [Importante] ¿La idea contiene múltiples funcionalidades? — Estado: pasó/falló
-  - [Menor] ¿Los límites están declarados? — Estado: pasó/falló
-  - [Menor] ¿Las suposiciones están documentadas? — Estado: pasó/falló
+### Criterios de calidad del análisis
 
-- **Inventario de preguntas abiertas identificadas**:
-  - [Crítica] ¿Pregunta crítica?: Estado: resuelta/pendiente (justificación).
-  - [Importante] ¿Pregunta importante?: Estado: resuelta/pendiente (justificación).
-  - [Menor] ¿Pregunta menor?: Estado: resuelta/pendiente (justificación).
+- **Crítico**: ¿El producto conecta claramente el problema con el resultado? — [Sí/No + breve justificación]
+- **Crítico**: ¿Se describe en términos de experiencia, no de implementación? — [Sí/No + breve justificación]
+- **Importante**: ¿Los comportamientos clave son descomponibles en épicas/tareas? — [Sí/No + breve justificación]
 
-- **¿Alerta al usuario?**: Sí/No. Si hay preguntas Críticas o Importantes pendientes, el usuario fue alertado y eligió avanzar con valor por defecto conservador.
+### Inventario de preguntas abiertas
 
-- **Estado final de avance**: Libre/Condicionado/Bloqueado (`status: ready/conditional/blocked`, `next: evaluar-alcance-idea`).
-```
+- **Importante**: [pregunta] — [contexto y por qué importa]
+- **Menor**: [pregunta] — [contexto y por qué importa]
 
-### Preguntas Abiertas (resueltas/pendientes)
+### Estado final de avance
 
-Registro de las preguntas que surgieron durante el análisis, con su estado. Obligatoria si el gate dejó preguntas pendientes. Si todas se resolvieron, opcional pero recomendable para transparencia.
-
-Formato:
-
-```markdown
-## Preguntas Abiertas (resueltas/pendientes)
-
-### Resueltas
-
-- **Pregunta**: <pregunta>
-- **Impacto**: <qué afecta>
-- **Severidad**: Crítica/Importante/Menor
-- **Propuesta**: <propuesta de resolución>
-- **Estado**: Resuelta (<cómo se resolvió>)
-
-### Pendientes
-
-- **Pregunta**: <pregunta>
-- **Impacto**: <qué afecta>
-- **Severidad**: Crítica/Importante/Menor
-- **Propuesta**: <propuesta de resolución>
-- **Estado**: Pendiente (<por qué sigue pendiente>)
+**Status**: `ready` | `conditional` | `blocked` — [justificación breve]
+**Next**: `evaluar-alcance-idea`
 ```
 
 ## Tono y voz

@@ -92,15 +92,17 @@ next: priorizar-roadmap
 
 ## Decisiones Pendientes
 
+Consolidación de decisiones pendientes de los desgloses anteriores:
+
 ### Importantes (afectan calidad)
-- ¿Incluir SMS en MVP o fase posterior? (notificaciones-core) - Opciones: Sí vs No - Impacto: Alcance vs Velocidad de entrega
-- ¿Default opt-in u opt-out para nuevos usuarios? (preferencias-usuario) - Opciones: Opt-in vs Opt-out - Impacto: Adopción vs Riesgo spam y compliance
-- ¿Nivel de detalle en eventos de analytics? (analytics-integration) - Opciones: Agregados vs Individuales - Impacto: Granularidad vs Costo de storage
+- SMS en MVP vs fase posterior (notificaciones-core) - Impacto: Alcance vs Velocidad de entrega
+- Default opt-in vs opt-out para nuevos usuarios (preferencias-usuario) - Impacto: Adopción vs Riesgo spam y compliance
+- Nivel de detalle en eventos de analytics (analytics-integration) - Impacto: Granularidad vs Costo de storage
 
 ### Menores (ideal resolver)
-- ¿Política de reintentos para emails fallidos? (notificaciones-core) - Opciones: 3 reintentos vs 1 reintento - Impacto: Entregabilidad vs Carga del sistema
-- ¿Complejidad de reglas avanzadas? (preferencias-usuario) - Opciones: Reglas simples vs Motor completo - Impacto: Usabilidad vs Flexibilidad
-- ¿Frecuencia de reportes automáticos? (analytics-integration) - Opciones: Diaria vs Semanal vs Mensual - Impacto: Visibilidad vs Overhead
+- Política de reintentos para emails fallidos (notificaciones-core) - Impacto: Entregabilidad vs Carga del sistema
+- Complejidad de reglas avanzadas (preferencias-usuario) - Impacto: Usabilidad vs Flexibilidad
+- Frecuencia de reportes automáticos (analytics-integration) - Impacto: Visibilidad vs Overhead
 
 ## Recomendación
 

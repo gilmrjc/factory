@@ -109,43 +109,19 @@ Estas variantes son decisiones de experiencia que definen la forma final del pro
 
 ## Gate de avance
 
-- **Inventario de preguntas identificadas**:
-  - [Crítica] ¿El producto conecta el problema y el estado final?: Estado: resuelta (el marketplace conecta la duplicación de esfuerzo con el descubrimiento y reutilización entre equipos).
-  - [Crítica] ¿El producto se describe en términos de experiencia, no de implementación?: Estado: resuelta (la narrativa describe publicar, buscar, navegar y reutilizar; sin stack ni arquitectura).
-  - [Importante] ¿El beneficiario está claro?: Estado: resuelta (equipos que consumen reportes + equipos que los producen + organización).
-  - [Importante] ¿La idea contiene múltiples funcionalidades?: Estado: pendiente (sospecha documentada como decisión diferida; descubrir + compartir + reutilizar podría ser más de una funcionalidad).
-  - [Importante] ¿La visión de producto incluye colaboración entre equipos como norte explícito?: Estado: pendiente (el usuario fue alertado y eligió avanzar con valor por defecto conservador).
-  - [Importante] ¿El equipo de platform/identity tiene capacidad para habilitar permisos entre equipos?: Estado: pendiente (el usuario fue alertado y eligió avanzar con valor por defecto conservador).
-  - [Menor] ¿Hay datos de cuántos reportes se duplican entre equipos?: Estado: resuelta (no hay datos; se documenta como suposición).
-- **Alerta al usuario**: Sí (se presentaron 3 preguntas Importantes pendientes al usuario: sospecha de múltiples funcionalidades, alineación con visión, capacidad de platform). El usuario eligió avanzar con valor por defecto conservador.
-- **Estado final de avance**: Condicionado (`status: conditional`, `next: evaluar-alcance-idea`). Las preguntas pendientes se heredan en `evaluar-alcance-idea`.
+### Criterios de calidad del análisis
 
-## Preguntas Abiertas (resueltas/pendientes)
+- **Crítico**: ¿El producto conecta claramente el problema con el resultado? — Sí. El marketplace conecta la duplicación de esfuerzo (reconstrucción, invisibilidad, falta de reconocimiento) con el descubrimiento y reutilización entre equipos.
+- **Crítico**: ¿Se describe en términos de experiencia, no de implementación? — Sí. La narrativa describe publicar, buscar, navegar y reutilizar; sin stack ni arquitectura.
+- **Importante**: ¿Los comportamientos clave son descomponibles en épicas/tareas? — Sí. Cada comportamiento (publicar, descubrir, identificar autor, reutilizar, hacer visible reutilización, navegar) es una unidad de producto descomponible.
 
-### Resueltas
+### Inventario de preguntas abiertas
 
-- **Pregunta**: ¿Hay datos de cuántos reportes se duplican entre equipos?
-- **Impacto**: Podría justificar urgencia pero no bloquea la descripción del producto.
-- **Severidad**: Menor
-- **Propuesta**: No hay datos — se documenta como suposición en Suposiciones y dependencias.
-- **Estado**: Resuelta (se documenta como suposición).
+- **Importante**: ¿La idea contiene múltiples funcionalidades (descubrir + compartir + reutilizar) o es una sola? — Esta pregunta define si `evaluar-alcance-idea` debe dividir la idea en sub-funcionalidades. Afecta toda la planificación downstream.
+- **Importante**: ¿La visión de producto incluye colaboración entre equipos como norte explícito? — Define si la idea está alineada estratégicamente o es tangencial. Afecta priorización.
+- **Importante**: ¿El equipo de platform/identity tiene capacidad para habilitar permisos entre equipos? — Los permisos actuales son por usuario, no por equipo. Afecta viabilidad técnica y timeline.
 
-### Pendientes
+### Estado final de avance
 
-- **Pregunta**: ¿La idea contiene múltiples funcionalidades (descubrir + compartir + reutilizar) o es una sola?
-- **Impacto**: Define si `evaluar-alcance-idea` debe dividir la idea en sub-funcionalidades. Afecta toda la planificación downstream.
-- **Severidad**: Importante
-- **Propuesta**: `evaluar-alcance-idea` evalúa si el espacio se divide en funcionalidades individuales con alcance propio.
-- **Estado**: Pendiente (usuario eligió avanzar con valor por defecto conservador).
-
-- **Pregunta**: ¿La visión de producto incluye colaboración entre equipos como norte explícito?
-- **Impacto**: Define si la idea está alineada estratégicamente o es tangencial. Afecta priorización.
-- **Severidad**: Importante
-- **Propuesta**: Revisar documento de visión con product lead.
-- **Estado**: Pendiente (usuario eligió avanzar con valor por defecto conservador).
-
-- **Pregunta**: ¿El equipo de platform/identity tiene capacidad para habilitar permisos entre equipos?
-- **Impacto**: Los permisos actuales son por usuario, no por equipo. Afecta viabilidad técnica y timeline.
-- **Severidad**: Importante
-- **Propuesta**: Reunión con líder de platform para confirmar capacidad.
-- **Estado**: Pendiente (usuario eligió avanzar con valor por defecto conservador).
+**Status**: `conditional` — Hay 3 preguntas Importantes pendientes que requieren resolución externa. El usuario fue alertado y eligió avanzar con valor por defecto conservador.
+**Next**: `evaluar-alcance-idea`

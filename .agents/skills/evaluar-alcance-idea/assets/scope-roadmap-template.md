@@ -85,21 +85,23 @@ Para cada funcionalidad del roadmap:
 - **Pendiente**: [decisión] - [opciones con trade-offs]
 ```
 
-Mínimo 2 fases por funcionalidad. Decisiones pendientes alimentan la sección 5.
+Mínimo 2 fases por funcionalidad. Las decisiones marcadas como "Pendiente" en cada desglose se consolidan en la sección 5.
 
 ### 5. Decisiones Pendientes y Next Steps
+
+Consolidación de todas las decisiones marcadas como "Pendiente" en los desgloses anteriores. Clasificadas por severidad según su impacto en el avance.
 
 ```markdown
 ## Decisiones Pendientes
 
 ### Críticas (bloquean avance)
-- [Pregunta]: [opciones] - [impacto si no se resuelve]
+- [decisión de funcionalidad]: [opciones] - [impacto si no se resuelve]
 
 ### Importantes (afectan calidad)
-- [Pregunta]: [opciones] - [impacto si no se resuelve]
+- [decisión de funcionalidad]: [opciones] - [impacto si no se resuelve]
 
 ### Menores (ideal resolver)
-- [Pregunta]: [opciones] - [impacto si no se resuelve]
+- [decisión de funcionalidad]: [opciones] - [impacto si no se resuelve]
 
 ## Recomendación
 
