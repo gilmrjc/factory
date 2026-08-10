@@ -27,7 +27,6 @@ Inicia un chat interactivo para esbozar y pulir una idea bruta. El esbozo es del
 Requerido: `IDEA-DESCRIPCION` (texto libre, por vago que sea).
 
 Infiere desde:
-- Descripción pegada: si el usuario pega la idea/solicitud/fragmento de chat/email.
 - Idea expresada en el mensaje: "Quiero algo para que la gente exporte reportes", "estaría bueno notificar a los usuarios", "modo oscuro".
 - Archivo referenciado en el mensaje: si el usuario menciona un archivo que contiene la idea, úsalo y cita la ruta.
 

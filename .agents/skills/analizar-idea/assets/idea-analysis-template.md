@@ -1,6 +1,10 @@
-# Template: Análisis Preliminar de Idea
+# Template: Descripción narrativa de producto
 
 Template para estructurar el artefacto de salida de `analizar-idea`. El agente sigue este formato al escribir `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`.
+
+## Objetivo del artefacto
+
+El artefacto transmite la idea del producto a quien va a gestionar su desarrollo. No es una descripción técnica, pero debe ser tan completa y detallada que permita realizar un análisis técnico posterior y descomponer en épicas y tareas. El nivel de detalle es producto: qué es, qué experiencia ofrece, qué forma tiene, qué comportamientos entrega, qué no es (sin stack, arquitectura ni implementación).
 
 ## Frontmatter requerido (al inicio del documento)
 
@@ -10,83 +14,165 @@ idea_slug: <IDEA-SLUG>
 domain: <domain>
 date: <YYYY-MM-DD>
 skill: analizar-idea
-input: <descripción del usuario o ruta del artefacto fuente>
-profile: full | lite
+level: producto | feature
 status: ready | conditional | blocked
 next: evaluar-alcance-idea
 ---
 ```
 
-El campo **input** documenta la fuente: texto libre pegado por el usuario (`Input: descripción del usuario`) o ruta del artefacto fuente si existe (ej. issue, email). **No omitas** la línea `input` aunque el detalle vaya en la sección "Resumen de la idea".
+- **level**: el diagnóstico de la Fase A. `producto` (producto completo o espacio nuevo) o `feature` (extensión a un producto existente). Cambia el alcance de la narrativa, no la estructura del artefacto.
+- **status**: `ready` (avance libre), `conditional` (Importantes sin resolver), `blocked` (Críticas sin resolver). Lógica en [references/gate-guide.md](../references/gate-guide.md).
 
-El campo **profile** indica el nivel de ceremonia del workflow downstream (`full` o `lite`). Criterios completos en `assets/decision-matrix-template.md` sección "Detección de profile".
+## Estructura del artefacto
 
-El campo **status** describe el estado del análisis: `ready` (avance libre), `conditional` (avance condicionado por preguntas Importantes), o `blocked` (no avanza). La lógica completa para decidir el valor está en [references/gate-guide.md](../references/gate-guide.md).
+El artefacto se organiza en tres secciones principales: **Problema**, **Resultado**, **Solución**. Le siguen **Suposiciones y dependencias**, **Decisiones diferidas**, **Gate de avance** y **Preguntas Abiertas**. Las tres secciones principales se escriben en forma narrativa (prosa, no viñetas sueltas), pero con la densidad necesaria para que un planificador pueda entender el producto y descomponerlo sin tener que volver a preguntar lo básico.
 
-El campo **next** es la señal de routing al siguiente skill. Presente solo cuando `status` es `ready` o `conditional`. Valor: `evaluar-alcance-idea`. La decisión se toma en la Fase G (ver SKILL.md). Si `status` es `blocked`, `next` se omite.
+### Problema
 
-## Secciones requeridas
+Pinta el dolor actual con suficiente detalle para que un planificador entienda **quién sufre, cuándo, cómo, y por qué importa ahora**. No es un síntoma vago: es el diagnóstico del problema en términos de experiencia observable.
 
-- Frontmatter requerido (al inicio del documento, incluyendo `input`, `profile`, `status` y `next`)
-- (Opcional) Nota de relación con artefactos downstream — ver abajo
-- Resumen de la idea (input del usuario) — preserva el input original para contexto
-- Declaración de resultado (sin mención de solución)
-- Validación de resultado (válido/necesita reformulación)
-- Alineación estratégica
-- Urgencia y momento
-- Disponibilidad de recursos
-- Recomendación preliminar (Proceder/Proceder condicional/No proceder)
-- Profile: `full` o `lite` (con justificación — ver criterios en `assets/decision-matrix-template.md`)
-- Matriz de decisión (4 columnas, justificaciones en lista debajo — ver `assets/decision-matrix-template.md`)
-- Fase F — Observaciones de diseño relevantes para el siguiente paso: insights de diseño que no son parte del gate pero aceleran `evaluar-alcance-idea`
-- Gate de avance (Fase G): inventario de preguntas identificadas (críticas/importantes/menores) con estado de resolución, evidencia de la alerta al usuario (si hubo) y estado final de avance que justifica `status` y `next`. **Obligatoria** incluso si todas las preguntas se resolvieron inline.
-- Preguntas Abiertas (resueltas/pendientes): documenta decisiones tomadas con severidad original y estado de resolución. Marcar como "Pendiente — usuario eligió avanzar con valor por defecto conservador" las que el usuario decidió no resolver en el gate de la Fase G.
-- Checklist de salida (validación de contenido + formato)
+Cubrir:
 
-## Convenciones de formato del documento
+- **Quién sufre** y en qué contexto (rol/segmento, situación en la que aparece el dolor).
+- **Síntomas concretos**: las fallas observables que se repiten. Si hay varios modos de falla (ej: olvido vs. revisión compulsiva vs. incertidumbre), listarlos (cada uno es una faceta del problema).
+- **Workaround actual**: cómo vive el usuario el problema hoy, qué hace a mano para compensar.
+- **Costo agregado**: no solo tiempo (atención, dependencias que se atrasan, fricción que se tolera y deja de reportarse).
 
-- Sin emojis en el documento (matriz, validación, checklist de salida). Usa texto: `Pass`/`Partial`/`Fail`, `Sí`/`Parcial`/`No`. Símbolos tipográficos estándar (`→`, `—`, `≥`, `≤`) sí están permitidos.
-- La matriz de decisión tiene 4 columnas; las justificaciones van en lista debajo, no como columna extra. Reglas completas en `assets/decision-matrix-template.md`.
-- `status` y `next` van en el frontmatter, no como sección del body.
+Forma: prosa narrativa, puede usar una lista con guiones para los síntomas concretos si son múltiples y distintos. 1–3 párrafos según riqueza del problema.
 
-## Nota opcional: Relación idea ↔ artefactos downstream
+### Resultado
 
-Cuando ya existen artefactos downstream generados por skills posteriores del workflow (scope-roadmap, PRD, epics), añade al inicio del documento (justo después del frontmatter) una nota breve que relacione esta idea con sus artefactos derivados, para facilitar navegación.
+Pinta el estado final al que conduce el producto: el destino, no el puente. Observable, sin solución. Debe ser específico enough para que un planificador pueda derivar señales de éxito.
 
-**Formato**:
-> **Relación idea ↔ PRD**: esta idea (`idea/<IDEA-SLUG>/`) es la fase pre-PRD. Su alcance se dividió y la parte prioridad N (RICE X) derivó en el PRD activo `initiatives/<PRD-SLUG>/` (PRD N — <descripción>). Ver [scope-roadmap.md](scope-roadmap.md).
+Cubrir:
 
-Solo se añade cuando los artefactos downstream existen. En la primera ejecución del skill (sin downstream), se omite.
+- **El estado final**: el mundo al que se llega. Qué cambia en la experiencia del usuario.
+- **El flujo del usuario después del cambio**: qué hace el usuario en el nuevo estado, paso a paso, en contraste con hoy.
+- **Qué deja de pasar**: observable y específico. Cosas que hoy ocurren y en el estado final no ocurren.
+- **Señales de éxito**: cómo se sabría que el resultado se alcanzó, medible sin mirar la implementación (no métricas técnicas sino cambios en comportamiento o feedback).
 
-## Qué NO va en este análisis
+Forma: prosa narrativa. 1–2 párrafos. Las señales de éxito pueden ir como lista si son múltiples y medibles.
 
-Estos contenidos pertenecen a skills posteriores y **no** deben desarrollarse en el análisis preliminar:
+### Solución
 
-- Evaluación de alcance (múltiples vs única funcionalidad) → `evaluar-alcance-idea`
-- Priorización RICE de funcionalidades → `priorizar-roadmap`
-- Conectividad técnica / features puente → `evaluar-conectividad-tecnica`
-- Captura de requerimientos formales → `capturar-requerimiento`
-- Validación de viabilidad de producto (demanda, riesgo negocio) → `validar-viabilidad-producto`
-- Mapeo de assumptions (matriz 2x2, risk vs evidence) → `mapear-assumptions`
-- Personas detalladas → `definir-usuarios`
-- Casos de uso (happy path, edge cases) → `mapear-casos-uso`
-- Métricas de éxito / diseño de experimentos → `disenar-experimentos`
-- PRD → `generar-prd`
+Pinta el producto que puentea entre el problema y el resultado. Es la sección más densa: describe la forma del producto, sus fronteras, sus comportamientos clave, los escenarios/variantes que necesita resolver, y los beneficiarios. El objetivo es dar suficiente forma para que un análisis posterior pueda identificar piezas (semillas de épicas/tareas) sin que el artefacto se vuelva técnico.
 
-Si el usuario introdujo alguno de estos durante el diálogo, regístralo como nota breve en "Fase F — Observaciones de diseño" o como Pregunta abierta, sin desarrollarlo.
+Estructura interna con sub-secciones:
 
-## Distinciones clave para no confundir secciones
+#### Forma del producto
 
-- **Resultado deseado** vs **Problema**: el resultado es el estado futuro que quieres lograr; el problema son los síntomas observables del dolor actual. Ambos se formulan sin solución. El análisis preliminar se centra en el resultado; el problema lo trabaja `esbozar-idea` upstream.
-- **Alineación estratégica** vs **Urgencia**: la alineación evalúa si la idea encaja con la visión/dirección del producto; la urgencia evalúa el momento (¿por qué ahora?). Una idea puede estar alineada pero no ser urgente, o ser urgente pero no estar alineada.
-- **Recursos básicos** vs **Viabilidad técnica**: los recursos básicos son una verificación rápida (equipo, stack, dependencias); la viabilidad técnica es un análisis profundo de deuda técnica y construcciones nuevas. Los recursos básicos van aquí; la viabilidad técnica va en `validar-viabilidad-tecnica`.
-- **Recomendación preliminar** vs **Aprobación final**: la recomendación preliminar (Proceder/Condicional/No proceder) es un gate de viabilidad rápida; la aprobación final la da `validar-viabilidad-producto`. La recomendación preliminar no aprueba ni rechaza definitivamente.
-- **Profile** vs **Recomendación**: el `profile` (full/lite) indica cuánta ceremonia aplica el workflow downstream; la recomendación (Proceder/Condicional/No proceder) indica si avanza. Son señales ortogonales — un PRD puede ser `Proceder` con `profile: lite` o `Proceder` con `profile: full`.
-- **Observaciones de diseño (Fase F)** vs **Gate de avance (Fase G)**: las observaciones de diseño son insights que aceleran el siguiente skill pero no condicionan el avance; el gate es la verificación obligatoria que decide `status` y `next`. Ambas coexisten.
+Qué ES el producto, la experiencia central que ofrece, y cómo se acopla al contexto existente. La experiencia se describe con una frase o metáfora que la captura (ej: "soltar y retomar", "recorrer una biblioteca compartida"). 1–2 párrafos.
 
-## Ejemplos canónicos
+#### Fronteras: qué no es
 
-Para referencia de formato, consulta el ejemplo canónico correspondiente al veredicto:
+Lista explícita de qué NO es el producto. Cada frontera es una decisión de alcance que evita que el planificador infiera funcionalidad que no existe. Formato: lista con guiones, una frontera por ítem, con una frase que explica la distinción. Para `level: feature`, si el producto existente define la frontera, marcar "No aplica (el producto existente define la frontera)" como primer ítem, y agregar las fronteras específicas que emergan.
 
-- **Proceder**: [references/examples/example-proceder.md](../references/examples/example-proceder.md) — análisis de "notificaciones-push" con `status: ready`, todas las secciones desarrolladas, gate resuelto inline.
-- **Proceder condicional**: [references/examples/example-condicional.md](../references/examples/example-condicional.md) — análisis de "marketplace-interno" con `status: conditional`, preguntas Importantes pendientes, gate con alerta al usuario.
+#### Comportamientos clave del producto
+
+Los comportamientos que el producto debe entregar, descritos en términos de experiencia. **Cada comportamiento es una unidad de producto** que un análisis posterior puede expandir y descomponer (son las semillas de épicas/tareas). No son requisitos técnicos ni specs; son "qué hace el producto" en lenguaje de experiencia.
+
+Formato: lista numerada, un comportamiento por ítem, con una frase que lo nombra y una o dos que lo explican. 3–7 comportamientos típicamente.
+
+#### Escenarios y variantes
+
+Las variantes del comportamiento central que el producto necesita resolver. Cada una es una **decisión de producto diferida explícitamente** (no un caso técnico, sino una bifurcación de experiencia que define la forma final). Identificarlas aquí permite que el análisis posterior las trabaje de forma explícita en lugar de descubrirlas tarde.
+
+Formato: lista con guiones, una variante por ítem, formulada como pregunta o tensión abierta (ej: "Reporte que falla: ¿aviso de fallo o silencio?", "Muchos reportes terminando cerca: ¿un aviso por evento o agrupación?"). 3–7 variantes típicamente.
+
+#### Beneficiarios
+
+Quién se beneficia del producto, con el beneficio concreto de cada uno. Un beneficiario primario y cero o más secundarios. El primario se introduce naturalmente en la narrativa; aquí se consolida y se agregan secundarios si emergen. Formato: lista con guiones, "Primario: \<rol\>: \<beneficio concreto\>", "Secundario: \<rol\>: \<beneficio\>".
+
+**Diferencia por nivel**:
+
+- `level: producto`: la Solución pinta un espacio nuevo. Más amplia: el producto define su propio territorio, la experiencia se describe de cero, las fronteras son más numerosas porque no hay producto existente que las herede.
+- `level: feature`: la Solución pinta una extensión a un producto existente. Más acotada: asume que el producto existente define el contexto, la experiencia se describe como una extensión sobre lo que ya existe, las fronteras incluyen "No aplica (el producto existente define la frontera)" como base.
+
+### Suposiciones y dependencias
+
+Lista separada de lo que la descripción asume del contexto, los usuarios o el producto para que la solución tenga sentido. Diferente de las Fronteras (que dicen qué no es): las suposiciones dicen qué se asume true del mundo para que el producto funcione. Incluye dependencias sobre el producto existente (ej: "el evento X es detectable por la plataforma").
+
+Formato: lista con guiones, una suposición por ítem. Para `level: feature`, inferir del repo cuando sea posible. Si no emerge ninguna, "Sin suposiciones (la narrativa es autocontenida)".
+
+### Decisiones diferidas al análisis posterior
+
+Lista explícita de las decisiones de producto que este artefacto no toma y delega a skills posteriores (`evaluar-alcance-idea`, `capturar-requerimiento`, etc.). Esto es clave para planificación: el planificador sabe qué decisiones le toman a él vs. qué ya está decidido. Incluye las variantes de "Escenarios y variantes" que quedan abiertas, más cualquier otra decisión (canal, preferencias de usuario, alcance de casos borde).
+
+Formato: lista con guiones, una decisión por ítem, descrita en términos de producto (no técnicos). Si no hay decisiones diferidas, "Sin decisiones diferidas (el artefacto está completo para esta etapa)".
+
+### Gate de avance
+
+Cierre operacional. **Obligatoria** incluso si todos los criterios pasaron y todas las preguntas se resolvieron.
+
+El gate evalúa si la descripción está lista para pasar a `evaluar-alcance-idea` usando dos tipos de criterios:
+
+1. **Criterios de calidad del análisis**: Validaciones internas que el skill debe cumplir (ej: ¿el producto conecta problema y resultado?, ¿se describe en términos de experiencia?). Si un criterio Crítico falla, el skill debe corregir el análisis antes de avanzar.
+2. **Preguntas abiertas/incógnitas**: Información faltante que requiere resolución externa (ej: disponibilidad de recursos, dependencias externas).
+
+La lógica completa del gate (criterios, severidad, estados de avance, flujo, reglas y ejemplos) está en [references/gate-guide.md](../references/gate-guide.md).
+
+Formato:
+
+```markdown
+## Gate de avance
+
+- **Criterios de calidad del análisis**:
+  - [Crítico] ¿El producto conecta el problema y el estado final? — Estado: pasó/falló
+  - [Crítico] ¿El producto se describe en términos de experiencia, no de implementación? — Estado: pasó/falló
+  - [Importante] ¿El beneficiario está claro? — Estado: pasó/falló
+  - [Importante] ¿La idea contiene múltiples funcionalidades? — Estado: pasó/falló
+  - [Menor] ¿Los límites están declarados? — Estado: pasó/falló
+  - [Menor] ¿Las suposiciones están documentadas? — Estado: pasó/falló
+
+- **Inventario de preguntas abiertas identificadas**:
+  - [Crítica] ¿Pregunta crítica?: Estado: resuelta/pendiente (justificación).
+  - [Importante] ¿Pregunta importante?: Estado: resuelta/pendiente (justificación).
+  - [Menor] ¿Pregunta menor?: Estado: resuelta/pendiente (justificación).
+
+- **¿Alerta al usuario?**: Sí/No. Si hay preguntas Críticas o Importantes pendientes, el usuario fue alertado y eligió avanzar con valor por defecto conservador.
+
+- **Estado final de avance**: Libre/Condicionado/Bloqueado (`status: ready/conditional/blocked`, `next: evaluar-alcance-idea`).
+```
+
+### Preguntas Abiertas (resueltas/pendientes)
+
+Registro de las preguntas que surgieron durante el análisis, con su estado. Obligatoria si el gate dejó preguntas pendientes. Si todas se resolvieron, opcional pero recomendable para transparencia.
+
+Formato:
+
+```markdown
+## Preguntas Abiertas (resueltas/pendientes)
+
+### Resueltas
+
+- **Pregunta**: <pregunta>
+- **Impacto**: <qué afecta>
+- **Severidad**: Crítica/Importante/Menor
+- **Propuesta**: <propuesta de resolución>
+- **Estado**: Resuelta (<cómo se resolvió>)
+
+### Pendientes
+
+- **Pregunta**: <pregunta>
+- **Impacto**: <qué afecta>
+- **Severidad**: Crítica/Importante/Menor
+- **Propuesta**: <propuesta de resolución>
+- **Estado**: Pendiente (<por qué sigue pendiente>)
+```
+
+## Tono y voz
+
+El artefacto se escribe en un tono empático y observacional, como si estuvieras al lado del usuario viendo lo que le pasa. No es un documento de gestión abstracto: es una narrativa que describe la experiencia encarnada.
+
+Características del tono:
+
+- **Lenguaje experiencial y encarnado**: nombra estados cognitivos y corporales, no abstracciones de producto. "El usuario mantiene un hilo mental abierto", no "el usuario tiene fricción".
+- **Construcción rítmica con repetición anafórica**: "no tiene que recordarlo, no tiene que revisar, no tiene que mantener ningún hilo mental abierto". La repetición cristaliza el estado deseado por acumulación.
+- **Definición por negación deliberada**: la sección *Fronteras* usa "No es un… no es un… no es un…" como patrón para fijar el contorno del producto por exclusión.
+- **Cristalización con frases cortas tras desarrollos largos**: después de párrafos extensos y subordinados, aterriza con una frase corta y simétrica: "Es puntual y oportuno: un evento, un aviso."
+- **Metáforas cotidianas precisas, no decorativas**: "eslabón que avisaba que ya estaba disponible", "hilo de la tarea actual que se rompe". Las metáforas son funcionales: nombran algo que el lenguaje literal no alcanza.
+- **Frases largas con subordinación y puntuación tradicional**: el ritmo es de prosa ensayística, no de bullet corporativo. Usa comas, paréntesis y puntos para introducir matices sin cortar el flujo, en lugar de em-dashes que son menos tradicionales en español.
+- **Empatía observacional sin condescendencia**: el texto observa al usuario con respeto ("el usuario aprende a tolerar y deja de reportar como problema"), no lo patologiza ni lo victimiza.
+- **Honestidad sobre lo que no se sabe**: "No hay datos cuantitativos… eso es una suposición que el análisis posterior debe confirmar." El tono no sobredeclara evidencia.
+
+Lo que evita: jerga corporativa ("cross-team", "stakeholders", "value proposition" como sustantivo), abstracciones organizacionales ("la organización no tiene visibilidad"), lenguaje de venta o de pitch, listas planas sin narrativa que las conecte.
