@@ -48,47 +48,50 @@ next: priorizar-roadmap
 ## Desglose: notificaciones-core
 
 ### Fases
-1. **Infraestructura de envío**: Configuración de SendGrid para emails transactionales, setup de templates base, sistema de colas para procesamiento asíncrono, manejo de errores y reintentos
-2. **Integración con auth**: Conexión con sistema de usuarios existente, validación de emails, gestión de preferencias básicas (on/off), endpoints de API para envío programático
-3. **Implementación de push**: Integración con FCM para Android y APNS para iOS, registro de dispositivos, manejo de tokens expirados, sistema de fallback cuando push falla
-4. **Plantillas y contenido**: Diseño de templates para diferentes tipos de alertas (seguridad, transacciones, recordatorios), sistema de variables dinámicas, A/B testing básico de subject lines
-5. **Monitoreo y alertas**: Métricas de entregabilidad, tracking de opens/clicks, alertas cuando tasas de entrega caen por debajo del umbral, dashboard de estado del sistema
+1. **Configuración de proveedor email**: Setup de cuenta SendGrid, configuración de API keys, validación de conexión, template base HTML. Entregable: Sistema capaz de enviar emails de prueba.
+2. **Sistema de colas básico**: Setup de RabbitMQ, configuración de colas para procesamiento asíncrono, manejo de errores básico, reintentos simples. Entregable: Infraestructura de colas operativa.
+3. **Integración con auth**: Conexión con sistema de usuarios existente, validación de emails, endpoints de API para registrar usuarios. Entregable: API que puede identificar usuarios válidos.
+4. **Envío de email simple**: Endpoint para enviar email a un usuario, validación de datos de entrada, encolado de tarea, tracking de estado. Entregable: API que envía emails transactionales básicos.
+5. **Integración FCM Android**: Setup de proyecto FCM, configuración de credenciales, registro de dispositivos Android, envío de push notification básico. Entregable: Sistema que envía push a dispositivos Android.
+6. **Integración APNS iOS**: Setup de certificados APNS, registro de dispositivos iOS, envío de push notification básico, manejo de tokens expirados. Entregable: Sistema que envía push a dispositivos iOS.
+7. **Sistema de fallback**: Lógica para detectar falla de push, cambio automático a email como fallback, tracking de canal utilizado. Entregable: Sistema que garantiza entrega aunque falle un canal.
+8. **Plantillas dinámicas**: Sistema de templates con variables, diseño de templates para diferentes tipos de alertas, motor de sustitución de variables. Entregable: Sistema que genera emails personalizados.
+9. **Preferencias básicas**: Almacenamiento de preferencias on/off por tipo de notificación, integración con endpoints de envío, UI básica de toggles. Entregable: Usuarios pueden controlar qué notificaciones reciben.
+10. **Monitoreo básico**: Tracking de envíos, entregas, opens y clicks, dashboard simple con métricas clave, alertas cuando tasas caen. Entregable: Visibilidad básica sobre performance del sistema.
 
 ### Decisiones
 - **Resuelta (2025-01-15)**: Proveedor email = SendGrid (balance costo/entregabilidad, API robusta)
 - **Resuelta (2025-01-15)**: Sistema de colas = RabbitMQ (ya integrado en plataforma, reduce latencia)
-- **Pendiente**: ¿Incluir SMS en MVP o fase posterior? Opciones: Sí (mayor alcance, más costo, complejidad adicional) vs No (entrega más rápida, alcance limitado a email/push)
-- **Pendiente**: ¿Política de reintentos para emails fallidos? Opciones: 3 reintentos con backoff exponencial (mayor entregabilidad, más carga) vs 1 reintento simple (menor carga, menor entregabilidad)
+- **Pendiente**: ¿Incluir SMS en MVP o fase posterior? (Fase 6-7) - Opciones: Sí vs No - Impacto: Alcance vs Velocidad de entrega
 
 ## Desglose: preferencias-usuario
 
 ### Fases
-1. **UI básica de toggle**: Pantalla de configuración con switches on/off por tipo de notificación, almacenamiento en DB existente, integración con auth-core
-2. **Gestión de canales**: Selección de canales por tipo (email, push, SMS), preferencias por dispositivo, manejo de dispositivos múltiples
-3. **Frecuencias y horarios**: Configuración de frecuencia (inmediata, diaria, semanal), horarios de silencio (modo no molestar), zonas horarias por usuario
-4. **Reglas avanzadas**: Sistema de reglas condicionales (ej: "solo notificaciones de seguridad fuera de horario laboral"), categorización por urgencia, filtros por contenido
-5. **Preferencias por defecto**: Sistema de defaults inteligentes basados en comportamiento del usuario, onboarding guiado de preferencias, capacidad de exportar/importar configuraciones
+1. **Schema de preferencias**: Diseño de modelo de datos para preferencias, migración de DB, índices para consultas eficientes. Entregable: Estructura de datos lista para almacenar preferencias.
+2. **UI básica de toggles**: Pantalla de configuración con switches on/off por tipo de notificación, almacenamiento en DB, integración con auth-core. Entregable: Usuarios pueden activar/desactivar tipos de notificaciones.
+3. **Gestión de canales**: Selección de canales por tipo (email, push, SMS), preferencias por dispositivo, manejo de dispositivos múltiples. Entregable: Usuarios pueden elegir canal por tipo de notificación.
+4. **Frecuencias y horarios**: Configuración de frecuencia (inmediata, diaria, semanal), horarios de silencio (modo no molestar), zonas horarias por usuario. Entregable: Control temporal sobre cuándo recibir notificaciones.
+5. **Reglas condicionales básicas**: Sistema de reglas if/then simple (ej: "solo notificaciones de seguridad fuera de horario laboral"), categorización por urgencia. Entregable: Lógica básica de filtrado contextual.
+6. **Preferencias por defecto**: Sistema de defaults inteligentes basados en comportamiento del usuario, onboarding guiado de preferencias. Entregable: Nueva experiencia de usuario con defaults sensibles.
 
 ### Decisiones
 - **Resuelta (2025-01-15)**: Almacenar preferencias en DB existente (sin nuevo bounded context, reduce complejidad)
 - **Resuelta (2025-01-15)**: UI basada en componentes existentes (consistencia visual, menor desarrollo)
-- **Pendiente**: ¿Default opt-in u opt-out para nuevos usuarios? Opciones: Opt-in (menos spam, menor adopción, compliance GDPR-friendly) vs Opt-out (mayor adopción, riesgo spam, requiere manejo cuidadoso)
-- **Pendiente**: ¿Complejidad de reglas avanzadas? Opciones: Reglas simples (if/then básico, fácil de usar) vs Motor de reglas completo (flexibilidad máxima, curva de aprendizaje alta)
+- **Pendiente**: ¿Default opt-in u opt-out para nuevos usuarios? (Fase 6) - Opciones: Opt-in vs Opt-out - Impacto: Adopción vs Riesgo spam y compliance
 
 ## Desglose: analytics-integration
 
 ### Fases
-1. **Eventos básicos**: Tracking de sent, delivered, opened, clicked, bounced, complained, integración con Mixpanel existente
-2. **Dashboard de alto nivel**: Métricas clave (tasa de entrega, tasa de apertura, tasa de clic), comparación temporal, filtros por tipo de notificación
-3. **Análisis por cohorte**: Segmentación por comportamiento del usuario, análisis de retención post-notificación, identificación de usuarios desenganchados
-4. **A/B testing framework**: Integración con sistema de experiments existente, test de subject lines, timing y contenido, análisis estadístico automático
-5. **Reportes y exportación**: Generación de reportes PDF, exportación a CSV, alertas automáticas cuando métricas caen, integración con Slack para notificaciones de equipo
+1. **Integración Mixpanel básica**: Setup de tracking de eventos sent, delivered, opened, clicked, bounced, complained. Entregable: Sistema que registra eventos fundamentales del ciclo de notificaciones.
+2. **Dashboard de métricas clave**: Métricas clave (tasa de entrega, tasa de apertura, tasa de clic), comparación temporal, filtros por tipo de notificación. Entregable: Dashboard simple con visibilidad básica de performance.
+3. **Segmentación por usuario**: Tracking de comportamiento del usuario, análisis de retención post-notificación, identificación de usuarios desenganchados. Entregable: Capacidad de analizar patrones por segmentos de usuarios.
+4. **A/B testing básico**: Integración con sistema de experiments existente, test de subject lines, análisis estadístico automático. Entregable: Sistema que puede ejecutar experiments simples en notificaciones.
+5. **Reportes programados**: Generación de reportes PDF, exportación a CSV, alertas automáticas cuando métricas caen. Entregable: Sistema que entrega reportes automáticos al equipo.
 
 ### Decisiones
 - **Resuelta (2025-01-15)**: Usar Mixpanel (ya integrado en plataforma, reduce setup)
 - **Resuelta (2025-01-15)**: Dashboards en herramienta existente (Grafana) para consistencia
-- **Pendiente**: ¿Nivel de detalle en eventos? Opciones: Eventos agregados (menor volumen, menor costo, menos granularidad) vs Eventos individuales (máxima granularidad, mayor costo, más storage)
-- **Pendiente**: ¿Frecuencia de reportes automáticos? Opciones: Diaria (mayor visibilidad, más ruido) vs Semanal (balance, menos ruido) vs Mensual (menos visibilidad, menos overhead)
+- **Pendiente**: ¿Nivel de detalle en eventos? (Fase 1) - Opciones: Agregados vs Individuales - Impacto: Granularidad vs Costo de storage
 
 ## Decisiones Pendientes
 
@@ -115,13 +118,13 @@ Consolidación de decisiones pendientes de los desgloses anteriores:
 
 - **Múltiples funcionalidades**: 3 funcionalidades con diferentes niveles de complejidad
 - **Patrones de desglose variados**:
-  - `notificaciones-core`: 5 fases (feature complejo con múltiples componentes técnicos)
-  - `preferencias-usuario`: 5 fases (feature de usuario con evolución progresiva)
-  - `analytics-integration`: 5 fases (feature de datos con capas de profundidad)
-- **Fases explícitas y detalladas**: Cada fase tiene descripción específica de qué se entrega, no solo nombres genéricos
+  - `notificaciones-core`: 10 fases (feature complejo con múltiples componentes técnicos, cada fase con entregable específico)
+  - `preferencias-usuario`: 6 fases (feature de usuario con evolución progresiva desde schema hasta defaults inteligentes)
+  - `analytics-integration`: 5 fases (feature de datos con capas de profundidad desde tracking básico hasta reportes programados)
+- **Fases granulares con entregables tangibles**: Cada fase tiene un entregable claro y verificable (ej: "Sistema capaz de enviar emails de prueba", no "infraestructura de email")
 - **Dependencias claras**: auth-core → notificaciones-core → preferencias-usuario → analytics-integration
-- **Decisiones mixtas**: Mezcla de decisiones resueltas (con fechas y rationale) y pendientes (con opciones y trade-offs)
+- **Decisiones mixtas**: Mezcla de decisiones resueltas (con fechas y rationale) y pendientes (con referencia a fase específica)
 - **Clasificación por severidad**: Decisiones divididas en Importantes y Menores según impacto
 - **Status condicionado**: Hay decisiones importantes pendientes que requieren input del usuario
 - **Value proposition claro**: Cada funcionalidad tiene un valor específico y diferenciado para el usuario
-- **Evolución progresiva**: Cada funcionalidad muestra un camino desde MVP hasta funcionalidad avanzada
+- **Evolución progresiva**: Cada funcionalidad muestra un camino desde componentes base hasta funcionalidad avanzada, con MVP fragmentado en múltiples fases

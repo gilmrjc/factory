@@ -2,6 +2,23 @@
 
 Template para estructurar el artefacto de salida de `analizar-idea`. El agente sigue este formato al escribir `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`.
 
+## Table of Contents
+
+- [Objetivo del artefacto](#objetivo-del-artefacto)
+- [Frontmatter requerido](#frontmatter-requerido-al-inicio-del-documento)
+- [Estructura del artefacto](#estructura-del-artefacto)
+  - [Problema](#problema)
+  - [Resultado](#resultado)
+  - [Solución](#solución)
+    - [Forma del producto](#forma-del-producto)
+    - [Fronteras: qué no es](#fronteras-qué-no-es)
+    - [Comportamientos clave del producto](#comportamientos-clave-del-producto)
+    - [Escenarios y variantes](#escenarios-y-variantes)
+    - [Beneficiarios](#beneficiarios)
+  - [Suposiciones y dependencias](#suposiciones-y-dependencias)
+  - [Decisiones diferidas al análisis posterior](#decisiones-diferidas-al-análisis-posterior)
+  - [Gate de avance](#gate-de-avance)
+
 ## Objetivo del artefacto
 
 El artefacto transmite la idea del producto a quien va a gestionar su desarrollo. No es una descripción técnica, pero debe ser tan completa y detallada que permita realizar un análisis técnico posterior y descomponer en épicas y tareas. El nivel de detalle es producto: qué es, qué experiencia ofrece, qué forma tiene, qué comportamientos entrega, qué no es (sin stack, arquitectura ni implementación).
@@ -26,6 +43,8 @@ next: evaluar-alcance-idea
 ## Estructura del artefacto
 
 El artefacto se organiza en tres secciones principales: **Problema**, **Resultado**, **Solución**. Le siguen **Suposiciones y dependencias**, **Decisiones diferidas**, **Gate de avance** y **Preguntas Abiertas**. Las tres secciones principales se escriben en forma narrativa (prosa, no viñetas sueltas), pero con la densidad necesaria para que un planificador pueda entender el producto y descomponerlo sin tener que volver a preguntar lo básico.
+
+**IMPORTANTE**: El artefacto final debe incluir un Table of Contents (TOC) al inicio, después del título principal y antes de la primera sección. El TOC debe incluir enlaces a todas las secciones principales y subsecciones del documento.
 
 ### Problema
 

@@ -24,11 +24,11 @@ Cada workflow representa una sesión de trabajo con inicio y fin claros, agrupad
 
 ```mermaid
 flowchart LR
-    Pminus1[esbozar-idea<br/>opcional] -.->|idea muy verde| P0
+    Pminus1[esbozar-idea<br/>opcional] -.->|esbozo: resultado sin solución| P1
 
     subgraph WF1["1. Descubrimiento de Producto"]
         direction TB
-        P0[Idea bruta] --> P1[analizar-idea]
+        P0[Idea con resultado claro] --> P1[analizar-idea<br/>descripción del producto]
         P1 --> P2[evaluar-alcance-idea]
         P2 --> P3[priorizar-roadmap]
         P3 --> P4[evaluar-conectividad-tecnica]
@@ -67,7 +67,7 @@ flowchart LR
 ## Resumen de Workflows: Entrada / Salida / Ready for
 
 - **1. Descubrimiento de Producto**
-  - Entrada: Idea bruta (o esbozo pulido por `esbozar-idea` — paso previo opcional)
+  - Entrada: Idea con resultado claro (esbozo pulido por `esbozar-idea` — paso previo opcional — o idea bien formada del usuario)
   - Artefacto de salida: `prd.md` (uno o múltiples) + `prd-workflow-summary.md` + `prd-roadmap-state.md` + `roadmap.md` consolidado del dominio
   - Ready for: `planificar-epics`
 - **2. Gestión de Epics**
@@ -95,11 +95,12 @@ flowchart LR
 
 Los siguientes orquestadores automatizan workflows completos. Úsalos cuando quieras avanzar sin invocar cada skill a mano:
 
-- **`orquestar-prd-workflow`** orquesta el Workflow 1 completo (incluyendo `analizar-idea`, `evaluar-alcance-idea`, `priorizar-roadmap` y `evaluar-conectividad-tecnica` como gates iniciales).
+- **`orquestar-prd-workflow`** orquesta el Workflow 1 completo (incluyendo `analizar-idea` como descripción del producto, `evaluar-alcance-idea` como gate preliminar de viabilidad + alcance + profile, `priorizar-roadmap` y `evaluar-conectividad-tecnica` como gates iniciales).
 - **`orquestar-epic-workflow`** orquesta el Workflow 2 completo (incluyendo priorización de epics, evaluación de conectividad por epic, gates de Go/No-Go, rama opcional de spike técnico y loop de procesamiento para múltiples epics).
 - **`implementar-ticket`** (Workflow 6) orquesta el Workflow 3 completo más la fase de codificación y verificación del Workflow 4. **No reemplaza al Workflow 4 completo**: no encadena automáticamente `actualizar-mapeo-contextos`, `revisar-cambios-locales` ni `revisar-cambios-implementados` (ver límite de alcance en Workflow 6).
 - **Módulo transversal Comprensión y Enseñanza** puede insertarse como puerta opcional antes del Workflow 4 o antes del Workflow 5.
-- **`esbozar-idea`** es un paso previo opcional al Workflow 1 (no es un orquestador). Conduce un chat interactivo que pulle una idea muy verde en un esbozo ligero (`docs/drafts/<slug>/esbozo.md`) listo para `analizar-idea`. No evalúa viabilidad ni añade detalle — solo formula el resultado deseado sin soluciónizar. No está encadenado en `orquestar-prd-workflow`; se invoca a mano cuando la idea no está lista para el flujo 1.
+- **`esbozar-idea`** es un paso previo opcional al Workflow 1 (no es un orquestador). Conduce un chat interactivo que pulle una idea muy verde en un esbozo ligero (`docs/drafts/<slug>/esbozo.md`) que formula el resultado deseado sin soluciónizar. No está encadenado en `orquestar-prd-workflow`; se invoca a mano cuando la idea no está lista para `analizar-idea`. Su salida alimenta `analizar-idea`, que toma el resultado y describe el producto que lo resuelve.
+- **`analizar-idea`** es el primer skill del Workflow 1. Toma una idea con resultado claro (esbozo de `esbozar-idea` o idea bien formada del usuario) y redacta una descripción narrativa de la funcionalidad o producto que la resuelve: problema, estado final y producto que puentea entre ambos, sin detalles técnicos ni de implementación. El resultado es un borrador ligero de la solución (`docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`) que sirve como punto inicial para `evaluar-alcance-idea`. No evalúa viabilidad ni declara `profile` — eso es `evaluar-alcance-idea`, el siguiente skill.
 
 ---
 
@@ -109,29 +110,32 @@ Antes del Workflow 1, cuando la idea está muy verde o vaga para entrar al flujo
 
 - **Entrada**: idea bruta vaga (texto libre del usuario).
 - **Artefacto de salida**: `docs/drafts/<IDEA-SLUG>/esbozo.md` — artefacto temporal de staging (vive fuera de `docs/<domain>/` porque la idea aún no está comprometida con un dominio ni con el flujo 1).
-- **Ready for**: `analizar-idea` / `orquestar-prd-workflow` / `bloqueado`.
+- **Ready for**: `analizar-idea` / `bloqueado`.
 
-**Límite de alcance**: el esbozo es deliberadamente ligero — declara el resultado deseado sin soluciónizar, beneficiarios y motivación. **No** evalúa viabilidad (eso es `analizar-idea`), ni estructura requerimientos (`capturar-requerimiento`), ni divide alcance (`evaluar-alcance-idea`), ni define personas/casos de uso/métricas. El detalle es trabajo del flujo 1. El esbozo se escribe para que `analizar-idea` pueda evaluarlo sin tener que reformularlo primero.
+**Límite de alcance**: el esbozo es deliberadamente ligero — declara el resultado deseado sin soluciónizar, beneficiarios y motivación. **No** describe el producto que resuelve el resultado (eso es `analizar-idea`), ni evalúa viabilidad preliminar (eso es `evaluar-alcance-idea`), ni estructura requerimientos (`capturar-requerimiento`), ni divide alcance (`evaluar-alcance-idea`), ni define personas/casos de uso/métricas. El esbozo se escribe para que `analizar-idea` pueda describir el producto sin tener que reformular el resultado primero.
 
-No es parte del orquestador `orquestar-prd-workflow` — se invoca a mano cuando hace falta. Si la idea ya está bien formada, se omite y se entra directo al Workflow 1.
+No es parte del orquestador `orquestar-prd-workflow` — se invoca a mano cuando hace falta. Si la idea ya tiene un resultado claro, se omite y se entra directo al Workflow 1 con `analizar-idea`.
 
 ---
 
 ## Workflow 1: Descubrimiento de Producto (Idea → PRDs)
 
-Workflow que transforma una idea de producto bruta en uno o múltiples PRDs formales listos para planificación arquitectónica, con puntos de salida a spike técnico o demo interactivo cuando la idea o los flujos no están claros. Incluye análisis preliminar con descubrimiento basado en resultados, evaluación de alcance para dividir ideas complejas en funcionalidades individuales, priorización basada en valor vs esfuerzo, evaluación de conectividad para generar features puente cuando la idea está desconectada, mapeo de assumptions (framework de David Bland) y diseño riguroso de experimentos antes del PRD.
+Workflow que transforma una idea de producto bruta en uno o múltiples PRDs formales listos para planificación arquitectónica, con puntos de salida a spike técnico o demo interactivo cuando la idea o los flujos no están claros. Incluye descripción narrativa del producto que resuelve el resultado, evaluación de alcance para dividir ideas complejas en funcionalidades individuales, priorización basada en valor vs esfuerzo, evaluación de conectividad con el codebase actual, mapeo de assumptions (framework de David Bland) y diseño riguroso de experimentos antes del PRD.
 
 ```mermaid
 flowchart TD
-    A[analizar-idea] -->|detecta profile: full o lite| B{Humano: Proceder/No proceder?}
-    B -->|No proceder| X[Exit temprano]
-    B -->|Proceder| C[evaluar-alcance-idea]
-    C --> D{¿Múltiples funcionalidades?}
+    A[analizar-idea<br/>descripción del producto] --> C[evaluar-alcance-idea<br/>viabilidad + alcance + profile]
+    C --> CG[Gate de avance<br/>Fase F: preguntas abiertas]
+    CG -->|bloqueado| X[Exit temprano]
+    CG -->|condicionado / libre| B{Humano: Proceder / No proceder?}
+    B -->|No proceder| X
+    B -->|Proceder| D{¿Múltiples funcionalidades?}
     D -->|Sí| E[priorizar-roadmap]
     D -->|No, N=1| D2[stub priorización N=1]
-    D -->|Sí| E2
     D2 --> E2[evaluar-conectividad-tecnica]
-    E --> E2
+    E --> EG[Gate de avance<br/>Fase G: preguntas abiertas]
+    EG -->|bloqueado| X
+    EG -->|condicionado / libre| E2
     E2 --> F{¿Greenfield + lite?}
     F -->|Sí| G2[connectivity short-form]
     F -->|No| G[connectivity full]
@@ -170,19 +174,21 @@ flowchart TD
     style I3 fill:#fff4e1,stroke-dasharray: 5 5
     style N2 fill:#ffe1e1
     style R2 fill:#ffe1e1
+    style CG fill:#ffe1e1
+    style EG fill:#ffe1e1
     style D2 fill:#e1ffe1
     style G2 fill:#e1ffe1
 ```
 
-**Propósito**: Convertir una idea informal en uno o múltiples requerimientos estructurados, validados por viabilidad de negocio, con personas y casos de uso concretos, consolidados en PRDs con criterios experimentales estado-específicos (MVP/Growth/Scale). Incluye análisis preliminar con descubrimiento basado en resultados, evaluación de alcance para evitar PRDs gigantescos, priorización inteligente basada en RICE, evaluación de conectividad con el codebase actual, mapeo de assumptions (framework de David Bland), gates de calidad de razonamiento (no-solutionización, spike por feasibility, métrica medible, no-duplicación), path lite para dogfooding/internal, y diseño riguroso de experimentos.
+**Propósito**: Convertir una idea informal en uno o múltiples requerimientos estructurados, validados por viabilidad de negocio, con personas y casos de uso concretos, consolidados en PRDs con criterios experimentales estado-específicos (MVP/Growth/Scale). Incluye descripción narrativa del producto que resuelve el resultado, evaluación de alcance para evitar PRDs gigantescos, priorización inteligente basada en RICE, evaluación de conectividad con el codebase actual, mapeo de assumptions (framework de David Bland), gates de calidad de razonamiento (no-solutionización, spike por feasibility, métrica medible, no-duplicación), path lite para dogfooding/internal, y diseño riguroso de experimentos.
 
-**Descripción narrativa**: Este workflow inicia con `analizar-idea`, que combina un gate rápido de viabilidad con la definición del resultado deseado sin mencionar la solución. Evalúa:
+**Descripción narrativa**: Este workflow inicia con `analizar-idea`, que toma una idea con resultado claro (esbozo de `esbozar-idea` o idea bien formada del usuario) y redacta una descripción narrativa del producto o funcionalidad que la resuelve. Evalúa:
 
-1. **Descubrimiento basado en resultados + profile**: `analizar-idea` define el resultado deseado (resultado/estado, no funcionalidad) y valida que sea medible sin mencionar tecnología o implementación. Si no puede definirse sin solución, marca como "necesita reformulación". Evalúa alineación estratégica, urgencia y disponibilidad básica de recursos para generar una recomendación preliminar Proceder/Proceder condicional/No proceder. Además, declara un campo `profile: full | lite` que el orquestador consume para activar shortcuts (stub RICE N=1, connectivity short-form, 1 persona, experiment-design omitido por defecto). `lite` aplica a dogfooding/internal tool/1-2 personas/greenfield/MVP N=1; `full` a producto externo/Growth-Scale/N>1. Genera `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md`.
+1. **Descripción del producto**: `analizar-idea` toma el resultado deseado (proveniente del esbozo o del input del usuario) y describe el producto o funcionalidad que lo resuelve en términos de experiencia: el problema, el estado final y el producto que puentea entre ambos, sin mencionar tecnología, arquitectura ni implementación. Si el resultado no está claro o no puede formularse, sugiere usar `esbozar-idea` primero. Diagnostica la madurez de la idea (Verde / Borrador / Casi lista) y su nivel (Producto / Feature), que modulan el alcance del diálogo. Resuelve el **dominio** (`docs/<domain>/`) inventariando dominios existentes, infiriendo candidatos y filtrando por nivel (Feature → dominio existente; Producto → nuevo o existente) — esta ruta fija la ubicación de todos los artefactos downstream del workflow. Genera `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md` — un borrador ligero de la solución que sirve como punto inicial para el resto del workflow.
 
-2. **Alcance**: `evaluar-alcance-idea` determina si la idea describe múltiples funcionalidades independientes (ej: "sistema de notificaciones + sistema de archivos") o una funcionalidad cohesiva (ej: "alertas de inactividad"). Si son múltiples funcionalidades, las divide en elementos individuales con alcance, propuesta de valor y cronograma, generando `docs/<domain>/idea/<IDEA-SLUG>/scope-roadmap.md`.
+2. **Viabilidad preliminar + alcance + profile**: `evaluar-alcance-idea` actúa como gate de fail-fast. Primero evalúa **alineación estratégica** (consistencia con la dirección del producto, si mueve un norte explícito, esencial vs deseable, foco vs dispersión) y produce un veredicto **Alineado / Parcialmente alineado / Desalineado**. Si es Desalineado, el workflow se detiene sin invertir en alcance. Si procede, determina si la idea describe múltiples funcionalidades independientes (ej: "sistema de notificaciones + sistema de archivos") o una funcionalidad cohesiva (ej: "alertas de inactividad"). Si son múltiples, las divide en elementos individuales con alcance, propuesta de valor y cronograma. Además, declara un campo `profile: full | lite` que el orquestador consume para activar shortcuts (stub RICE N=1, connectivity short-form, 1 persona, experiment-design omitido por defecto): `lite` aplica a producto interno o funcionalidad cohesiva única; `full` a producto externo o múltiples funcionalidades. La **Fase E** clasifica el estado de avance preliminar que drivea el branching: funcionalidad única → `next: evaluar-conectividad-tecnica`; múltiples → `next: priorizar-roadmap`. Finalmente, la **Fase F (Gate de Avance Condicionado)** es obligatoria: inventaría las preguntas abiertas identificadas durante el análisis, las clasifica por severidad (Crítica / Importante / Menor) y determina el estado de avance — **bloqueado** (Críticas sin resolver → `Ready for: bloqueado`), **condicionado** (Importantes sin resolver → alerta al usuario, ofrece responder o avanzar con default conservador) o **libre** (solo Menores o todas resueltas). El gate se documenta en una subsección "Gate de avance (Fase F)" del artefacto; sin esa evidencia el documento no se considera completo. Genera `docs/<domain>/idea/<IDEA-SLUG>/scope-roadmap.md`.
 
-3. **Priorización**: `priorizar-roadmap` calcula puntuaciones RICE (Alcance × Impacto × Confianza / Esfuerzo) para cada funcionalidad, generando `docs/<domain>/idea/<IDEA-SLUG>/feature-prioritization.md` con ranking basado en valor vs esfuerzo. Ajusta por dependencias, marcando elementos bloqueados. **Path lite (N=1)**: si `scope-roadmap.md` declara "funcionalidad única", emite un stub con el score RICE como sanity check (no roadmap ranqueado) — reduce ceremonia para MVPs dogfooding.
+3. **Priorización**: `priorizar-roadmap` calcula puntuaciones RICE (Alcance × Impacto × Confianza / Esfuerzo) para cada funcionalidad, generando `docs/<domain>/idea/<IDEA-SLUG>/feature-prioritization.md` con ranking basado en valor vs esfuerzo. Ajusta por dependencias, marcando elementos bloqueados. Acepta como entrada `scope-roadmap.md` (funcionalidades) o `bridge-roadmap.md` (features puente). **Path lite (N=1)**: si `scope-roadmap.md` declara "funcionalidad única", emite un stub con el score RICE como sanity check (no roadmap ranqueado) — reduce ceremonia para MVPs dogfooding. Al igual que `evaluar-alcance-idea`, ejecuta la **Fase G (Gate de Avance Condicionado)** obligatoria: inventaría preguntas abiertas de las Fases B/C/D, las clasifica por severidad (Crítica / Importante / Menor) y determina el estado de avance — **bloqueado** (Críticas sin resolver), **condicionado** (Importantes sin resolver → alerta al usuario) o **libre** (solo Menores o todas resueltas). El gate se documenta en una subsección "Gate de avance (Fase G)"; sin esa evidencia el documento no se considera completo.
 
 4. **Conectividad**: `evaluar-conectividad-tecnica` analiza el codebase actual (auth, DB, APIs, servicios, frontend, monitoring) para identificar prerequisitos existentes. Determina si la funcionalidad está conectada (prerequisitos existen), desconectada (falta infraestructura crítica) o **greenfield** (repo sin codebase/producto previo — conectado por vacío, sin prerequisitos previos que falten). En modo greenfield el paso no se salta: genera el artefacto obligatorio con veredicto "conectado (greenfield)" como registro de la decisión. **Path lite (greenfield + profile=lite)**: emite un short-form (tabla mínima de componentes a crear, sin enumerar cada categoría de infraestructura como N/A). Si está desconectada, genera plan de trabajo de funcionalidades puente que construyen la infraestructura necesaria paso a paso, escribiendo `docs/<domain>/initiatives/<PRD-SLUG>/bridge-roadmap.md`.
 

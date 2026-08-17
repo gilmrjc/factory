@@ -11,6 +11,20 @@ next: evaluar-alcance-idea
 
 # Descripción narrativa: notificaciones-push
 
+## Table of Contents
+
+- [Problema](#problema)
+- [Resultado](#resultado)
+- [Solución](#solución)
+  - [Forma del producto](#forma-del-producto)
+  - [Fronteras — qué no es](#fronteras--qué-no-es)
+  - [Comportamientos clave del producto](#comportamientos-clave-del-producto)
+  - [Escenarios y variantes](#escenarios-y-variantes)
+  - [Beneficiarios](#beneficiarios)
+- [Suposiciones y dependencias](#suposiciones-y-dependencias)
+- [Decisiones diferidas al análisis posterior](#decisiones-diferidas-al-análisis-posterior)
+- [Gate de avance](#gate-de-avance)
+
 ## Problema
 
 El usuario que genera reportes en la plataforma vive un flujo roto desde el momento en que arranca un reporte. La generación toma suficiente tiempo como para que no pueda quedarse esperando en la página: cierra la pestaña o se va a otra cosa, y el reporte queda corriendo de fondo. A partir de ahí, el ciclo del reporte deja de estar monitoreado en la plataforma y pasa a estar sostenido por la memoria del usuario. Ese es el problema de fondo: la plataforma inicia el trabajo pero no cierra el ciclo; el cierre queda delegado al usuario, que tiene que recordarlo, volver y revisar.

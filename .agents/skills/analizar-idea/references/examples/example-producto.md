@@ -11,6 +11,20 @@ next: evaluar-alcance-idea
 
 # Descripción narrativa: marketplace-interno
 
+## Table of Contents
+
+- [Problema](#problema)
+- [Resultado](#resultado)
+- [Solución](#solución)
+  - [Forma del producto](#forma-del-producto)
+  - [Fronteras — qué no es](#fronteras--qué-no-es)
+  - [Comportamientos clave del producto](#comportamientos-clave-del-producto)
+  - [Escenarios y variantes](#escenarios-y-variantes)
+  - [Beneficiarios](#beneficiarios)
+- [Suposiciones y dependencias](#suposiciones-y-dependencias)
+- [Decisiones diferidas al análisis posterior](#decisiones-diferidas-al-análisis-posterior)
+- [Gate de avance](#gate-de-avance)
+
 ## Problema
 
 El equipo que necesita un reporte vive un flujo roto desde el momento en que arranca una necesidad. Alguien pide un reporte, el equipo lo construye, lo entrega, y el ciclo se cierra para ese equipo. Pero el trabajo que hizo no queda visible para nadie más: el reporte vive dentro de la frontera del equipo, y la organización no tiene forma de saber que existe. A partir de ahí, el conocimiento de reportes deja de estar compartido y pasa a estar atrapado en el equipo que lo produjo. Ese es el problema de fondo: la organización produce reportes pero no los hace visibles; el descubrimiento queda delegado a la memoria y a las conversaciones informales, que son frágiles y no escalan.
