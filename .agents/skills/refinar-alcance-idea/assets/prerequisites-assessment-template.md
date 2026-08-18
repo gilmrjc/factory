@@ -1,5 +1,13 @@
 # Prerequisites Assessment: [IDEA]
 
+## Table of Contents
+
+- [Infraestructura Existente](#infraestructura-existente)
+- [Prerequisitos de la Idea](#prerequisitos-de-la-idea)
+- [Gaps Identificados](#gaps-identificados)
+- [Evaluación de Conectividad](#evaluación-de-conectividad)
+- [Recomendaciones](#recomendaciones)
+
 ## Infraestructura Existente
 
 - Auth: [Estado actual]

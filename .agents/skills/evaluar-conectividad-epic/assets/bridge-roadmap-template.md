@@ -1,140 +1,106 @@
-# Bridge Roadmap: <EPIC-SLUG>
+# Roadmap de Funcionalidades Puente: <EPIC-SLUG>
+
+Template para estructurar el artefacto de salida de `evaluar-conectividad-epic` cuando el epic está desconectado o parcialmente conectado.
+
+## Objetivo del artefacto
+
+Documento de planificación que responde: ¿qué funcionalidades puente construyen la infraestructura necesaria para que el epic se pueda implementar? Cada funcionalidad puente tiene valor por sí misma y aporta un prerequisito faltante. Incluye estimación de puntos, acceptance criteria, dependencias, timeline y trade-offs.
+
+## Frontmatter requerido
+
+```yaml
+---
+epic_slug: <EPIC-SLUG>
+prd_slug: <PRD-SLUG>
+domain: <domain>
+date: <YYYY-MM-DD>
+skill: evaluar-conectividad-epic
+input: <ruta a prerequisites-assessment.md>
+status: ready
+next: implementar-bridge
+---
+```
+
+- **status**: siempre `ready` — el roadmap se genera solo cuando el epic requiere funcionalidades puente.
+- **next**: siempre `implementar-bridge`.
 
 ## Resumen
 
-**Epic objetivo**: <EPIC-NOMBRE>
-**Estado de conectividad**: Parcialmente conectado
-**Objetivo del bridge**: Construir prerequisitos faltantes para conectar el epic al codebase
+- **Epic objetivo**: <EPIC-NOMBRE>
+- **Estado de conectividad**: Parcialmente conectado / Desconectado
+- **Objetivo del bridge**: Construir prerequisitos faltantes para conectar el epic al codebase
 
-## Features Puente
+## Análisis de Desconexión
 
-### Feature 1: Implementar Async Queue
+- **Bloqueadores principales**: [lista]
+- **Infraestructura faltante**: [lista]
+- **Estimación de esfuerzo total**: [X puntos / Y semanas]
 
-**Descripción**: Implementar sistema de colas para procesamiento de jobs en background
+## Funcionalidades Puente
 
-**Alcance**:
+Una sección por funcionalidad puente, en orden de dependencia.
 
-- Setup de RabbitMQ/Redis
-- Implementar producer/consumer pattern
-- Configurar retry logic
-- Implementar dead letter queue
+### Funcionalidad Puente 1: <NOMBRE>
 
-**Criterios de Aceptación**:
+- **Prerequisitos que construye**: [lista]
+- **Value proposition**: [valor por sí misma]
+- **Alcance**: [lista de tareas]
+- **Acceptance Criteria**: [lista]
+- **Esfuerzo estimado**: [1-8 puntos]
+- **Dependencias**: [Ninguna | lista]
+- **Archivos/componentes que toca**: [lista]
 
-- [ ] RabbitMQ/Redis configurado y corriendo
-- [ ] Producer puede publicar mensajes en la cola
-- [ ] Consumer puede procesar mensajes de la cola
-- [ ] Retry logic implementado (3 intentos con backoff exponencial)
-- [ ] Dead letter queue configurada para mensajes fallidos
-- [ ] Monitoring de cola (queue depth, processing rate)
+### Funcionalidad Puente N: <NOMBRE>
 
-**Estimación**: 5 puntos (1 semana)
+...
 
-**Dependencias**: Ninguna
+## Epic Objetivo
 
-**Archivos que toca**:
+La implementación del epic una vez construidos los prerequisitos.
 
-- `infra/docker-compose.yml` (agregar RabbitMQ/Redis)
-- `src/queue/producer.ts` (nuevo)
-- `src/queue/consumer.ts` (nuevo)
-- `src/queue/config.ts` (nuevo)
-
----
-
-### Feature 2: Mejorar Monitoring
-
-**Descripción**: Implementar stack de monitoring centralizado (ELK)
-
-**Alcance**:
-
-- Setup de Elasticsearch, Logstash, Kibana
-- Configurar log shipping desde aplicación
-- Implementar dashboards en Kibana
-- Configurar alertas
-
-**Criterios de Aceptación**:
-
-- [ ] ELK stack configurado y corriendo
-- [ ] Logs de aplicación se envían a Elasticsearch
-- [ ] Dashboards creados en Kibana (errors, requests, performance)
-- [ ] Alertas configuradas (error rate > 5%, latency > 500ms)
-- [ ] Retention policy configurada (30 días)
-
-**Estimación**: 8 puntos (2 semanas)
-
-**Dependencias**: Feature 1 (Async Queue)
-
-**Archivos que toca**:
-
-- `infra/docker-compose.yml` (agregar ELK)
-- `src/logging/elk-transport.ts` (nuevo)
-- `src/logging/config.ts` (modificar)
-- `infra/kibana/dashboards/*.json` (nuevo)
-
----
+- **Prerequisitos requeridos**: [lista de funcionalidades puente]
+- **Value proposition**: [valor final]
+- **Esfuerzo estimado**: [X puntos]
+- **Success criteria**: [cómo validar]
 
 ## Secuencia de Implementación
 
-```mermaid
-gantt
-    title Bridge Roadmap Implementation Timeline
-    dateFormat  YYYY-MM-DD
-    section Feature 1
-        Setup RabbitMQ/Redis           :a1, 2024-01-01, 3d
-        Implement Producer/Consumer    :a2, after a1, 2d
-        Retry Logic & DLQ             :a3, after a2, 2d
-    section Feature 2
-        Setup ELK Stack               :b1, after a3, 3d
-        Log Shipping                  :b2, after b1, 2d
-        Dashboards & Alerts           :b3, after b2, 3d
-```
+1. Funcionalidad Puente 1 — Semana X
+2. Funcionalidad Puente 2 — Semana Y
+3. ...
 
-**Orden recomendado**:
-
-1. Feature 1 (Async Queue) - Semana 1
-2. Feature 2 (Monitoring) - Semana 2-3
-
-**Paralelización**: No recomendada (Feature 2 depende de Feature 1)
+**Paralelización**: [qué se puede hacer en paralelo y qué no]
 
 ## Trade-offs
 
-### Opción A: Implementar bridge completo (recomendado)
+### Opción A: <descripción>
 
-- **Ventajas**: Epic completamente conectado, infraestructura robusta
-- **Desventajas**: 3 semanas de inversión antes de implementar epic
-- **Riesgos**: Bajos, tecnologías probadas
+- **Ventajas**: ...
+- **Desventajas**: ...
+- **Riesgos**: ...
 
-### Opción B: Implementar bridge mínimo
+### Opción B: <descripción>
 
-- **Ventajas**: 1 semana de inversión, epic puede empezar antes
-- **Desventajas**: Infraestructura mínima, technical debt acumulado
-- **Riesgos**: Medios, puede requerir refactorización futuro
+- **Ventajas**: ...
+- **Desventajas**: ...
+- **Riesgos**: ...
 
-### Opción C: Modificar epic para evitar prerequisitos
+### Opción C: <descripción>
 
-- **Ventajas**: Sin inversión en infraestructura
-- **Desventajas**: Epic comprometido, funcionalidad reducida
-- **Riesgos**: Altos, puede no cumplir objetivos de negocio
+- **Ventajas**: ...
+- **Desventajas**: ...
+- **Riesgos**: ...
 
 ## Recomendación
 
-**Opción seleccionada**: A (Implementar bridge completo)
+- **Opción seleccionada**: [A/B/C]
+- **Justificación**: [por qué]
+- **Next step**: `implementar-bridge`
 
-**Justificación**:
+## Convenciones de formato
 
-- Epic requiere infraestructura robusta para escalabilidad
-- Inversión de 3 semanas es aceptable dado el valor del epic
-- Infraestructura reutilizable para futuros epics
-
-## Próximos Pasos
-
-1. ✅ Aprobar bridge roadmap
-2. [ ] Implementar Feature 1 (Async Queue)
-3. [ ] Implementar Feature 2 (Monitoring)
-4. [ ] Validar bridge (tests de integración)
-5. [ ] Retomar implementación del epic original
-
----
-
-**Documento generado**: <FECHA>
-**Ready for**: implementar-bridge
+- Sin emojis.
+- Estimaciones en puntos de esfuerzo (1-8).
+- Cada funcionalidad puente con value proposition independiente.
+- Dependencias sin ciclos.
+- Epic objetivo referencia todas las funcionalidades puente como dependencias.

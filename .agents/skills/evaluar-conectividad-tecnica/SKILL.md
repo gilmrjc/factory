@@ -1,41 +1,42 @@
 ---
 name: evaluar-conectividad-tecnica
 description: >-
-  Evalúa si el codebase actual soporta una funcionalidad o qué infraestructura
-  falta para que la soporte. Si está conectada, habilita el avance al
-  siguiente paso; si está desconectada, genera un bridge roadmap de features
-  puente con valor propio que construyen el camino hacia la funcionalidad
-  objetivo. Úsalo después de evaluar-alcance-idea o priorizar-roadmap.
-  Triggers comunes: evaluar conectividad, validar prerequisitos técnicos,
-  identificar features puente, determinar gap de infraestructura. No lo usas
-  para evaluar conectividad de un epic específico (usa evaluar-conectividad-epic),
-  ni para validar viabilidad técnica a fondo (usa validar-viabilidad-tecnica),
-  ni para priorizar funcionalidades (usa priorizar-roadmap).
+  Evalúa conectividad técnica de una funcionalidad a nivel PRD. Toma una
+  funcionalidad del roadmap y el codebase actual, y determina si está conectada
+  o qué infraestructura falta para que la soporte. Si está conectada,
+  genera el assessment de prerequisitos y habilita el avance; si está
+  desconectada, genera un roadmap de funcionalidades puente con valor propio.
+  Úsalo cuando necesites evaluar conectividad de una funcionalidad completa
+  antes de capturar requerimientos o priorizar. Triggers comunes: evaluar
+  conectividad de una funcionalidad, validar prerequisitos técnicos de un PRD,
+  identificar funcionalidades puente a nivel producto, determinar brecha de
+  infraestructura. No lo uses para evaluar conectividad de un epic
+  específico (usa evaluar-conectividad-epic), ni para validar viabilidad
+  técnica a fondo (usa validar-viabilidad-tecnica), ni para priorizar
+  funcionalidades (usa priorizar-roadmap).
 ---
 
-# Evaluador de Conectividad Técnica
+# Evaluador de Conectividad Técnica (PRD / Funcionalidad)
 
-Evalúa prerequisitos técnicos y conectividad de una funcionalidad con el codebase actual. Determina si la funcionalidad está conectada al producto existente o si requiere features puente para construir la infraestructura necesaria antes de poder entregarla.
+Evalúa los prerequisitos técnicos y la conectividad de una funcionalidad a nivel PRD con el codebase actual. Determina si la funcionalidad está conectada al producto existente o si necesita funcionalidades puente para construir la infraestructura necesaria.
 
-Solo análisis y planificación: no implementa, no modifica código. Prepara la funcionalidad para el siguiente paso.
+Solo analiza y planifica: no implementa ni modifica código; prepara la funcionalidad para el siguiente paso.
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: existe una funcionalidad definida (del scope-roadmap o del roadmap priorizado) y se necesita saber si el codebase actual la soporta o qué falta para que la soporte.
+- **Sí**: existe una funcionalidad definida a nivel PRD (del `scope-roadmap.md` o del roadmap priorizado) y se necesita saber si el codebase actual la soporta o qué falta para que la soporte.
 - **No**: evaluar conectividad de un epic específico (usa `evaluar-conectividad-epic`), validar viabilidad técnica a fondo con deuda técnica bloqueante (usa `validar-viabilidad-tecnica`), priorizar funcionalidades (usa `priorizar-roadmap`), implementar o modificar código.
 
-**Scope**: Este skill evalúa conectividad a nivel PRD/funcionalidad.
-- **PRD-level**: evalúa si la funcionalidad completa tiene prerequisitos en el codebase.
-- **Epic-level**: evalúa si un epic específico tiene prerequisitos (más granular).
+**Scope**: Este skill evalúa conectividad a nivel PRD/funcionalidad. Para evaluar un epic específico, usa `evaluar-conectividad-epic`.
 
 NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutar tareas en paralelo o para ejecutarlas de forma consecutiva pero aprovechando el subagente especializado.
 
-## Fase 0 — Resolver entrada
+## Fase 0: Resolver entrada
 
 Requerido: `FUNCIONALIDAD-SLUG` o `IDEA-DESCRIPCION`.
 
 Infiere desde:
-- Ruta: `docs/<DOMAIN>/idea/<IDEA-SLUG>/scope-roadmap.md` (para extraer una funcionalidad específica).
+- Ruta: `docs/<DOMAIN>/idea/<IDEA-SLUG>/scope-roadmap.md` (para extraer una funcionalidad específica del alcance de la idea).
 - Slug: si el usuario especifica una funcionalidad del roadmap.
 - Descripción pegada: si el usuario pega la funcionalidad directamente.
 
@@ -43,82 +44,86 @@ Si no se puede inferir la funcionalidad, pregunta: "¿Qué funcionalidad evalúo
 
 Declara los inputs resueltos: funcionalidad capturada.
 
-## Fase A — Evaluar Prerequisitos Técnicos
+## Fase A: Eco y diagnóstico inicial
 
-Analiza el codebase actual para identificar qué infraestructura existe y qué falta. Determina si el repo es greenfield (sin codebase/producto previo), mapea infraestructura existente, features relacionadas y deuda técnica, y compara los prerequisitos de la funcionalidad contra el estado actual.
+Devuelve al usuario un eco breve de lo que entendiste (funcionalidad, dominio, PRD asociado) y un diagnóstico inicial de qué tan lista está la funcionalidad para evaluar conectividad.
 
-**Detección de modo**: Determina si el repo es greenfield Y el perfil es `lite` (ver `analizar-idea`). Esta decisión se usa en la Fase C para seleccionar el template correcto.
+**Diagnóstico de madurez** (clasifica la entrada en uno de estos estados):
 
-Consulta [references/prerequisites-analysis-guide.md](references/prerequisites-analysis-guide.md) para la lógica completa de detección y criterios de modo.
+- **Verde**: no hay funcionalidad seleccionada o no se puede inferir del roadmap/PRD, necesita resolver entrada primero.
+- **Borrador**: la funcionalidad existe pero carece de alcance, propuesta de valor o dependencias claras; necesita diálogo focalizado.
+- **Casi lista**: la funcionalidad tiene alcance y propuesta de valor definidos; diálogo mínimo de confirmación.
 
-## Fase B — Evaluar Conectividad
+**Diagnóstico de nivel** (clasifica la funcionalidad en uno de estos niveles):
 
-Determina si la funcionalidad está conectada al producto actual. Si está conectada, el workflow continúa al siguiente paso. Si está desconectada, genera un roadmap de features puente con valor propio.
+- **Funcionalidad puente**: la funcionalidad se propone como infraestructura habilitante para otras funcionalidades.
+- **Funcionalidad de valor directo**: la funcionalidad entrega valor directo al usuario final.
 
-Esta fase produce el veredicto de conectividad (conectado/desconectado) y, si aplica, la lista de features puente necesarias.
+Presenta ambos diagnósticos y confirma que quiere evaluar la conectividad antes de avanzar. Si el diagnóstico de madurez es "Verde", detente a resolver la entrada. En cualquier caso espera la confirmación.
 
-Consulta [references/connectivity-evaluation-guide.md](references/connectivity-evaluation-guide.md) para la lógica completa de criterios de conectividad/desconexión, generación de features puente y ejemplo canónico.
+## Fase B: Evaluar Prerequisitos Técnicos
 
-## Fase C — Decidir Routing
+Analiza el codebase actual para identificar qué infraestructura existe y qué falta.
 
-Centraliza la decisión de qué template usar y qué documentos generar según el modo detectado en Fase A y el veredicto de conectividad de Fase B.
+- Detecta si el repositorio es greenfield (sin codebase/producto previo).
+- Si es greenfield, evalúa la infraestructura básica del repositorio: gestor de paquetes, contenedores, archivos de configuración, directorios base y convenciones de proyecto. Si un requisito base es crítico y no se puede inferir (runtime, SDKs, cuentas de servicio, entornos, dominios, licencias, accesos a APIs externas), haz una pregunta enfocada y detente a esperar la respuesta. Si es menor, regístralo como pregunta abierta.
+- Si es codebase existente, mapea la infraestructura de producto (auth, DB, APIs, servicios, frontend, monitoring). Enfócate en los bounded contexts y features relacionadas; no escanees todo el repo capa por capa si el alcance de la funcionalidad es claro.
+- En brownfield, evalúa la calidad de los datos históricos, el estado de salud de los componentes legacy y las limitaciones del stack.
+- Identifica features relacionadas y deuda técnica relevante.
+- Compara los prerequisitos de la funcionalidad contra el estado actual.
 
-**Selección de template según modo:**
+**Detección de modo**: determina si el repositorio es greenfield. El modo se usa en Fase C para el veredicto y en la generación de artefactos para rellenar el frontmatter y la sección de infraestructura.
 
-- **Greenfield + profile: lite**: Usa `assets/prerequisites-assessment-greenfield-short-form-template.md` (short-form reducido, sin enumerar infraestructura N/A).
-- **Codebase existente o greenfield completo**: Usa `assets/prerequisites-assessment-template.md` (estructura completa con todas las secciones).
+Consulta [references/prerequisites-analysis-prd-guide.md](references/prerequisites-analysis-prd-guide.md) para la lógica completa de detección y criterios de modo.
+
+## Fase C: Evaluar Conectividad y Decidir Documentos
+
+Determina si la funcionalidad está conectada, parcialmente conectada o desconectada del producto actual. Si está desconectada, genera un roadmap de funcionalidades puente con valor propio.
+
+Esta fase produce:
+- El veredicto de conectividad (conectado / parcialmente conectado / desconectado).
+- La lista de funcionalidades puente (si aplica).
+- La decisión de documentos a generar.
+
+**Criterios de veredicto:**
+
+- **Conectado**: todos los prerequisitos críticos existen o son alcanzables sin funcionalidades puente.
+- **Parcialmente conectado**: la mayoría de los prerequisitos existen, pero faltan o son insuficientes algunos requisitos no críticos.
+- **Desconectado**: falta infraestructura crítica; requiere funcionalidades puente con valor propio.
 
 **Documentos a generar:**
 
-- **Prerequisites Assessment** (siempre): `docs/<domain>/initiatives/<PRD-SLUG>/connectivity/prerequisites-assessment.md`
-  - Si es epic-level: `docs/<domain>/initiatives/<PRD-SLUG>/epics/<EPIC-SLUG>/prerequisites-assessment.md` (sin subcarpeta `connectivity/`)
+- **Prerequisites Assessment** (siempre): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/prerequisites-assessment.md`.
+- **Bridge Roadmap** (solo si desconectado o parcialmente conectado): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/bridge-roadmap.md`.
 
-- **Bridge Roadmap** (solo si desconectado): `docs/<domain>/initiatives/<PRD-SLUG>/connectivity/bridge-roadmap.md`
-  - Si es epic-level: `docs/<domain>/initiatives/<PRD-SLUG>/epics/<EPIC-SLUG>/bridge-roadmap.md` (sin subcarpeta `connectivity/`)
+Consulta [references/connectivity-evaluation-guide.md](references/connectivity-evaluation-guide.md) para la lógica completa de criterios de conectividad/desconexión, generación de funcionalidades puente y ejemplo canónico.
 
-Esta fase produce un plan de generación: qué template usar y qué documentos escribir. La ejecución de la generación ocurre en la Fase E.
+## Fase D: Gate de avance y cierre
 
-## Fase D — Gate de Avance (Preguntas Abiertas)
+Esta fase fija el `status` y `next` y genera los artefactos finales.
 
-**Gate obligatorio.** Después de completar el análisis (Fases A–C) y antes de generar los documentos finales, ejecuta este gate. El documento no está completo hasta que esta fase se ejecuta y se documenta, incluso si todas las preguntas se resolvieron inline durante las Fases A o B.
+1. **Gate**: ejecuta [references/advancement-gate-guide.md](references/advancement-gate-guide.md). Clasifica preguntas abiertas (Crítica / Importante / Menor), alerta al usuario si aplica y fija el `status`:
+   - `ready`: sin Críticas/Importantes pendientes.
+   - `conditional`: Importantes pendientes y el usuario acepta avanzar.
+   - `blocked`: Críticas pendientes → omite `next`.
 
-Esta fase evalúa las preguntas abiertas identificadas durante el análisis y fija el `status` y `next` finales del frontmatter:
+2. **Fijar `next`** según veredicto de conectividad:
+   - **Conectado** (incluye greenfield): `next: capturar-requerimiento`
+   - **Parcialmente conectado** o **desconectado**: `next: priorizar-roadmap`
+   - **Información insuficiente**: sin `next`
 
-**Lógica de status/next según veredicto de conectividad:**
+3. **Generar artefactos**:
+   - **Prerequisites Assessment** (siempre): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/prerequisites-assessment.md`.
+   - **Bridge Roadmap** (solo si desconectado o parcialmente conectado): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/bridge-roadmap.md`.
 
-- **Si la funcionalidad está conectada** (incluye greenfield):
-  - Sin preguntas críticas/importantes pendientes: `status: ready`, `next: capturar-requerimiento`
-  - Con preguntas importantes pendientes: `status: conditional`, `next: capturar-requerimiento`
-  - Con preguntas críticas pendientes: `status: blocked` (sin `next`)
+   Ambos artefactos deben incluir frontmatter `status` y `next`, TOC, gate de avance documentado y seguir sus templates.
 
-- **Si la funcionalidad está desconectada**:
-  - Sin preguntas críticas/importantes pendientes: `status: ready`, `next: priorizar-roadmap`
-  - Con preguntas importantes pendientes: `status: conditional`, `next: priorizar-roadmap`
-  - Con preguntas críticas pendientes: `status: blocked` (sin `next`)
+4. **Actualizar README**: si existe `docs/<domain>/idea/<IDEA-SLUG>/README.md` o `docs/<domain>/README.md`, añade los enlaces a los artefactos en la tabla de "Puntos de entrada".
 
-- **Si la información es insuficiente**:
-  - `status: blocked` (sin `next`) con preguntas abiertas documentadas
+5. **Checklist de salida** (interno): antes de terminar, verifica:
+   - Funcionalidad y modo correctos.
+   - Veredicto de conectividad justificado.
+   - Gate de avance documentado con `status` y `next` correctos.
+   - Artefactos con frontmatter y formato correctos.
 
-Consulta [references/advancement-gate-guide.md](references/advancement-gate-guide.md) para la lógica completa de estados de avance, clasificación de severidad, reglas y ejemplo canónico.
-
-## Fase E — Generar Documentos
-
-Escribe los artefactos finales según el plan de generación definido en la Fase C, usando el `status` y `next` fijados en la Fase D.
-
-**Generación de Prerequisites Assessment** (siempre):
-- Usa el template seleccionado en Fase C (short-form o completo)
-- Incluye frontmatter con `status` y `next` de Fase D
-- Documenta el gate de avance (Fase D) en la sección correspondiente
-- Sigue las convenciones de formato y validación de calidad del template
-
-**Generación de Bridge Roadmap** (solo si desconectado):
-- Usa `assets/bridge-roadmap-template.md`
-- Incluye frontmatter con `status` y `next` de Fase D
-- Documenta las features puente generadas en Fase B
-- Sigue las convenciones de formato y validación de calidad del template
-
-Esta fase es la última del skill: después de escribir los documentos, el skill termina.
-
-## Autoevaluación
-
-Después de completar la evaluación de conectividad, valida contra el checklist en `references/autoevaluacion-checklist.md`. Si alguna respuesta es "No", revisa y completa antes de marcar el skill como terminado.
+   Aplica el checklist completo de [references/autoevaluacion-checklist.md](references/autoevaluacion-checklist.md).

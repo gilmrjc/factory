@@ -1,10 +1,11 @@
 ---
 name: priorizar-roadmap
 description: >-
-  Toma un roadmap de funcionalidades (incluidas funcionalidades puente) y prioriza sus ítems
+  Toma un roadmap de funcionalidades (incluidas las funcionalidades puente) y prioriza sus ítems
   usando metodología RICE (Reach, Impact, Confidence, Effort). Genera un
   ranking con justificaciones, dependencias y recomendación de cuál
-  implementar primero. Úsalo cuando el usuario tenga múltiples funcionalidades (incluidas funcionalidades puente) y necesite decidir cuál implementar primero. Triggers
+  implementar primero. Úsalo cuando el usuario tenga múltiples funcionalidades
+  y necesite decidir cuál implementar primero. Triggers
   comunes: priorizar, ordenar, decidir qué funcionalidad implementar
   primero, comparar valor vs esfuerzo. No lo uses para planificar épicas
   dentro de un PRD, para evaluar viabilidad técnica a fondo ni para dividir

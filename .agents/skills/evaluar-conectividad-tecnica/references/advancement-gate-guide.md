@@ -34,6 +34,28 @@ Con independencia del resultado, añade al documento una subsección "Gate de av
 - Si hubo alerta: confirma que se presentó al usuario y qué decidió.
 - Estado final de avance (bloqueado / condicionado / libre) que justifica el `status` y `next` del frontmatter.
 
+## Formato de cada pregunta
+
+Cada pregunta documenta:
+
+- **Severidad**: `Crítica` / `Importante` / `Menor`.
+- **Pregunta**: una sola oración concreta.
+- **Estado**: `resuelta inline` / `resuelta en gate` / `pendiente`.
+- **Impacto** (opcional): por qué afecta al avance.
+- **Default conservador** (si aplica): qué asumir si el usuario avanza sin resolver.
+
+Ejemplo:
+
+```markdown
+- **[Importante]** ¿El servicio de auth existente soporta los flujos del PRD? — Estado: resuelta inline
+```
+
+Agrúpalas en el documento bajo `## Preguntas abiertas` con subsecciones:
+
+- **Críticas**
+- **Importantes**
+- **Menores**
+
 ## Reglas
 
 - **Nunca** omitas la alerta cuando hay preguntas Críticas o Importantes sin resolver.
@@ -53,5 +75,3 @@ Con independencia del resultado, añade al documento una subsección "Gate de av
 - **Alerta al usuario**: No necesaria — todas las Críticas/Importantes se resolvieron inline durante el análisis.
 - **Estado final de avance**: Libre — `status: ready`, `next: <según veredicto>`
 ```
-
-Para el flujo detallado del gate (formato de alerta, manejo de respuestas del usuario, herencia de preguntas pendientes en el siguiente skill, best practices), consulta `_shared/open-questions-template.md` sección "Integración con Ready For — Avance Condicionado".
