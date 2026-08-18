@@ -62,6 +62,11 @@ Puntuación RICE (0-100) = 100 × RICE / (RICE + 1)
 
 Consulta la guía para escalas, calibración con roadmaps anteriores, normalización 0-100, ejemplo canónico y tratamiento de datos faltantes.
 
+**Puntos de pausa** (detente y pregunta si ocurre):
+- Un ítem tiene **Reach, Impact, Confidence o Effort desconocidos** y no se pueden estimar del contexto.
+- Dos o más ítems tienen puntuaciones RICE muy cercanas y el orden depende de un criterio subjetivo que no se ha acordado.
+- Hay un ítem marcado como `Bloqueado` por dependencias, pero no está claro si la dependencia es interna o externa.
+
 ## Fase C — Ajustar por dependencias
 
 ### Reglas de ordenamiento

@@ -45,7 +45,7 @@ Infiere desde:
 
 Pregunta cuando falta: "¿Cuál es la idea que capturo? (descripción breve o completa, `FUNCIONALIDAD-SLUG`, o ruta del artefacto fuente)"
 
-Declara inputs resueltos: idea capturada y fuente.
+**Eco**: presenta al usuario el resumen de lo que entendiste (funcionalidad, dominio, fuente). Si el usuario corrige, aplica la corrección. Si no responde, avanza a Fase A.
 
 ## Fase A — Analizar Idea Bruta
 
@@ -57,6 +57,12 @@ Lee la descripción e identifica:
 5. **Actores**: ¿Quiénes están involucrados?
 6. **Preguntas abiertas**: Información faltante.
 
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede inferir el **problema central** o el **resultado esperado**.
+- La descripción contiene detalles de implementación (solutionización): detente y advierte que se moverán a "Preguntas abiertas" como decisiones pendientes, y pregunta si el usuario quiere aclarar el "qué" antes de continuar.
+- Faltan **actores** o la **audiencia afectada** es ambigua.
+- Hay términos del dominio desconocidos que cambiarían el alcance.
+
 ## Fase B — Estructurar Requerimiento
 
 Estructura el requerimiento siguiendo [assets/captured-requirement-template.md](assets/captured-requirement-template.md).
@@ -64,6 +70,11 @@ Estructura el requerimiento siguiendo [assets/captured-requirement-template.md](
 Notas específicas para esta fase:
 - **Solución propuesta**: describe propósito/capacidad. Aplica [references/no-solutionization-guide.md](references/no-solutionization-guide.md); si el usuario menciona detalles de implementación, regístralos en "Preguntas abiertas" como "decisión de diseño pendiente — se resuelve en fases posteriores del workflow".
 - **Preguntas abiertas**: extrae unknowns con [assets/open-questions-template.md](assets/open-questions-template.md).
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- Al estructurar, descubres que falta el **problema central** o el **resultado esperado**.
+- La **solución propuesta** sigue conteniendo detalles de implementación que no se pueden abstraer.
+- Hay contradicciones entre lo declarado en Fase A y lo que se puede escribir de forma coherente.
 
 ## Fase C — Gate de avance y cierre
 

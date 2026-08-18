@@ -94,10 +94,15 @@ Esta fase produce:
 - **Parcialmente conectado**: la mayoría de los prerequisitos existen, pero faltan o son insuficientes algunos requisitos no críticos.
 - **Desconectado**: falta infraestructura crítica; requiere funcionalidades puente con valor propio.
 
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede determinar el modo del repositorio (greenfield/brownfield) por falta de información.
+- Hay un prerequisito crítico que **podría** existir pero no se puede confirmar sin acceso o permisos.
+- La decisión entre `conectado` y `desconectado` depende de una suposición sobre el stack que no se puede verificar.
+
 **Documentos a generar:**
 
-- **Prerequisites Assessment** (siempre): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/prerequisites-assessment.md`.
-- **Bridge Roadmap** (solo si desconectado o parcialmente conectado): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/bridge-roadmap.md`.
+- **Prerequisites Assessment** (siempre): `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/prerequisites-assessment.md`.
+- **Bridge Roadmap** (solo si desconectado o parcialmente conectado): `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/bridge-roadmap.md`.
 
 Consulta [references/connectivity-evaluation-guide.md](references/connectivity-evaluation-guide.md) para la lógica completa de criterios de conectividad/desconexión, generación de funcionalidades puente y ejemplo canónico.
 

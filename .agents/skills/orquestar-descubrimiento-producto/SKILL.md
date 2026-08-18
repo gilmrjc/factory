@@ -50,7 +50,12 @@ Orquesta la primera mitad del proceso: toma una idea con resultado claro, la des
 
 ## Protocolo de delegación
 
-Para cada fase delega a un agente hijo que lee el `SKILL.md` completo del skill hijo, ejecuta solo esa fase y termina con el bloque de handoff definido abajo. En hosts sin delegación, ejecuta inline secuencialmente.
+Para cada fase, invoca el skill correspondiente y mantente en la misma invocación mientras el skill no termine o no se detenga por una pausa interna.
+
+- Si el skill avanza sin pausas y entrega el artefacto final, evalúa el handoff.
+- Si el skill **se detiene por aclaración** (punto de pausa, pregunta crítica, información faltante), **propaga la pregunta al usuario**, espera la respuesta y **reanuda la misma invocación del skill** con el input corregido/añadido.
+- Si el skill retorna un artefacto con `status: conditional` o `blocked`, aplica el Protocolo de Gate de Avance Condicionado.
+- En hosts sin delegación, ejecuta inline; cuando el skill pide aclaración, presenta la pregunta al usuario y continúa.
 
 ### Handoff block template
 
@@ -64,6 +69,24 @@ Para cada fase delega a un agente hijo que lee el `SKILL.md` completo del skill 
 - Resumen: <2–4 oraciones>
 ```
 
+## Protocolo de Gate de Avance Condicionado
+
+Después de **cada** fase delegada (A, B, C, D, D.5, E, D.5.5), el orquestador debe:
+
+1. Leer el artefacto generado y su frontmatter `status` y `next`.
+2. Si `status: ready` y `next` está definido, continuar automáticamente a la siguiente fase.
+3. Si `status: conditional`:
+   - Presentar al usuario el resumen y el inventario de preguntas abiertas marcadas como Importantes.
+   - Preguntar: "¿Quieres resolver estas preguntas ahora o avanzar con el default conservador?"
+   - Si el usuario elige resolver, detenerse y esperar respuestas; cuando reanude, re-ejecutar la misma fase.
+   - Si el usuario elige avanzar, registrar la decisión y continuar.
+4. Si `status: blocked`:
+   - Presentar al usuario las preguntas abiertas críticas.
+   - Detenerse. No avanzar hasta que el usuario resuelva o cancele.
+   - Actualizar `discovery-state.md` con `estado: bloqueado` y `next: blocked`.
+
+Este protocolo aplica incluso cuando el orquestador delega a un agente hijo: el agente hijo ejecuta el skill y el orquestador evalúa el handoff.
+
 ## Fases
 
 ### Fase 0.5 — Reconstrucción de Estado
@@ -76,27 +99,27 @@ Aplica el algoritmo de [state-reconstruction.md](references/state-reconstruction
 
 ### Fase A — Evaluar Alcance
 
-`evaluar-alcance-idea`. Si `No proceder` por desalineación estratégica, detente. Si múltiples funcionalidades, divide y guarda `scope-roadmap.md`.
+`evaluar-alcance-idea`. Si `No proceder` por desalineación estratégica, detente. Si múltiples funcionalidades, divide y guarda `scope-roadmap.md`. Aplica el Protocolo de Gate de Avance Condicionado.
 
 ### Fase B — Priorizar Roadmap
 
-`priorizar-roadmap` sobre `scope-roadmap.md` o bridge-roadmap. Genera `feature-prioritization.md` y actualiza `discovery-state.md` con el ranking (Fase F.5 del skill).
+`priorizar-roadmap` sobre `scope-roadmap.md` o bridge-roadmap. Genera `feature-prioritization.md` y actualiza `discovery-state.md` con el ranking (Fase F.5 del skill). Aplica el Protocolo de Gate de Avance Condicionado.
 
 ### Fase C — Evaluar Conectividad Técnica
 
-Toma el `next` de `discovery-state.md` (un FUNCIONALIDAD-SLUG) y ejecuta `evaluar-conectividad-tecnica`. Si desconectado, genera `bridge-roadmap.md`, re-prioriza y actualiza `discovery-state.md` con la feature puente más prioritaria. Marca el ítem con `estado: conectividad-lista` y `conectividad: <conectado|desconectado|greenfield>`.
+Toma el `next` de `discovery-state.md` (un FUNCIONALIDAD-SLUG) y ejecuta `evaluar-conectividad-tecnica`. Si desconectado, genera `bridge-roadmap.md`, re-prioriza y actualiza `discovery-state.md` con la feature puente más prioritaria. Marca el ítem con `estado: conectividad-lista` y `conectividad: <conectado|desconectado|greenfield>`. Aplica el Protocolo de Gate de Avance Condicionado.
 
 ### Fase D — Capturar Requerimiento
 
-Toma el `next` de `discovery-state.md` y ejecuta `capturar-requerimiento [FUNCIONALIDAD-SLUG]`. El skill genera `requirements.md` y actualiza `discovery-state.md` marcando el ítem como `requerimiento-capturado` y asignando el siguiente FUNCIONALIDAD-SLUG pendiente a `next`.
+Toma el `next` de `discovery-state.md` y ejecuta `capturar-requerimiento [FUNCIONALIDAD-SLUG]`. El skill genera `requirements.md` y actualiza `discovery-state.md` marcando el ítem como `requerimiento-capturado` y asignando el siguiente FUNCIONALIDAD-SLUG pendiente a `next`. Aplica el Protocolo de Gate de Avance Condicionado.
 
 ### Fase D.5 — Mapear Assumptions
 
-`mapear-assumptions` (recomendado). Si se omite, registra stub con justificación.
+`mapear-assumptions` (recomendado). Si se omite, registra stub con justificación. Aplica el Protocolo de Gate de Avance Condicionado.
 
 ### Fase D.5.5 — Gate de Spike por Feasibility
 
-Si `assumption-map.md` contiene assumptions `feasibility` con riesgo medio/alto y evidencia baja/media, invoca `construir-spike` por cada una antes de la viabilidad.
+Si `assumption-map.md` contiene assumptions `feasibility` con riesgo medio/alto y evidencia baja/media, invoca `construir-spike` por cada una antes de la viabilidad. Aplica el Protocolo de Gate de Avance Condicionado al terminar cada spike.
 
 ### Fase E — Validar Viabilidad
 
@@ -105,6 +128,8 @@ Si `assumption-map.md` contiene assumptions `feasibility` con riesgo medio/alto 
 - **Go** → actualiza estado, continúa a consolidación.
 - **Conditional Go** → extrae condiciones. Si son técnicas, resuelve con spike; si no, documenta y continúa.
 - **No-Go** → marca funcionalidad como rechazada y vuelve al loop (Fase I).
+
+Aplica el Protocolo de Gate de Avance Condicionado.
 
 ### Fase I — Loop de Procesamiento
 

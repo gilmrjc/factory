@@ -27,11 +27,18 @@ Infiere desde:
 
 Pregunta cuando falta: "¿Qué requerimiento valido? (ruta o `FUNCIONALIDAD-SLUG`)"
 
+**Eco**: presenta al usuario el requerimiento y `assumption-map.md` identificados (funcionalidad, dominio, ruta fuente). Si el usuario corrige, aplica la corrección. Si no responde, avanza a Fase A.
+
 Declara inputs resueltos: requerimiento, restricciones leídas.
 
 ## Fase A — Validar Alineación Estratégica
 
 ¿Encaja con visión/roadmap de producto?
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede localizar o inferir la **visión de producto** o el **roadmap** del dominio.
+- Hay dos interpretaciones posibles de la alineación estratégica y ninguna es claramente correcta.
+- El requerimiento contradice explícitamente una declaración de visión/roadmap conocida.
 
 ```
 ### Criterios de Alineación
@@ -59,6 +66,11 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 ## Fase B — Validar Demanda Real
 
 ¿Hay evidencia de que usuarios realmente necesitan esto?
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se cuenta con ninguna evidencia de demanda y tampoco se puede inferir del contexto.
+- El requerimiento asume una necesidad sin declarar de qué usuarios o en qué magnitud.
+- El stage (MVP/Growth/Scale) no está claro y esto cambiaría el tipo de evidencia mínima requerida.
 
 ```
 ### Validación de Demanda
@@ -96,6 +108,11 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 
 ¿Tenemos recursos para hacerlo bien?
 
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede inferir la disponibilidad del **equipo** o del **Product Owner**.
+- El requerimiento implica un **nuevo tech stack** o **licencias** sin aprobación conocida.
+- Hay una **dependencia crítica** de otro equipo, sistema o proveedor externo que no se ha validado.
+
 ```
 ### Checklist de Recursos
 
@@ -125,6 +142,11 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 ## Fase D — Validar Riesgo de Negocio
 
 ¿Cuál es el downside si falla?
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- Hay un riesgo de **regulatory, compliance o legal** que no se puede evaluar sin input experto.
+- El riesgo de **adopción** o **competencia** es alto y no se cuenta con mitigación documentada.
+- Hay un riesgo técnico que depende de decisiones de arquitectura que aún no se han tomado.
 
 ```
 ### Matriz de Riesgo
@@ -223,12 +245,16 @@ Estructura del documento:
 Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/product-viability.md`
 
 **Header requerido** (al inicio del documento):
+- idea_slug: <IDEA-SLUG>
+- funcionalidad_slug: <FUNCIONALIDAD-SLUG>
 - Req slug
 - Dominio
 - Fecha
 - Skill: validar-viabilidad-producto
 - Input: ruta del artefacto fuente (requirements.md)
 - Stage (MVP/Growth/Scale, cuando aplique)
+- status: ready | conditional | blocked
+- next: <orquestar-diseno-prd | validar-viabilidad-producto | spike | workflow-complete | needs-review | blocked>
 
 **Secciones requeridas**:
 - Header requerido

@@ -54,6 +54,8 @@ Infiere desde:
 
 Pregunta cuando falta: "¿Qué requerimiento analizo? (ruta o `FUNCIONALIDAD-SLUG`)"
 
+**Eco**: presenta al usuario el requerimiento identificado (funcionalidad, dominio, ruta fuente). Si el usuario corrige, aplica la corrección. Si no responde, avanza a Fase A.
+
 Declara inputs resueltos: requerimiento leído.
 
 ## Fase A — Identificar Assumptions por Bucket
@@ -67,6 +69,11 @@ Framework de David Bland (4 buckets): ver `references/david-bland-framework.md` 
 - **Usability**: ¿Pueden usarlo?
 
 Para cada bucket, listar 3-5 assumptions específicos.
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede inferir al menos un assumption por bucket por falta de contexto en el requerimiento.
+- El requerimiento es tan ambiguo que cualquier assumption sería especulación sin base.
+- Hay un término o restricción del dominio que, si se interpreta de otra forma, cambiaría completamente los assumptions.
 
 **Estrategia de fallo**: Si el requerimiento no tiene suficiente información para identificar assumptions, listar assumptions genéricos basados en el dominio y documentar en Preguntas abiertas.
 
@@ -83,6 +90,10 @@ Para cada assumption:
 - **Alta**: Data cuantitativa, múltiples validaciones
 - **Media**: Algunos datos, validación parcial
 - **Baja/Ninguna**: Solo opinión, sin validación
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- Un assumption identificado como **Alto risk** no tiene evidencia ni se puede inferir del dominio o del codebase.
+- Un assumption de **feasibility** de Alto/Medio risk requiere datos del repositorio que no están disponibles (stack, arquitectura, dependencias).
 
 **Estrategia de fallo**: Si no hay información para evaluar risk/evidence de un assumption, marcar como "Medium risk/Low evidence" (default conservador) y documentar en Preguntas abiertas.
 
@@ -113,6 +124,11 @@ Ordenar por:
 3. Costo de experimento (menor costo primero)
 
 **Top 3-5 assumptions** para focus inmediato.
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- Hay más de 5 assumptions en el cuadrante crítico y no se puede decidir el top sin input del usuario.
+- Un assumption crítico requiere un experimento que depende de recursos o acceso que no se pueden inferir (p.ej. acceso a usuarios, presupuesto, datos).
+- La priorización cambiaría radicalmente según la interpretación del alcance.
 
 Para cada assumption priorizado, sugerir experimento usando `references/experiment-types-by-assumption.md` como guía completa.
 
@@ -203,10 +219,13 @@ Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/assumption-map.
 
 **Header requerido** (al inicio del documento):
 - [Req slug]
+- funcionalidad_slug: <FUNCIONALIDAD-SLUG>
 - Dominio
 - Fecha
 - Skill: mapear-assumptions
 - Input: ruta del artefacto fuente
+- status: ready | conditional | blocked
+- next: <validar-viabilidad-producto | blocked>
 
 **Secciones requeridas**:
 - Header requerido (al inicio del documento)

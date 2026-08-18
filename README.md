@@ -98,7 +98,7 @@ flowchart LR
 
 - **1. Descubrimiento de Producto**
   - Entrada: Idea bruta (o esbozo de `esbozar-idea`)
-  - Artefacto de salida: `prd.md` (uno o varios) + `prd-workflow-summary.md` + `prd-roadmap-state.md` + `roadmap.md`
+  - Artefacto de salida: `prd.md` (uno o varios) + `prd-workflow-summary.md` + `discovery-state.md` + `roadmap.md`
   - Ready for: `planificar-epics`
 - **2. Gestión de Epics**
   - Entrada: PRD

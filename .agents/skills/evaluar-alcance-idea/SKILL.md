@@ -61,11 +61,21 @@ Presenta ambos diagnósticos y confirma que quiere evaluar el alcance antes de a
 
 **Fail-fast.** Antes de invertir tiempo en dividir alcance, evalúa si la idea merece inversión. Si no procede, el workflow se detiene aquí sin pasar a la Fase C.
 
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede inferir el **valor esperado** o el **resultado claro** de la idea.
+- Hay una contradicción evidente entre la idea y la dirección declarada del producto/negocio.
+- La idea es un "nice-to-have" sin evidencia de impacto y el usuario no ha justificado por qué vale la pena evaluarla.
+
 Consulta [references/viability-gate-guide.md](references/viability-gate-guide.md) para la lógica completa de criterios, veredicto, estrategia de fallo y declaración de tamaño.
 
 ## Fase C: Analizar Alcance de la Idea
 
 Evalúa si la idea contiene múltiples funcionalidades o una sola.
+
+**Puntos de pausa** (detente y pregunta si ocurre):
+- No se puede decidir si una propuesta es una sola funcionalidad o varias sin más contexto.
+- Hay funcionalidades implícitas en la descripción que el usuario no ha mencionado explícitamente.
+- La división en funcionalidades afectaría el valor entregado (p.ej. una funcionalidad sin la otra no tiene valor).
 
 Consulta [references/scope-analysis-guide.md](references/scope-analysis-guide.md) para la lógica completa de criterios, estrategia de fallo y resultados del análisis.
 
