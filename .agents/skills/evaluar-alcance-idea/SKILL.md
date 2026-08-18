@@ -95,9 +95,7 @@ Consulta [references/advancement-gate-guide.md](references/advancement-gate-guid
 
 ## Salida
 
-Escribe en formato principal en `docs/<domain>/idea/<IDEA-SLUG>/scope-roadmap.md` (subdirectorio), con compatibilidad legacy en `docs/<domain>/idea/<IDEA-SLUG>-scope-roadmap.md` (prefijo).
-
-Usa el template en `assets/scope-roadmap-template.md` para la estructura completa del artefacto (frontmatter requerido, secciones requeridas, convenciones de formato, estructura del desglose interno).
+Escribe en `docs/<domain>/idea/<IDEA-SLUG>/scope-roadmap.md` (subdirectorio). Usa el template en `assets/scope-roadmap-template.md` para la estructura completa del artefacto (frontmatter requerido, secciones requeridas, convenciones de formato, estructura del desglose interno).
 
 ### README del dominio (índice)
 

@@ -4,7 +4,7 @@ Lógica completa para determinar `domain` durante la Fase B.
 
 ## Qué es `domain`
 
-`domain` es la carpeta raíz de organización persistente que agrupa todos los artefactos del workflow de PRD.
+`domain` es la carpeta raíz de organización persistente que agrupa todos los artefactos del workflow de PRD. Representa el dominio segun la metodología Domain Driven Design.
 
 ## Cómo informa el nivel de la idea
 
@@ -21,7 +21,7 @@ Lista las carpetas de dominios en `docs/`. Si `docs/` no tiene estructura de dom
 
 ### 2. Inferir candidatos desde la idea
 
-Deriva 1–3 candidatos en kebab-case del área de producto que la idea describe (no del nombre técnico). Ej: "notificaciones push" → `reportes` (si extiende reportes) o `notificaciones` (si es un espacio nuevo). El dominio refleja un área de producto, no un módulo técnico.
+Deriva 1–3 candidatos en kebab-case del área de producto que la idea describe (no del nombre técnico). Ej: "notificaciones push" → `reportes` (si extiende reportes) o `notificaciones` (si es un espacio nuevo). El dominio refleja un área de producto, no un módulo técnico. Si no existen módulos de referencia puedes usar el modulo `core` para implementar la funcionalidad principal.
 
 ### 3. Filtrar por nivel
 
