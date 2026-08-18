@@ -2,10 +2,18 @@
 name: capturar-requerimiento
 description: >-
   Captura y estructura un requerimiento bruto de producto (idea, feature,
-  problema). Genera documento con: problema, usuarios afectados, solución
-  propuesta, restricciones. Salida:
-  docs/<domain>/initiatives/<PRD-SLUG>/requirements.md. Úsalo para estructurar
-  ideas antes de validación de viabilidad.
+  problema) en un documento con contexto, problema, audiencia afectada,
+  resultado esperado, solución propuesta a alto nivel y preguntas
+  abiertas. Genera
+  docs/<domain>/idea/<IDEA-SLUG>/captured-requirement.md. Úsalo cuando el
+  usuario traiga una idea o feature request informal y se necesite
+  formalizar el requerimiento antes de mapear supuestos, validar viabilidad
+  o generar un PRD. Triggers comunes: capturar requerimiento, estructurar
+  una idea, documentar un feature request, formalizar un problema. No lo
+  uses para describir la forma del producto o la experiencia (usa
+  analizar-idea), evaluar viabilidad (usa validar-viabilidad-producto),
+  generar el PRD formal, priorizar (usa priorizar-roadmap) ni
+  implementar o modificar código.
 ---
 
 # Capturador de Requerimientos
@@ -13,6 +21,13 @@ description: >-
 Captura y estructura un requerimiento de producto bruto. Transforma una idea vaga o descripción informal en documento estructurado listo para validación.
 
 Solo documentación: no valida, no aprueba. Estructura la idea.
+
+## Cuándo usarlo y cuándo no
+
+- **Sí**: existe una idea o feature request informal y se necesita estructurar el requerimiento antes de mapear supuestos o validar viabilidad. La fuente puede ser un mensaje, un email, una descripción pegada o un artefacto previo del workflow (`feature-prioritization.md` o `prerequisites-assessment.md`).
+- **No**: describir el producto (usa `analizar-idea`), evaluar viabilidad (usa `validar-viabilidad-producto`), generar el PRD formal, dividir en épicas (usa `dividir-epic`), implementar o modificar código.
+
+NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutarlas en paralelo o de forma consecutiva pero aprovechando el subagente especializado.
 
 ## Fase 0 — Resolver entrada
 
@@ -33,39 +48,18 @@ Declara inputs resueltos: idea capturada y fuente.
 Lee la descripción e identifica:
 1. **Problema central**: ¿Qué problema resuelve?
 2. **Contexto**: ¿Por qué importa ahora?
-3. **Solución propuesta**: ¿Qué se propone?
-4. **Actores**: ¿Quiénes están involucrados?
-5. **Restricciones mencionadas**: tiempo, presupuesto, tech, etc.
+3. **Resultado esperado**: ¿Qué cambia para el usuario o el negocio?
+4. **Solución propuesta**: ¿Qué se propone?
+5. **Actores**: ¿Quiénes están involucrados?
+6. **Preguntas abiertas**: Información faltante.
 
 ## Fase B — Estructurar Requerimiento
 
-Genera documento con secciones:
+Estructura el requerimiento siguiendo [assets/captured-requirement-template.md](assets/captured-requirement-template.md).
 
-```markdown
-### 1. Problema
-**Declaración de problema**: 
-[En 2-3 oraciones, qué problema existe]
-
-### 2. Audiencia Afectada
-- **Usuarios primarios**: [Quién sufre el problema más]
-- **Usuarios secundarios**: [Quién se beneficia indirectamente]
-- **Internos**: [Product, Sales, Support, etc.]
-
-### 3. Solución Propuesta
-**Descripción de alto nivel**:
-[Qué se va a construir, en lenguaje simple — solo el "qué", no el "cómo"]
-
-**Regla de no-solutionización**: la solución propuesta se describe a nivel de **propósito/capacidad**, no de detalle de diseño. NO incluir aquí: formato de archivos, flags de CLI, políticas de UX (overwrite/skip/abort), mecanismos de handoff, esquemas de manifiesto, rutas destino, políticas de colisiones. Esas decisiones se toman en `generar-prd` (sección RF), informadas por personas y casos de uso. Si el usuario las menciona al capturar la idea, registrarlas en "Preguntas abiertas" como "decisión de diseño pendiente — se resuelve en generar-prd", no en "Decisiones resueltas".
-
-### 4. Restricciones Conocidas
-- **Timing**: [Cuándo se necesita, si hay deadline]
-- **Recursos**: [Equipo disponible, restricciones]
-- **Técnicas**: [Tech stack obligatorio, sistemas existentes que afecta]
-- **Negocio**: [Budget si es conocido, prioridad relativa]
-
-### 5. Preguntas Abiertas
-[Lo que NO se sabe y necesita clarificación]
-```
+Notas específicas para esta fase:
+- **Solución propuesta**: describe propósito/capacidad. Aplica [references/no-solutionization-guide.md](references/no-solutionization-guide.md); si el usuario menciona detalles de implementación, regístralos en "Preguntas abiertas" como "decisión de diseño pendiente — se resuelve en fases posteriores del workflow".
+- **Preguntas abiertas**: extrae unknowns con [assets/open-questions-template.md](assets/open-questions-template.md).
 
 ## Fase C — Gate de avance y cierre
 
@@ -75,9 +69,9 @@ Esta fase valida la completitud, ejecuta el gate de avance condicionado y genera
 
 Checklist interno:
 - Problema está claro.
+- Contexto y resultado esperado documentados.
 - Usuarios identificados.
 - Solución propuesta descrita.
-- Restricciones documentadas.
 - Preguntas abiertas listadas.
 
 Si algo falta, agregarlo o listarlo en preguntas abiertas.
@@ -99,125 +93,41 @@ El `next` de este skill es:
 
 ### 3. Escribir artefacto final
 
-Ruta: `docs/<domain>/initiatives/<PRD-SLUG>/requirements.md`
-
-Frontmatter requerido:
-
-```yaml
----
-prd_slug: <PRD-SLUG>
-domain: <DOMAIN>
-date: <YYYY-MM-DD>
-skill: capturar-requerimiento
-input: <ruta del artefacto fuente o descripción pegada>
-status: ready | conditional | blocked
-next: <mapear-assumptions | validar-viabilidad-producto>
----
-```
-
-Cuerpo:
-
-1. **Resumen ejecutivo**: 1-2 oraciones del requerimiento
-2. **Problema**: Descripción clara del pain point
-3. **Audiencia afectada**: Primarios, secundarios, internos
-4. **Solución propuesta**: Descripción de alto nivel
-5. **Restricciones**: Timing, recursos, técnicas, negocio
-6. **Preguntas abiertas**: Qué se necesita clarificar
-7. **Restricciones y Decisiones de Alcance** (opcional): decisiones tomadas durante la captura, con fecha de resolución. **Gate de no-solutionización**: solo restricciones de timing/recursos/negocio, tech stack impuesto externamente o decisiones de alcance. NO decisiones de diseño de solución (ver Fase B).
-8. **Gate de avance (Fase C)**: inventario de preguntas, alerta si aplica, estado final de avance.
-
-`status` y `next` van en el frontmatter, no como sección del body. `next` se omite si `status: blocked`.
+Escribe el documento siguiendo [assets/captured-requirement-template.md](assets/captured-requirement-template.md). El `status` y `next` van en el frontmatter, no como sección del body. `next` se omite si `status: blocked`.
 
 ### 4. Actualizar README
 
-Si existe `docs/<domain>/initiatives/<PRD-SLUG>/README.md` o `docs/<domain>/README.md`, añade el enlace al `requirements.md` en la tabla de "Puntos de entrada".
+Si existe `docs/<domain>/idea/<IDEA-SLUG>/README.md` o `docs/<domain>/README.md`, añade el enlace al `captured-requirement.md` en la tabla de "Puntos de entrada".
 
-### 5. Autoevaluación interna
+---
 
-Aplica el checklist interno antes de terminar:
-- [ ] Problema declarado en 2-3 oraciones claras
-- [ ] Audiencia primaria, secundaria e interna identificada
-- [ ] Solución propuesta descrita en lenguaje simple
-- [ ] Restricciones documentadas
-- [ ] Preguntas abiertas listadas
-- [ ] Decisiones resueltas documentadas con fecha (si aplica)
-- [ ] No-solutionización: ninguna decisión resuelta es de detalle de diseño
-- [ ] Gate de avance documentado
-- [ ] `status` y `next` correctos
-- [ ] Documento de salida accionable
+## Salida
 
-Esta autoevaluación no se incluye en el artefacto final.
+Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/captured-requirement.md`
+
+## Checklist de salida
+
+Verificación final, no parte del artefacto. Antes de terminar, verifica cada ítem:
+
+### Contenido
+
+1. Problema declarado en 2-3 oraciones claras.
+2. Contexto y resultado esperado documentados.
+3. Audiencia primaria, secundaria e interna identificada.
+4. Solución propuesta descrita en lenguaje simple, sin detalles de diseño.
+5. Preguntas abiertas listadas con categoría, impacto, severidad y propuesta de resolución.
+6. No-solutionización: la solución propuesta no incluye detalles de diseño.
+7. Gate de avance documentado con inventario y estado final.
+8. `status` y `next` correctos en el frontmatter (`next` ausente si `blocked`).
+
+### Formato
+
+9. Frontmatter con `idea_slug`, `domain`, `date`, `skill`, `input`, `status`, `next` correctos.
+10. Table of Contents (TOC) presente después del título y antes de la primera sección.
+11. Sin emojis en el documento.
 
 ---
 
 ## Ejemplo Completo
 
-```markdown
----
-prd_slug: sistema-de-notificaciones
-domain: plataforma
-date: 2026-08-18
-skill: capturar-requerimiento
-input: docs/plataforma/idea/sistema-de-notificaciones/feature-prioritization.md
-status: ready
-next: mapear-assumptions
----
-
-# Requirements: Sistema de Notificaciones
-
-## Table of Contents
-
-- [Resumen Ejecutivo](#resumen-ejecutivo)
-- [Problema](#problema)
-- [Audiencia Afectada](#audiencia-afectada)
-- [Solución Propuesta](#solución-propuesta)
-- [Restricciones](#restricciones)
-- [Preguntas Abiertas](#preguntas-abiertas)
-- [Gate de avance](#gate-de-avance)
-
-## Resumen Ejecutivo
-
-Implementar sistema centralizado de notificaciones para alertar a usuarios sobre eventos importantes, mejorando engagement y retención.
-
-## Problema
-
-Usuarios pierden oportunidades importantes porque no reciben alertas sobre cambios en su cuenta o eventos time-sensitive. Actualmente 30% abandona sin reconocer oportunidades debido a falta de comunicación.
-
-## Audiencia Afectada
-
-- **Primaria**: Usuarios activos (5K diarios, creciendo 20%/mes)
-- **Secundaria**: Nuevos usuarios en onboarding (500/semana)
-- **Interna**: CS team (reduce tickets), Product, Sales (upsell)
-
-## Solución Propuesta
-
-Sistema de notificaciones omnichannel:
-- Email (transaccional + digest)
-- Push (mobile app)
-- In-app bell notification
-- Preferencias por usuario (qué y cómo recibir)
-
-**No-solutionización**: las decisiones de formato, esquemas, mecanismos de cola y endpoints se definen en `generar-prd`.
-
-## Restricciones
-
-- **Timing**: Before Q3 feature launch
-- **Recursos**: 1 backend, 1 frontend, 1 QA
-- **Técnica**: Usar SendGrid existente, integrar con analytics
-- **Negocio**: High priority (retention iniciativa)
-
-## Preguntas Abiertas
-
-- ¿Frecuencia máxima? (evitar spam)
-- ¿Soportar webhooks third-party?
-- ¿A/B test en diferentes cadencias?
-
-## Gate de avance
-
-- **Inventario de preguntas identificadas**:
-  - [Menor] ¿Frecuencia máxima? — Estado: pendiente
-  - [Menor] ¿Soportar webhooks third-party? — Estado: pendiente
-  - [Menor] ¿A/B test en diferentes cadencias? — Estado: pendiente
-- **Alerta al usuario**: No necesaria — solo preguntas Menores, no bloquean el avance.
-- **Estado final de avance**: Libre — `status: ready`, `next: mapear-assumptions`
-```
+Ver ejemplo canónico en [references/examples/example-captured-requirement.md](references/examples/example-captured-requirement.md) (`sistema-de-notificaciones`).

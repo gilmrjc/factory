@@ -1,33 +1,34 @@
 ---
 name: evaluar-conectividad-tecnica
 description: >-
-  Evalúa conectividad técnica de una funcionalidad a nivel PRD. Toma una
-  funcionalidad del roadmap y el codebase actual, y determina si está conectada
-  o qué infraestructura falta para que la soporte. Si está conectada,
-  genera el assessment de prerequisitos y habilita el avance; si está
-  desconectada, genera un roadmap de funcionalidades puente con valor propio.
-  Úsalo cuando necesites evaluar conectividad de una funcionalidad completa
-  antes de capturar requerimientos o priorizar. Triggers comunes: evaluar
-  conectividad de una funcionalidad, validar prerequisitos técnicos de un PRD,
-  identificar funcionalidades puente a nivel producto, determinar brecha de
-  infraestructura. No lo uses para evaluar conectividad de un epic
-  específico (usa evaluar-conectividad-epic), ni para validar viabilidad
-  técnica a fondo (usa validar-viabilidad-tecnica), ni para priorizar
-  funcionalidades (usa priorizar-roadmap).
+  Evalúa conectividad técnica de una funcionalidad priorizada con el codebase
+  actual y determina si está conectada, parcialmente conectada o
+  desconectada. Si está conectada, genera el assessment de prerequisitos
+  y habilita `capturar-requerimiento`; si está desconectada, genera un
+  roadmap de funcionalidades puente con valor propio para volver a
+  `priorizar-roadmap`. No asigna esfuerzo ni prioriza. Úsalo después de
+  `priorizar-roadmap` sobre la funcionalidad más prioritaria, antes de
+  `capturar-requerimiento`. Triggers comunes: evaluar conectividad de una
+  funcionalidad, validar prerequisitos técnicos, identificar funcionalidades
+  puente, determinar brecha de infraestructura. No lo uses para evaluar
+  conectividad de un epic específico (usa evaluar-conectividad-epic), ni
+  para validar viabilidad técnica a fondo (usa validar-viabilidad-tecnica),
+  ni para priorizar funcionalidades (usa priorizar-roadmap), ni para
+  asignar esfuerzo o complejidad.
 ---
 
-# Evaluador de Conectividad Técnica (PRD / Funcionalidad)
+# Evaluador de Conectividad Técnica
 
-Evalúa los prerequisitos técnicos y la conectividad de una funcionalidad a nivel PRD con el codebase actual. Determina si la funcionalidad está conectada al producto existente o si necesita funcionalidades puente para construir la infraestructura necesaria.
+Evalúa los prerequisitos técnicos y la conectividad de una funcionalidad priorizada con el codebase actual. Determina si la funcionalidad está conectada al producto existente o si necesita funcionalidades puente para construir la infraestructura necesaria.
 
 Solo analiza y planifica: no implementa ni modifica código; prepara la funcionalidad para el siguiente paso.
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: existe una funcionalidad definida a nivel PRD (del `scope-roadmap.md` o del roadmap priorizado) y se necesita saber si el codebase actual la soporta o qué falta para que la soporte.
+- **Sí**: existe una funcionalidad definida en un `scope-roadmap.md` o `feature-prioritization.md` (roadmap priorizado) y se necesita saber si el codebase actual la soporta o qué falta para que la soporte.
 - **No**: evaluar conectividad de un epic específico (usa `evaluar-conectividad-epic`), validar viabilidad técnica a fondo con deuda técnica bloqueante (usa `validar-viabilidad-tecnica`), priorizar funcionalidades (usa `priorizar-roadmap`), implementar o modificar código.
 
-**Scope**: Este skill evalúa conectividad a nivel PRD/funcionalidad. Para evaluar un epic específico, usa `evaluar-conectividad-epic`.
+**Scope**: Este skill evalúa conectividad de una funcionalidad priorizada. Para evaluar un epic específico, usa `evaluar-conectividad-epic`.
 
 NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutar tareas en paralelo o para ejecutarlas de forma consecutiva pero aprovechando el subagente especializado.
 
