@@ -4,7 +4,7 @@ description: >-
   Mapea assumptions en 4 buckets (desirability, viability, feasibility,
   usability) usando framework de David Bland. Genera matriz 2x2 (risk vs
   evidence) y prioriza assumptions de alto riesgo/baja evidencia. Salida:
-  docs/<domain>/initiatives/<PRD-SLUG>/assumption-map.md. Úsalo después de
+  docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/assumption-map.md. Úsalo después de
   capturar-requerimiento para identificar riesgos antes de validar viabilidad.
 ---
 
@@ -14,7 +14,7 @@ Mapea assumptions de producto en 4 buckets (desirability, viability, feasibility
 
 Solo análisis: no valida, no implementa. Identifica riesgos para probar.
 
-**Condicionalidad**: Este skill es recomendado pero no bloqueante en el workflow de PRD. Para contextos greenfield de bajo riesgo puede omitirse con justificación. Para PRDs con hipótesis significativas (cambio de comportamiento, monetización, regulatory), es obligatorio.
+**Condicionalidad**: Este skill es recomendado pero no bloqueante en el descubrimiento de producto. Para contextos greenfield de bajo riesgo puede omitirse con justificación. Para PRDs con hipótesis significativas (cambio de comportamiento, monetización, regulatory), es obligatorio.
 
 ## Referencias
 
@@ -40,18 +40,19 @@ Solo análisis: no valida, no implementa. Identifica riesgos para probar.
 IF Opcional Y el usuario no lo pide explícitamente:
   → Omite este skill con justificación documentada
   → Registro de omisión OBLIGATORIO (preserva trazabilidad del proceso):
-    - Escribe un stub `docs/<domain>/initiatives/<PRD-SLUG>/assumption-map.md` con header estándar, veredicto "Omitido", razón (ej: "greenfield de bajo riesgo — dogfooding") y Ready for: validar-viabilidad-producto
-    - O alternativamente, añade un campo "Pasos omitidos" en `docs/<domain>/initiatives/<PRD-SLUG>/requirements.md` listando la omisión con razón
+    - Escribe un stub `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/assumption-map.md` con header estándar, veredicto "Omitido", razón (ej: "greenfield de bajo riesgo — dogfooding") y Ready for: validar-viabilidad-producto
+    - O alternativamente, añade un campo "Pasos omitidos" en `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/requirements.md` listando la omisión con razón
   → Ready for: validar-viabilidad-producto (sin assumption-map completo, pero con registro de omisión)
 
-Requerido: `REQ-SLUG` o `REQUIREMENTS-RUTA`.
+Requerido: `FUNCIONALIDAD-SLUG` o `REQUIREMENTS-RUTA`.
 
 Infiere desde:
+- `FUNCIONALIDAD-SLUG` explícito o `discovery-state.md` `next`: si se invoca desde el flujo de descubrimiento, toma el `FUNCIONALIDAD-SLUG` del frontmatter de `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`.
 - Ruta: `docs/**/initiatives/**/requirements.md`
 - Contenido pegado: si usuario pega requerimiento capturado
 - Requerimiento previo: busca archivo más reciente de `*-requirements.md`
 
-Pregunta cuando falta: "¿Qué requerimiento analizo? (ruta o slug)"
+Pregunta cuando falta: "¿Qué requerimiento analizo? (ruta o `FUNCIONALIDAD-SLUG`)"
 
 Declara inputs resueltos: requerimiento leído.
 
@@ -128,7 +129,7 @@ Para cada assumption priorizado, sugerir experimento usando `references/experime
 
 Para detalles completos de duración, costo y consideraciones por tipo, consultar la referencia.
 
-**Campo `spike-required` (gate de feasibility)**: para cada assumption priorizado, declarar un campo `spike-required: yes/no` que el orquestador (`orquestar-prd-workflow` Fase D.5.5) consume para decidir si dispara `construir-spike` antes de `validar-viabilidad-producto`:
+**Campo `spike-required` (gate de feasibility)**: para cada assumption priorizado, declarar un campo `spike-required: yes/no` que el orquestador de descubrimiento consume para decidir si dispara `construir-spike` antes de `validar-viabilidad-producto`:
 
 - `spike-required: yes` cuando **bucket = feasibility** Y **risk ∈ {Alto, Medio}** Y **evidence ∈ {Baja, Media}**. En ese caso, añadir también `spike-question:` con la pregunta puntual de feasibility que el spike debe responder (ej: "¿Los agentes destino consumen stdout + archivo de handoff bajo la convención `.agents/`?").
 - `spike-required: no` en caso contrario.
@@ -179,9 +180,9 @@ Esto frena el problema donde un assumption de feasibility de riesgo medio/baja e
 
 Para el flujo detallado del gate (formato de alerta, manejo de respuestas del usuario, herencia de preguntas pendientes en el siguiente skill, best practices), consultar `_shared/open-questions-template.md` sección "Integración con Ready For — Avance Condicionado".
 
-## Fase E — Escribir Assumption Map
+## Fase E — Escribir Assumption Map y actualizar `discovery-state.md`
 
-Estructura:
+Estructura del documento:
 
 1. **Resumen ejecutivo**: Total assumptions, por bucket, críticos identificados
 2. **Assumptions por bucket**: Lista completa con risk/evidence
@@ -190,9 +191,15 @@ Estructura:
 5. **Plan de experimentos**: Por assumption priorizado, tipo y timeline sugerido
 6. **Ready for**: `validar-viabilidad-producto`
 
+**Actualización de `discovery-state.md`**: después de escribir el artefacto, si existe `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`:
+- Marca el ítem del `FUNCIONALIDAD-SLUG` como `assumptions-mapeadas`.
+- Añade la ruta del `assumption-map.md`.
+- Si se omite con stub, registra `assumptions: stub` y la justificación.
+- Actualiza `next` a `validar-viabilidad-producto` para este `FUNCIONALIDAD-SLUG`.
+
 ## Salida
 
-Escribe en: `docs/<domain>/initiatives/<PRD-SLUG>/assumption-map.md`
+Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/assumption-map.md`
 
 **Header requerido** (al inicio del documento):
 - [Req slug]

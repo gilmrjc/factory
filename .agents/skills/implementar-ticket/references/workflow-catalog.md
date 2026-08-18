@@ -6,10 +6,12 @@ Para resolución de entradas (Fase 0, tiers de contexto, orden de inferencia, de
 
 ## Workflow de PRD orquestado
 
-Entrada por defecto para trabajo de descubrimiento de producto de extremo a extremo: `.devin/skills/orquestar-prd-workflow/SKILL.md`. Ejecuta skills en orden con gates de Go/No-Go y ramas opcionales (análisis preliminar, división de alcance, features puente, mapeo de assumptions, spike técnico, demo interactivo, diseño de experimentos condicional al stage, loop de múltiples funcionalidades, roadmap consolidado).
+Entradas por defecto para trabajo de descubrimiento y diseño de producto: `orquestar-descubrimiento-producto/SKILL.md` (Idea → Requerimiento validado) y `orquestar-diseno-prd/SKILL.md` (Requerimiento → PRD). Ejecutan skills en orden con gates de Go/No-Go y ramas opcionales (análisis preliminar, división de alcance, features puente, mapeo de assumptions, spike técnico, demo interactivo, diseño de experimentos condicional al stage, loop de múltiples funcionalidades, roadmap consolidado).
 
 Invocables solos cuando los artefactos ya existen:
 
+- **Esbozo previo (opcional)** → `esbozar-idea` → `docs/drafts/<IDEA-SLUG>/esbozo.md`
+  - Rol: Chat interactivo que pulle una idea muy verde en un esbozo ligero listo para `analizar-idea`. Paso previo al flujo 1, no parte del orquestador. Artefacto temporal de staging (fuera de `docs/<domain>/`).
 - **Análisis preliminar** → `analizar-idea` → `…-idea-analysis.md`
   - Rol: Gate inicial con outcome-driven discovery (opcional, paso 0 del orquestador)
 - **Alcance** → `evaluar-alcance-idea` → `…-scope-roadmap.md`
@@ -103,6 +105,10 @@ Pasos con alcance PR (también invocables solos). Orden típico: contexto → re
 
 ## Nomenclatura de artefactos (auto-descubrimiento)
 
+### Artefactos de esbozo (paso previo, temporal)
+
+- `docs/drafts/<IDEA-SLUG>/esbozo.md` → Esbozo ligero de idea pulida por `esbozar-idea` (artefacto temporal de staging, fuera de `docs/<domain>/`). No es entrada durable del flujo 1; `analizar-idea` produce el artefacto durable equivalente (`idea-analysis.md`).
+
 ### Artefactos de PRD
 
 Dado `IDEA-SLUG` o `PRD-SLUG`, busca en el repo. La fase de idea usa prefijo `<IDEA-SLUG>-` (varias ideas coexisten en `idea/`); la fase de PRD usa carpeta `initiatives/<PRD-SLUG>/` sin prefijo redundante (la carpeta aporta el contexto).
@@ -112,7 +118,7 @@ Dado `IDEA-SLUG` o `PRD-SLUG`, busca en el repo. La fase de idea usa prefijo `<I
 - `docs/**/idea/<IDEA-SLUG>-idea-analysis.md` O `docs/**/idea/<IDEA-SLUG>/idea-analysis.md` → Análisis preliminar de idea
 - `docs/**/idea/<IDEA-SLUG>-scope-roadmap.md` O `docs/**/idea/<IDEA-SLUG>/scope-roadmap.md` → Roadmap de alcance
 - `docs/**/idea/<IDEA-SLUG>-prioritized-roadmap.md` O `docs/**/idea/<IDEA-SLUG>/prioritized-roadmap.md` → Priorización de features (desambigua de `epic-prioritization.md`)
-- `docs/**/idea/<IDEA-SLUG>-prd-roadmap-state.md` → Estado final del roadmap PRD
+- `docs/**/idea/<IDEA-SLUG>/discovery-state.md` → Estado final del descubrimiento
 
 **Fase PRD** (`docs/<domain>/initiatives/<PRD-SLUG>/`):
 

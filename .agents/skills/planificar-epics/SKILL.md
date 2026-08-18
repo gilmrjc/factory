@@ -37,7 +37,7 @@ Verifica que el PRD contenga:
 - ✅ Alcance explícito (qué SÍ, qué NO)
 - ✅ `Ready for: planificar-epics` (indica que el PRD está validado y listo para planificación de epics)
 
-Si el PRD no tiene `Ready for: planificar-epics`, sugiere ejecutar `orquestar-prd-workflow` primero para generar un PRD validado.
+Si el PRD no tiene `Ready for: planificar-epics`, sugiere ejecutar `orquestar-diseno-prd` primero para generar un PRD validado.
 
 Si faltan elementos críticos: detente y lista brechas en Preguntas abiertas. No continúes sin objetivo claro.
 
@@ -50,15 +50,15 @@ Lee `docs/<domain>/initiatives/<PRD-SLUG>/product-viability.md` si existe. Si el
 - Las condiciones técnicas (ej: "spike de handoff antes de comprometer la mecánica") se mapean como prerequisitos del epic correspondiente.
 - Las condiciones de demanda (ej: "5+ user interviews antes de Fase 5") se mapean como riesgos del epic de distribución/lanzamiento.
 
-Esto asegura que el epic plan no ignore los riesgos residuales que el WF1 ya identificó.
+Esto asegura que el epic plan no ignore los riesgos residuales que el descubrimiento ya identificó.
 
 ## Fase B — Analizar Codebase para Viabilidad
 
-**Paso 0 (nuevo) — Consumir artefacto de conectividad de WF1**: lee `docs/<domain>/initiatives/<PRD-SLUG>/connectivity/prerequisites-assessment.md` si existe (generado por `evaluar-conectividad-tecnica` en el Workflow 1). Esto evita rehacer el análisis de codebase que WF1 ya hizo.
+**Paso 0 (nuevo) — Consumir artefacto de conectividad**: lee `docs/<domain>/initiatives/<PRD-SLUG>/connectivity/prerequisites-assessment.md` si existe (generado por `evaluar-conectividad-tecnica` durante el descubrimiento). Esto evita rehacer el análisis de codebase que el descubrimiento ya hizo.
 
 - Si el assessment dice **greenfield** → skip del grep por arquitecturas existentes; usar el assessment como input directo. Los pasos 1-3 de abajo se skipan (no hay arquitecturas existentes que greppear). Solo anota los componentes a crear (paso 4) usando el assessment.
 - Si el assessment dice **conectado** o **desconectado** → usar el assessment como punto de partida. Complementar con grep específico del epic (no rehacer el escaneo completo de auth/DB/APIs/servicios/frontend/monitoring — el assessment ya lo tiene). Solo grep por features similares al epic específico (paso 3).
-- Si el assessment **no existe** (PRD legacy sin WF1) → ejecuta los pasos 1-4 completos como antes.
+- Si el assessment **no existe** (PRD legacy sin descubrimiento) → ejecuta los pasos 1-4 completos como antes.
 
 1. Identifica 2-3 arquitecturas existentes que el PRD tocará (búsqueda `grep` por dominio/feature) — **skip si greenfield**
 2. Detecta **deuda técnica conocida** que bloquee features (ej. legacy auth, monolith refactor pending) — **skip si greenfield**
@@ -120,7 +120,7 @@ Antes de finalizar, verifica:
 - [ ] **Inputs completos**: PRD identificado y leído completamente
 - [ ] **Validación PRD**: Objetivo, usuario, criterios de éxito, restricciones y alcance están claros
 - [ ] **Conditional Go consumido**: si el PRD tiene Conditional Go, las condiciones heredadas se mapearon a riesgos/prerequisitos por epic
-- [ ] **Análisis codebase**: Arquitecturas identificadas, deuda técnica detectada, precedentes encontrados (o skip justificado si greenfield — consumió `prerequisites-assessment.md` de WF1)
+- [ ] **Análisis codebase**: Arquitecturas identificadas, deuda técnica detectada, precedentes encontrados (o skip justificado si greenfield — consumió `prerequisites-assessment.md` de descubrimiento)
 - [ ] **Epics bien estructurados**: 1-7 epics (1-3 para funcionalidad única, 3-7 para múltiples), cada uno con objetivo, AC, dependencias, riesgos, estimación
 - [ ] **Epics con valor verificable**: Cada epic entrega valor testeable/demostrable (independencia de deploy deseable pero no obligatoria para features secuenciales)
 - [ ] **Tamaño de epics**: Ningún epic > 4 semanas (L/XL), si los hay, sugiere división

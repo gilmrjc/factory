@@ -1,18 +1,20 @@
 ---
 name: capturar-requerimiento
 description: >-
-  Captura y estructura un requerimiento bruto de producto (idea, feature,
+  Captura y estructura un requerimiento de producto (idea, feature,
   problema) en un documento con contexto, problema, audiencia afectada,
   resultado esperado, solución propuesta a alto nivel y preguntas
-  abiertas. Genera
-  docs/<domain>/idea/<IDEA-SLUG>/captured-requirement.md. Úsalo cuando el
-  usuario traiga una idea o feature request informal y se necesite
-  formalizar el requerimiento antes de mapear supuestos, validar viabilidad
-  o generar un PRD. Triggers comunes: capturar requerimiento, estructurar
-  una idea, documentar un feature request, formalizar un problema. No lo
-  uses para describir la forma del producto o la experiencia (usa
-  analizar-idea), evaluar viabilidad (usa validar-viabilidad-producto),
-  generar el PRD formal, priorizar (usa priorizar-roadmap) ni
+  abiertas. Puede recibir un `FUNCIONALIDAD-SLUG` y leer `discovery-state.md` para
+  procesar una funcionalidad concreta de la cola. Genera
+  `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/captured-requirement.md` y actualiza el
+  estado de avance en `discovery-state.md` si existe. Úsalo cuando el
+  usuario traiga una idea o feature request informal, o cuando el
+  orquestador de descubrimiento indique el siguiente `FUNCIONALIDAD-SLUG` a
+  capturar. Triggers comunes: capturar requerimiento, estructurar una
+  idea, documentar un feature request, formalizar un problema. No lo uses
+  para describir la forma del producto o la experiencia (usa
+  `analizar-idea`), evaluar viabilidad (usa `validar-viabilidad-producto`),
+  generar el PRD formal, priorizar (usa `priorizar-roadmap`) ni
   implementar o modificar código.
 ---
 
@@ -31,15 +33,17 @@ NOTA: Al ejecutar las distintas fases, determina las partes que no requieren int
 
 ## Fase 0 — Resolver entrada
 
-Requerido: `IDEA-DESCRIPCION` o `BREVE`.
+Requerido: `IDEA-DESCRIPCION` o `BREVE`; `FUNCIONALIDAD-SLUG` es opcional y se usa cuando se invoca desde `orquestar-descubrimiento-producto`.
 
 Infiere desde:
-- Descripción pegada: si el usuario pega la idea/feature request
+- `FUNCIONALIDAD-SLUG` explícito: si el usuario o el orquestador lo provee.
+- `discovery-state.md`: si existe, toma el `next` actual como `FUNCIONALIDAD-SLUG` y lee el nombre/descripción de la funcionalidad desde `feature-prioritization.md` o `scope-roadmap.md`.
+- Descripción pegada: si el usuario pega la idea/feature request.
 - Contenido breve: "Agregar dark mode", "Sistema de notificaciones", etc.
 - Artefacto previo: `docs/<domain>/idea/<IDEA-SLUG>/connectivity/prerequisites-assessment.md` o `docs/<domain>/idea/<IDEA-SLUG>/feature-prioritization.md` cuando viene de `evaluar-conectividad-tecnica` o `priorizar-roadmap`.
-- Email o chat snippet: si el usuario copia descripción informal
+- Email o chat snippet: si el usuario copia descripción informal.
 
-Pregunta cuando falta: "¿Cuál es la idea que capturo? (descripción breve o completa, o ruta del artefacto fuente)"
+Pregunta cuando falta: "¿Cuál es la idea que capturo? (descripción breve o completa, `FUNCIONALIDAD-SLUG`, o ruta del artefacto fuente)"
 
 Declara inputs resueltos: idea capturada y fuente.
 
@@ -95,7 +99,17 @@ El `next` de este skill es:
 
 Escribe el documento siguiendo [assets/captured-requirement-template.md](assets/captured-requirement-template.md). El `status` y `next` van en el frontmatter, no como sección del body. `next` se omite si `status: blocked`.
 
-### 4. Actualizar README
+### 4. Actualizar `discovery-state.md`
+
+Si existe `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`:
+- Localiza el ítem con el `FUNCIONALIDAD-SLUG` capturado.
+- Marca `estado: requerimiento-capturado`.
+- Añade la ruta a `captured-requirement.md` (o `requirements.md`) en el campo `Requerimiento`.
+- Determina el siguiente `FUNCIONALIDAD-SLUG` con `estado: pendiente-captura` y actualiza el `next` del frontmatter de `discovery-state.md` con ese slug. Si no hay más pendientes, deja `next: mapear-assumptions` (o `validar-viabilidad-producto` si se omite assumptions) y `status: in-progress`.
+
+Si no existe `discovery-state.md` y se invocó individualmente, crea uno mínimo con el ítem capturado marcado y `next: mapear-assumptions`.
+
+### 5. Actualizar README
 
 Si existe `docs/<domain>/idea/<IDEA-SLUG>/README.md` o `docs/<domain>/README.md`, añade el enlace al `captured-requirement.md` en la tabla de "Puntos de entrada".
 
@@ -103,7 +117,7 @@ Si existe `docs/<domain>/idea/<IDEA-SLUG>/README.md` o `docs/<domain>/README.md`
 
 ## Salida
 
-Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/captured-requirement.md`
+Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/captured-requirement.md`
 
 ## Checklist de salida
 

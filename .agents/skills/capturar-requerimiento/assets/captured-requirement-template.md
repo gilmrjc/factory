@@ -7,6 +7,7 @@ Template para el artefacto de salida de `capturar-requerimiento`.
 ```yaml
 ---
 idea_slug: <IDEA-SLUG>
+funcionalidad_slug: <FUNCIONALIDAD-SLUG>
 domain: <DOMAIN>
 date: <YYYY-MM-DD>
 skill: capturar-requerimiento

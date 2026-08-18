@@ -57,7 +57,7 @@ Presenta ambos diagnósticos y confirma que quiere describir la funcionalidad an
 
 ## Fase B - Resolución de dominio
 
-`domain` es la carpeta raíz que agrupa los artefactos del workflow de PRD.
+`domain` es la carpeta raíz que agrupa los artefactos del proceso de descubrimiento y diseño de producto.
 
 El diagnóstico de nivel (Producto vs Feature) informa la lógica: **Feature** → dominio del producto existente que extiende; **Producto** → dominio nuevo o existente según encaje. Resumen operativo:
 
@@ -101,14 +101,14 @@ Refina `IDEA-SLUG` si el diálogo aclaró el producto desde la Fase 0.
 
 Para las preguntas abiertas, usa el template en [open-questions-template.md](assets/open-questions-template.md).
 
-## Fase E — Gate de listo para el workflow de PRD
+## Fase E — Gate de listo para evaluar alcance
 
-**Gate obligatorio.** Antes de fijar `status` y `next` en el frontmatter y escribir el documento final, verifica que la descripción está lista para pasar al workflow de PRD (`evaluar-alcance-idea` o `orquestar-prd-workflow`).
+**Gate obligatorio.** Antes de fijar `status` y `next` en el frontmatter y escribir el documento final, verifica que la descripción está lista para `evaluar-alcance-idea` (o un orquestador de descubrimiento).
 
 El gate evalúa si la narrativa pinta un producto válido, no si llenó campos. Las preguntas del gate (2 Críticas, 2 Importantes, 2 Menores) están especificadas en [idea-analysis-template.md](assets/idea-analysis-template.md). Sigue las instrucciones del template al escribir el artefacto. Resumen operativo:
 
 1. **Decisión de status**: evalúa el inventario de preguntas abiertas. `ready` si no hay Críticas/Importantes sin resolver. `conditional` si hay Importantes sin resolver (el usuario fue alertado y eligió avanzar). `blocked` si hay Críticas sin resolver.
-2. **Decisión de next**: si `status` es `ready` o `conditional`, `next: evaluar-alcance-idea` (o `orquestar-prd-workflow`). Si `blocked`, `next` se omite.
+2. **Decisión de next**: si `status` es `ready` o `conditional`, `next: evaluar-alcance-idea` (o `orquestar-descubrimiento-producto`). Si `blocked`, `next` se omite.
 3. **Documentación del gate**: añade al artefacto una subsección "Gate de avance" que registre inventario de preguntas (críticas/importantes/menores) con estado de resolución, evidencia de alerta (si hubo), y estado final de avance. Obligatoria incluso si todas las preguntas se resolvieron inline.
 
 Consulta [references/gate-guide.md](references/gate-guide.md) para la lógica completa de severidad, estados de avance, flujo del gate y reglas.

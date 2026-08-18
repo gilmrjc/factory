@@ -35,7 +35,7 @@ Orquesta el workflow completo de gestión de epics (validación de entrada → p
 ### Fase 0: Validación de entrada
 - Verificar que el PRD existe en `docs/<domain>/<REQ-SLUG>-prd.md`
 - Validar que el PRD tiene `Ready for: planificar-epics`
-- Si el PRD no cumple, sugerir ejecutar `orquestar-prd-workflow` primero
+- Si el PRD no cumple, sugerir ejecutar `orquestar-diseno-prd` primero
 - Si el PRD cumple, proceder a Fase 1
 
 ### Fase 1: Planificar epics

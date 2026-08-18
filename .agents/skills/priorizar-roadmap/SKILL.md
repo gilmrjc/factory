@@ -31,7 +31,7 @@ Requerido: `ROADMAP-ENTRADA` (ruta a `scope-roadmap.md` o `bridge-roadmap.md`, o
 
 Infiere a partir de:
 - Contenido breve: "prioriza el roadmap de X", "ordena las funcionalidades del bridge roadmap", "¿cuál implementamos primero?", "ordena las funcionalidades"
-- Artefacto: si existe `docs/<domain>/idea/<IDEA-SLUG>/scope-roadmap.md` (producido por `evaluar-alcance-idea`) o `docs/<domain>/initiatives/<PRD-SLUG>/bridge-roadmap.md` (producido por `evaluar-conectividad-tecnica`), leerlo para heredar la lista de ítems, alcance, value proposition y dependencias
+- Artefacto: si existe `docs/<domain>/idea/<IDEA-SLUG>/scope-roadmap.md` (producido por `evaluar-alcance-idea`) o `docs/<domain>/idea/<IDEA-SLUG>/connectivity/bridge-roadmap.md` (producido por `evaluar-conectividad-tecnica`), leerlo para heredar la lista de ítems, alcance, value proposition y dependencias
 - Contenido pegado: si el usuario pega el contenido del roadmap, úsalo directamente
 
 Pregunta si falta: "¿Qué roadmap priorizo? (ruta del scope-roadmap, bridge-roadmap, o pega el contenido)" y espera la respuesta.
@@ -100,12 +100,18 @@ No escribas el documento final hasta haber completado las Fases E–G.
 **Si hay preguntas abiertas sin resolver**:
 - `Ready for: blocked` con las preguntas abiertas que impiden avanzar
 
-## Fase F — Actualizar README del dominio
+## Fase F — Actualizar `discovery-state.md` y README del dominio
 
-Después de escribir `feature-prioritization.md`, actualiza `docs/<domain>/README.md`.
+Después de escribir `feature-prioritization.md`:
 
-- Añade o refresca la entrada `Ver la priorización de funcionalidades/PRDs del dominio` → `idea/<IDEA-SLUG>/feature-prioritization.md` en la tabla de "Puntos de entrada".
-- Si el README no existe, salta a la Fase G.
+1. **Actualiza `discovery-state.md`**: crea o actualiza `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`:
+   - Copia el ranking de funcionalidades en `## Cola de funcionalidades`.
+   - Marca todos los ítems con `estado: pendiente-captura`.
+   - Asigna `next` al `FUNCIONALIDAD-SLUG` del ítem más prioritario y `estado: in-progress`.
+   - Conserva los estados previos si el archivo ya existe.
+2. **Actualiza `docs/<domain>/README.md`**:
+   - Añade o refresca la entrada `Ver la priorización de funcionalidades/PRDs del dominio` → `idea/<IDEA-SLUG>/feature-prioritization.md` en la tabla de "Puntos de entrada".
+   - Si el README no existe, salta a la Fase G.
 
 ## Fase G — Gate de avance condicionado
 

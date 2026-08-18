@@ -37,11 +37,13 @@ NOTA: Al ejecutar las distintas fases, determina las partes que no requieren int
 Requerido: `FUNCIONALIDAD-SLUG` o `IDEA-DESCRIPCION`.
 
 Infiere desde:
+- `FUNCIONALIDAD-SLUG` explícito o `discovery-state.md` `next`: si el skill se ejecuta después de `priorizar-roadmap`, toma el `FUNCIONALIDAD-SLUG` del frontmatter de `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`.
 - Ruta: `docs/<DOMAIN>/idea/<IDEA-SLUG>/scope-roadmap.md` (para extraer una funcionalidad específica del alcance de la idea).
+- Ruta: `docs/<DOMAIN>/idea/<IDEA-SLUG>/feature-prioritization.md`.
 - Slug: si el usuario especifica una funcionalidad del roadmap.
 - Descripción pegada: si el usuario pega la funcionalidad directamente.
 
-Si no se puede inferir la funcionalidad, pregunta: "¿Qué funcionalidad evalúo? (slug del roadmap o descripción)" y detente a esperar la respuesta.
+Si no se puede inferir la funcionalidad, pregunta: "¿Qué funcionalidad evalúo? (slug del roadmap, `FUNCIONALIDAD-SLUG` o descripción)" y detente a esperar la respuesta.
 
 Declara los inputs resueltos: funcionalidad capturada.
 
@@ -114,14 +116,21 @@ Esta fase fija el `status` y `next` y genera los artefactos finales.
    - **Información insuficiente**: sin `next`
 
 3. **Generar artefactos**:
-   - **Prerequisites Assessment** (siempre): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/prerequisites-assessment.md`.
-   - **Bridge Roadmap** (solo si desconectado o parcialmente conectado): `docs/<domain>/idea/<IDEA-SLUG>/connectivity/bridge-roadmap.md`.
+   - **Prerequisites Assessment** (siempre): `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/prerequisites-assessment.md`.
+   - **Bridge Roadmap** (solo si desconectado o parcialmente conectado): `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/bridge-roadmap.md`.
 
    Ambos artefactos deben incluir frontmatter `status` y `next`, TOC, gate de avance documentado y seguir sus templates.
 
-4. **Actualizar README**: si existe `docs/<domain>/idea/<IDEA-SLUG>/README.md` o `docs/<domain>/README.md`, añade los enlaces a los artefactos en la tabla de "Puntos de entrada".
+4. **Actualizar `discovery-state.md`**: si existe `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`, actualiza el ítem con el `FUNCIONALIDAD-SLUG` evaluado:
+   - `estado: conectividad-lista`
+   - `conectividad: <conectado | parcialmente-conectado | desconectado | greenfield>`
+   - `prerequisites-assessment: <ruta>`
+   - Si aplica, `bridge-roadmap: <ruta>`
+   - Si quedan funcionalidades pendientes, actualiza `next` con el siguiente `FUNCIONALIDAD-SLUG` de la cola. Si no, `next: capturar-requerimiento`.
 
-5. **Checklist de salida** (interno): antes de terminar, verifica:
+5. **Actualizar README**: si existe `docs/<domain>/idea/<IDEA-SLUG>/README.md` o `docs/<domain>/README.md`, añade los enlaces a los artefactos en la tabla de "Puntos de entrada".
+
+6. **Checklist de salida** (interno): antes de terminar, verifica:
    - Funcionalidad y modo correctos.
    - Veredicto de conectividad justificado.
    - Gate de avance documentado con `status` y `next` correctos.

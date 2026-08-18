@@ -56,7 +56,7 @@ Ordena primero por dependencias (ítems desbloqueados primero; si un ítem desbl
 - **Ítem prioritario**: [Primer ítem con estado `Priorizable` en el ranking; si Puesto 1 está `Bloqueado`, saltar al siguiente `Priorizable`]
 - **Justificación**: [Por qué este ítem]
 - **Next step**: `evaluar-conectividad-tecnica` si hay un ítem `Priorizable`; `blocked` si hay preguntas abiertas sin resolver
-- **Ruta del siguiente artefacto esperado**: `docs/<domain>/initiatives/<PRD-SLUG>/connectivity/prerequisites-assessment.md`
+- **Ruta del siguiente artefacto esperado**: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/prerequisites-assessment.md`
 
 ## Notas de escala usadas
 

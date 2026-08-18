@@ -31,5 +31,5 @@ next: evaluar-conectividad-tecnica
 - Puntuación RICE (0-100): <puntuación> (RICE raw: <rice_raw>; Reach=<r>, Impact=<i>, Confidence=<c>, Effort=<e>)
 - Justificación de la revisión de coherencia: <1-2 líneas>
 - Ready for: `evaluar-conectividad-tecnica`
-- Ruta del siguiente artefacto: `docs/<domain>/initiatives/<PRD-SLUG>/connectivity/prerequisites-assessment.md`
+- Ruta del siguiente artefacto: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/prerequisites-assessment.md`
 ```

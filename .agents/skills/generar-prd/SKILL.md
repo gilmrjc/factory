@@ -306,7 +306,7 @@ Ready for valores:
 
 ### README de la iniciativa (índice del PRD)
 
-Como último skill del workflow de PRD, este skill es responsable de crear o actualizar el índice de la iniciativa en `docs/<domain>/initiatives/<PRD-SLUG>/README.md`.
+Este skill es responsable de crear o actualizar el índice de la iniciativa en `docs/<domain>/initiatives/<PRD-SLUG>/README.md`.
 
 **Si no existe** `docs/<domain>/initiatives/<PRD-SLUG>/README.md`:
 - Créalo como índice de la iniciativa con enlaces a todos los artefactos generados.
@@ -373,7 +373,7 @@ Scale (Optimización)
 
 ## Fase H — Restricción de Timeline (NO decomposition en fases)
 
-**Gate anti-pre-especificación de implementación**: la sección 9 (Timeline) del PRD declara **solo la restricción de timeline**, no la decomposition en fases de implementación. La decomposition en epics/fases es job de `planificar-epics` (Workflow 2).
+**Gate anti-pre-especificación de implementación**: la sección 9 (Timeline) del PRD declara **solo la restricción de timeline**, no la decomposition en fases de implementación. La decomposition en epics/fases es job de `planificar-epics`.
 
 **Permitido en sección 9**:
 - "MVP target: ~3-4 semanas"

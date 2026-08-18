@@ -3,7 +3,7 @@ name: validar-viabilidad-producto
 description: >-
   Valida viabilidad de un requerimiento de producto: alineación con visión,
   demanda real, recursos disponibles, riesgo negocio. Salida:
-  docs/<domain>/initiatives/<PRD-SLUG>/product-viability.md con go/no-go. Gate
+  docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/product-viability.md con go/no-go. Gate
   de aprobación antes de proceder a definir usuarios. Úsalo para decidir si
   invertir tiempo en PRD o rechazar idea.
 ---
@@ -16,15 +16,16 @@ Solo análisis: no aprueba finalmente. Genera recomendación para stakeholders.
 
 ## Fase 0 — Resolver entrada
 
-Requerido: `REQ-SLUG` o `REQUIREMENTS-RUTA`.
+Requerido: `FUNCIONALIDAD-SLUG` o `REQUIREMENTS-RUTA`.
 
 Infiere desde:
+- `FUNCIONALIDAD-SLUG` explícito o `discovery-state.md` `next`: si se invoca desde el flujo de descubrimiento, toma el `FUNCIONALIDAD-SLUG` del frontmatter de `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`.
 - Ruta: `docs/**/initiatives/**/requirements.md`
 - Contenido pegado: si usuario pega requerimiento capturado
 - Requerimiento previo: busca archivo más reciente de `*-requirements.md`
 - Existente: busca `docs/**/initiatives/**/product-viability.md` para reanudar/actualizar una validación previa
 
-Pregunta cuando falta: "¿Qué requerimiento valido? (ruta o slug)"
+Pregunta cuando falta: "¿Qué requerimiento valido? (ruta o `FUNCIONALIDAD-SLUG`)"
 
 Declara inputs resueltos: requerimiento, restricciones leídas.
 
@@ -196,9 +197,9 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 **Razones**: Off-roadmap, validación débil, recursos no disponibles
 ```
 
-## Fase F — Escribir Validación
+## Fase F — Escribir Validación y actualizar `discovery-state.md`
 
-Estructura:
+Estructura del documento:
 
 1. **Resumen ejecutivo**: Go/No-Go + rationale
 2. **Alineación Estratégica**: ¿Encaja con visión?
@@ -209,9 +210,17 @@ Estructura:
 7. **Condiciones (si Conditional)**: Qué debe resolverse
 8. **Ready for**: `definir-usuarios` o `blocked` (con ruta relativa del siguiente artefacto)
 
+**Actualización de `discovery-state.md`**: después de escribir el artefacto, si existe `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`:
+- Marca el ítem del `FUNCIONALIDAD-SLUG` según el veredicto:
+  - `Go` → `estado: viabilidad-go`, `veredicto: Go`, `ready-for: orquestar-diseno-prd`
+  - `Conditional Go` → `estado: viabilidad-conditional-go`, `veredicto: Conditional Go`, `ready-for: <spike|validar-viabilidad-producto>`
+  - `No-Go` → `estado: viabilidad-no-go`, `veredicto: No-Go`, `ready-for: workflow-complete`
+- Añade la ruta a `product-viability.md`.
+- Determina el siguiente `FUNCIONALIDAD-SLUG` pendiente y actualiza `next`. Si no quedan pendientes, fija `next` según el resumen global (p.ej. `orquestar-diseno-prd` si hay al menos un `Go`, `workflow-complete` si todos son `No-Go`, `needs-review` si hay `Conditional Go` con riesgo ejecutivo).
+
 ## Salida
 
-Escribe en: `docs/<domain>/initiatives/<PRD-SLUG>/product-viability.md`
+Escribe en: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/product-viability.md`
 
 **Header requerido** (al inicio del documento):
 - Req slug
@@ -248,7 +257,7 @@ Ready for valores:
 - `blocked`: No-Go o Conditional Go con condiciones críticas no resueltas
 - `spike`: Conditional Go, necesita spike técnico primero
 
-En la sección Ready for, incluye la ruta relativa del siguiente artefacto esperado (ej: `docs/<domain>/initiatives/<PRD-SLUG>/personas-mapping.md`).
+En la sección Ready for, incluye la ruta relativa del siguiente artefacto esperado (ej: `docs/<domain>/idea/<IDEA-SLUG>/<FUNCIONALIDAD-SLUG>/personas-mapping.md`).
 
 ---
 

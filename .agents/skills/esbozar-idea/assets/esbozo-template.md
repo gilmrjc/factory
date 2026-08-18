@@ -11,7 +11,7 @@ date: <YYYY-MM-DD>
 skill: esbozar-idea
 level: producto | feature
 status: ready | conditional | blocked
-next: analizar-idea | orquestar-prd-workflow
+next: analizar-idea | orquestar-descubrimiento-producto
 ---
 ```
 
@@ -19,7 +19,7 @@ El campo **level** indica si la idea es un producto completo/iniciativa nueva (`
 
 El campo **status** describe el estado del esbozo: `ready` (avance libre), `conditional` (avance condicionado por preguntas Importantes), o `blocked` (no avanza). La lógica completa para decidir el valor está en [references/gate-guide.md](../references/gate-guide.md).
 
-El campo **next** es la señal de routing al siguiente skill. Presente solo cuando `status` es `ready` o `conditional`. Valores: `analizar-idea` o `orquestar-prd-workflow`. La decisión se toma en la Fase D (ver SKILL.md).
+El campo **next** es la señal de routing al siguiente skill. Presente solo cuando `status` es `ready` o `conditional`. Valores: `analizar-idea` o `orquestar-descubrimiento-producto`. La decisión se toma en la Fase D (ver SKILL.md).
 
 ## Secciones núcleo (siempre presentes — ambos niveles)
 
