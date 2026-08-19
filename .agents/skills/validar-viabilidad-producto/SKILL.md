@@ -12,6 +12,12 @@ description: >-
 
 Valida si un requerimiento de producto es viable: estrategia, demanda, recursos, riesgo. Gate de go/no-go antes de gastar tiempo en PRD completo.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 Solo análisis: no aprueba finalmente. Genera recomendación para stakeholders.
 
 ## Fase 0 — Resolver entrada
@@ -47,8 +53,8 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
    - ¿Esta feature es consistent con dirección de producto?
    - ¿Mueve un norte explícito de la compañía?
    
-   Ejemplo ✅: "Retención de usuarios es core de Q3 roadmap"
-   Ejemplo ❌: "Nice-to-have, no en roadmap"
+   Ejemplo Sí: "Retención de usuarios es core de Q3 roadmap"
+   Ejemplo No: "Nice-to-have, no en roadmap"
 
 2. **Core vs Nice-to-Have**
    - Core: Resuelve pain point crítico, users pagan por esto
@@ -76,24 +82,24 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 ### Validación de Demanda
 
 **Para MVP o Early Stage** (< 1000 usuarios, < 3 meses):
-- ✅ Feedback directo de usuarios (mínimo 5-10)
-- ✅ Support tickets mencionando este problema
-- ✅ Churn analysis (¿causa de abandono?)
-- ✅ User interviews (cualitativo)
-- ❌ NO usar: A/B tests (muestra muy pequeña), Surveys (sesgadas)
+- Sí: Feedback directo de usuarios (mínimo 5-10)
+- Sí: Support tickets mencionando este problema
+- Sí: Churn analysis (¿causa de abandono?)
+- Sí: User interviews (cualitativo)
+- No: NO usar: A/B tests (muestra muy pequeña), Surveys (sesgadas)
 
 **Para Growth Stage** (1K-10K usuarios, 3-12 meses):
-- ✅ Support tickets + trending
-- ✅ Surveys con mínimo 50 respuestas
-- ✅ Telemetría (users clicking "request feature"?)
-- ✅ NPS/CSAT comments mencionando pain point
-- ⚠️ A/B test landing page si es risky
+- Sí: Support tickets + trending
+- Sí: Surveys con mínimo 50 respuestas
+- Sí: Telemetría (users clicking "request feature"?)
+- Sí: NPS/CSAT comments mencionando pain point
+- Parcial: A/B test landing page si es risky
 
 **Para Scale** (10K+ usuarios, 1+ años):
-- ✅ A/B tests con landing page
-- ✅ Cohort analysis (retención impact)
-- ✅ Surveys con 100+ respuestas
-- ✅ Competitive analysis (market size)
+- Sí: A/B tests con landing page
+- Sí: Cohort analysis (retención impact)
+- Sí: Surveys con 100+ respuestas
+- Sí: Competitive analysis (market size)
 
 **Matriz: Estado × Validación**
 
@@ -134,9 +140,9 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 - ¿Cambios de DB schema? (reversible?)
 
 **Veredicto**:
-- ✅ Recursos suficientes
-- ⚠️ Resources tight (factible pero riesgoso)
-- ❌ Recursos insuficientes (rechazar o postpone)
+- Sí: Recursos suficientes
+- Parcial: Resources tight (factible pero riesgoso)
+- No: Recursos insuficientes (rechazar o postpone)
 ```
 
 ## Fase D — Validar Riesgo de Negocio
@@ -166,9 +172,9 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 | Market shift | Baja | Alto | Monitor trends |
 
 **Veredicto**: Riesgo total = ¿Aceptable para compañía?
-- ✅ Riesgo bajo/manejable
-- ⚠️ Riesgo medio (proceder con caution)
-- ❌ Riesgo alto (reconsiderar)
+- Sí: Riesgo bajo/manejable
+- Parcial: Riesgo medio (proceder con caution)
+- No: Riesgo alto (reconsiderar)
 ```
 
 ## Fase E — Generar Veredicto
@@ -178,12 +184,12 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 
 | Criterio | Status | Weight |
 |----------|--------|--------|
-| Alineación estratégica | ✅ Aligned | 25% |
-| Validación demanda | ✅ Validated (5+ users) | 25% |
-| Recursos disponibles | ✅ Suficientes | 25% |
-| Riesgo manejable | ✅ Low-Medium | 25% |
+| Alineación estratégica | Sí: Aligned | 25% |
+| Validación demanda | Sí: Validated (5+ users) | 25% |
+| Recursos disponibles | Sí: Suficientes | 25% |
+| Riesgo manejable | Sí: Low-Medium | 25% |
 
-**SCORE**: 100% → ✅ GO
+**SCORE**: 100% → GO
 **Veredicto**: Proceder a definir usuarios
 
 ---
@@ -192,12 +198,12 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 
 | Criterio | Status | Weight |
 |----------|--------|--------|
-| Alineación estratégica | ✅ Aligned | 25% |
-| Validación demanda | ⚠️ Weak (2 users) | 25% |
-| Recursos disponibles | ⚠️ Tight (backend only 50%) | 25% |
-| Riesgo manejable | ⚠️ Medium | 25% |
+| Alineación estratégica | Sí: Aligned | 25% |
+| Validación demanda | Parcial: Weak (2 users) | 25% |
+| Recursos disponibles | Parcial: Tight (backend only 50%) | 25% |
+| Riesgo manejable | Parcial: Medium | 25% |
 
-**SCORE**: 75% → ⚠️ CONDITIONAL GO
+**SCORE**: 75% → CONDITIONAL GO
 **Veredicto**: Proceder CON:
 - Spike técnico (2 semanas)
 - Validación adicional (5+ more user interviews)
@@ -209,12 +215,12 @@ Declara inputs resueltos: requerimiento, restricciones leídas.
 
 | Criterio | Status | Weight |
 |----------|--------|--------|
-| Alineación estratégica | ❌ Off-roadmap | 25% |
-| Validación demanda | ❌ No evidence | 25% |
-| Recursos disponibles | ❌ Team fully committed | 25% |
-| Riesgo manejable | ❌ High regulatory risk | 25% |
+| Alineación estratégica | No: Off-roadmap | 25% |
+| Validación demanda | No: No evidence | 25% |
+| Recursos disponibles | No: Team fully committed | 25% |
+| Riesgo manejable | No: High regulatory risk | 25% |
 
-**SCORE**: 0% → ❌ NO-GO
+**SCORE**: 0% → NO-GO
 **Veredicto**: Rechazar o Postpone
 **Razones**: Off-roadmap, validación débil, recursos no disponibles
 ```
@@ -290,8 +296,8 @@ En la sección Ready for, incluye la ruta relativa del siguiente artefacto esper
 ## Nota Importante
 
 **Este es un gate binario**:
-- ✅ Go: Procede a PRD (invierte tiempo)
-- ❌ No-Go: Rechaza idea sin gastar recursos
-- ⚠️ Conditional Go: Resuelve condiciones, luego decide
+- Sí: Go: Procede a PRD (invierte tiempo)
+- No: No-Go: Rechaza idea sin gastar recursos
+- Parcial: Conditional Go: Resuelve condiciones, luego decide
 
 **Objetivo**: Filtrar ideas temprano, evitar PRDs de features que no deberían hacerse.

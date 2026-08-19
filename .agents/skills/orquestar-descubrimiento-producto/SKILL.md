@@ -14,6 +14,13 @@ description: >-
 
 Orquesta la primera mitad del proceso: toma una idea con resultado claro, la describe, divide el alcance, prioriza, evalúa conectividad, estructura el requerimiento, mapea assumptions y valida la viabilidad de producto. El objetivo es decidir **si conviene construir la funcionalidad** antes de invertir en personas, casos de uso y PRD.
 
+## Refuerzo de ejecución
+
+- **No escribas artefactos con `write`**. Cada fase se delega a un subagente (`run_subagent`) que ejecuta el skill correspondiente.
+- **Cada fase es individual**. Nunca un solo subagente ejecuta todo el workflow.
+- Si un subagente retorna `PAUSA-ACTIVA`, propaga la pregunta al usuario, espera respuesta y reanuda el mismo subagente/fase.
+- El orquestador solo lee artefactos, genera `Handoff blocks` y decide el `next`.
+
 **Fases**:
 0. `esbozar-idea` (previo, no incluido) — `esbozar-idea` corre a mano cuando la idea no tiene resultado claro.
 0.5. **Reconstrucción de estado** — Lee `workflow-state.md` para reanudar.
@@ -50,12 +57,78 @@ Orquesta la primera mitad del proceso: toma una idea con resultado claro, la des
 
 ## Protocolo de delegación
 
-Para cada fase, invoca el skill correspondiente y mantente en la misma invocación mientras el skill no termine o no se detenga por una pausa interna.
+El orquestador **nunca** delega el workflow completo a un solo subagente. Ejecuta cada fase de forma individual mediante `run_subagent`, y mantiene el control del flujo entre fases.
 
-- Si el skill avanza sin pausas y entrega el artefacto final, evalúa el handoff.
-- Si el skill **se detiene por aclaración** (punto de pausa, pregunta crítica, información faltante), **propaga la pregunta al usuario**, espera la respuesta y **reanuda la misma invocación del skill** con el input corregido/añadido.
-- Si el skill retorna un artefacto con `status: conditional` o `blocked`, aplica el Protocolo de Gate de Avance Condicionado.
-- En hosts sin delegación, ejecuta inline; cuando el skill pide aclaración, presenta la pregunta al usuario y continúa.
+### Reglas obligatorias
+
+- **Ejecuta cada fase con `run_subagent`**. No ejecutes las fases "inline" escribiendo directamente los artefactos con `write`.
+- El orquestador **nunca** crea ni modifica los artefactos de salida de un skill con `write`. Los artefactos los genera el subagente de la fase.
+- El orquestador solo lee artefactos existentes para reconstruir estado o evaluar handoffs.
+- Un subagente ejecuta **una sola fase** (un skill) y luego termina.
+- El subagente **no** decide cuál es la siguiente fase; eso lo hace el orquestador principal.
+- El subagente **no** reanuda por sí solo; el orquestador principal decide si reanudar con la respuesta del usuario.
+
+### Ejecución paso a paso
+
+1. El orquestador invoca `run_subagent` para la fase actual.
+2. El subagente ejecuta el skill correspondiente.
+3. El orquestador principal recibe el resultado del subagente y decide:
+   - Si retorna un `PAUSA-ACTIVA`:
+     - Propaga al usuario: **Detectado** y **Pregunta**.
+     - Espera la respuesta.
+     - Reanuda **el mismo subagente/fase** con la respuesta añadida al input (usa `resume` del subagente si está disponible, o re-invoca con el contexto completo).
+   - Si retorna un artefacto final:
+     - Evalúa el handoff.
+     - Si `status: conditional` o `blocked`, aplica el Protocolo de Gate de Avance Condicionado.
+     - Si `status: ready`, avanza a la siguiente fase.
+
+### Plantilla de subagente por fase
+
+Para cada fase, invoca `run_subagent` con `profile: subagent_general` y un `task` específico:
+
+- **Fase Pre-A** — `analizar-idea`:
+  ```
+  Ejecuta el skill `analizar-idea` con IDEA-DESCRIPCION: <descripción>. Lee su SKILL.md, sigue cada PAUSA-CHECK/PAUSA-ACTIVA y devuelve el artefacto `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md` o el PAUSA-ACTIVA activado.
+  ```
+
+- **Fase A** — `evaluar-alcance-idea`:
+  ```
+  Ejecuta el skill `evaluar-alcance-idea` usando `idea-analysis.md`. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve `scope-roadmap.md` o pausa.
+  ```
+
+- **Fase B** — `priorizar-roadmap`:
+  ```
+  Ejecuta el skill `priorizar-roadmap` sobre `scope-roadmap.md`. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve `feature-prioritization.md` y `discovery-state.md` o pausa.
+  ```
+
+- **Fase C** — `evaluar-conectividad-tecnica`:
+  ```
+  Ejecuta el skill `evaluar-conectividad-tecnica` para el FUNCIONALIDAD-SLUG del `next` de `discovery-state.md`. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve `prerequisites-assessment.md` (y `bridge-roadmap.md` si aplica) o pausa.
+  ```
+
+- **Fase D** — `capturar-requerimiento`:
+  ```
+  Ejecuta el skill `capturar-requerimiento` para el FUNCIONALIDAD-SLUG del `next` de `discovery-state.md`. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve `captured-requirement.md` o pausa.
+  ```
+
+- **Fase D.5** — `mapear-assumptions`:
+  ```
+  Ejecuta el skill `mapear-assumptions` para el FUNCIONALIDAD-SLUG del `next` de `discovery-state.md`. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve `assumption-map.md` o pausa.
+  ```
+
+- **Fase D.5.5** — `construir-spike`:
+  ```
+  Ejecuta el skill `construir-spike` para la pregunta de feasibility. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve notas de spike o pausa.
+  ```
+
+- **Fase E** — `validar-viabilidad-producto`:
+  ```
+  Ejecuta el skill `validar-viabilidad-producto` para el FUNCIONALIDAD-SLUG del `next` de `discovery-state.md`. Sigue sus PAUSA-CHECK/PAUSA-ACTIVA y devuelve `product-viability.md` o pausa.
+  ```
+
+### Handoff entre fases
+
+Después de cada fase, el orquestador genera el `Handoff block` y lo usa para decidir el `next`.
 
 ### Handoff block template
 

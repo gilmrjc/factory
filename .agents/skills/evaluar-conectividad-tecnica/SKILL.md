@@ -21,11 +21,17 @@ description: >-
 
 Evalúa los prerequisitos técnicos y la conectividad de una funcionalidad priorizada con el codebase actual. Determina si la funcionalidad está conectada al producto existente o si necesita funcionalidades puente para construir la infraestructura necesaria.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 Solo analiza y planifica: no implementa ni modifica código; prepara la funcionalidad para el siguiente paso.
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: existe una funcionalidad definida en un `scope-roadmap.md` o `feature-prioritization.md` (roadmap priorizado) y se necesita saber si el codebase actual la soporta o qué falta para que la soporte.
+- **Sí**: existe una funcionalidad definida en un `scope-roadmap.md` o `feature-prioritization.md` (roadmap priorizado) y necesitas saber si el codebase actual la soporta o qué falta para que la soporte.
 - **No**: evaluar conectividad de un epic específico (usa `evaluar-conectividad-epic`), validar viabilidad técnica a fondo con deuda técnica bloqueante (usa `validar-viabilidad-tecnica`), priorizar funcionalidades (usa `priorizar-roadmap`), implementar o modificar código.
 
 **Scope**: Este skill evalúa conectividad de una funcionalidad priorizada. Para evaluar un epic específico, usa `evaluar-conectividad-epic`.
@@ -37,7 +43,7 @@ NOTA: Al ejecutar las distintas fases, determina las partes que no requieren int
 Requerido: `FUNCIONALIDAD-SLUG` o `IDEA-DESCRIPCION`.
 
 Infiere desde:
-- `FUNCIONALIDAD-SLUG` explícito o `discovery-state.md` `next`: si el skill se ejecuta después de `priorizar-roadmap`, toma el `FUNCIONALIDAD-SLUG` del frontmatter de `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`.
+- `FUNCIONALIDAD-SLUG` explícito o `discovery-state.md` `next`: después de `priorizar-roadmap`, toma el `FUNCIONALIDAD-SLUG` del frontmatter de `docs/<domain>/idea/<IDEA-SLUG>/discovery-state.md`.
 - Ruta: `docs/<DOMAIN>/idea/<IDEA-SLUG>/scope-roadmap.md` (para extraer una funcionalidad específica del alcance de la idea).
 - Ruta: `docs/<DOMAIN>/idea/<IDEA-SLUG>/feature-prioritization.md`.
 - Slug: si el usuario especifica una funcionalidad del roadmap.

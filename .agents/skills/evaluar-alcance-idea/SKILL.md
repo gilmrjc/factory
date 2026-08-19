@@ -16,6 +16,12 @@ description: >-
 
 Evalúa si la idea merece inversión antes de dedicar tiempo a dividir alcance. Si procede, evalúa si la idea contiene múltiples funcionalidades que requieren PRDs separados o una sola funcionalidad cohesiva que justifica un solo PRD, y divide ideas complejas en funcionalidades individuales manejables.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 Solo análisis y planificación, no implementa ni modifica código, prepara la idea para priorización.
 
 ## Cuándo usarlo y cuándo no
@@ -30,7 +36,7 @@ NOTA: Al ejecutar las distintas fases, determina las partes que no requieren int
 Requerido: `IDEA-DESCRIPCION`.
 
 Infiere desde:
-- Contenido breve: "Agregar dark mode", "Sistema de notificaciones", etc.
+- Contenido breve: "Agregar dark mode", "Sistema de notificaciones", "Exportar reportes"
 - Artefacto: si existe `docs/<domain>/idea/<IDEA-SLUG>/idea-analysis.md` (producido por `analizar-idea`), leerlo para heredar la descripción del producto, problema, estado final, beneficiarios y decisiones resueltas
 
 Pregunta cuando falta: "¿Cuál es la idea que evalúo? (descripción breve o completa)" y detente a esperar la respuesta.
@@ -99,7 +105,7 @@ El estado preliminar se refina en la Fase F según las preguntas abiertas (decis
 
 ## Fase F: Gate de Avance Condicionado (Preguntas Abiertas)
 
-**Gate obligatorio.** Ejecuta este gate después de completar el análisis (Fases A–E) y antes de fijar el `status` y `next` en el frontmatter. El documento no está completo hasta que Fase F se ejecuta y se documenta.
+**Gate obligatorio.** Ejecuta este gate después de completar el análisis (Fases A–E) y antes de fijar el `status` y `next` en el frontmatter. El documento no está completo hasta que ejecutes y documentes Fase F.
 
 Consulta [references/advancement-gate-guide.md](references/advancement-gate-guide.md) para la lógica completa de estados de avance, clasificación de severidad, reglas y documentación del gate.
 
@@ -122,7 +128,7 @@ Antes de marcar el skill como terminado, verifica cada ítem. Si alguno es "No",
 1. Gate preliminar de viabilidad evaluado correctamente (alineación estratégica)
 2. Tamaño declarado con justificación (`full` / `lite`)
 3. Evaluación correcta del alcance (múltiples funcionalidades vs única)
-4. División del alcance cuando fue necesario
+4. División del alcance que decidiste
 5. Identificación de funcionalidades con alcance claro
 6. Value proposition definido para cada funcionalidad
 7. Dependencias identificadas entre funcionalidades

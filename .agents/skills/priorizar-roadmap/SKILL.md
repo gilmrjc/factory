@@ -16,6 +16,12 @@ description: >-
 
 Toma un roadmap de funcionalidades (incluidas funcionalidades puente) y produce un ranking priorizado con la metodología RICE. El resultado es un documento de decisión: ordena los ítems por valor vs esfuerzo, deja claro por qué un ítem va antes que otro y señala qué está bloqueado por dependencias.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 No define el producto, no evalúa viabilidad técnica ni divide el trabajo en tareas; eso corresponde a skills posteriores.
 
 ## Cuándo usarlo y cuándo no

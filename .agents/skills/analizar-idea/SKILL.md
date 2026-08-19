@@ -16,9 +16,15 @@ description: >-
 
 Toma una idea que contenga el problema a resolver y redacta una descripción narrativa del producto que la resuelve. La descripción es de nivel producto: pinta el problema, el resultado al que conduce y la solución que conecta ambos. Sirve para entender qué es el producto, qué experiencia ofrece, qué forma tiene, qué comportamientos entrega, qué no es, sin mencionar tecnología, arquitectura ni implementación. El detalle es lo suficientemente completo para que quien gestione el desarrollo pueda hacer un análisis posterior y descomponer en épicas y tareas sin tener que volver a preguntar lo básico. La viabilidad, el alcance, la priorización, las personas, los casos de uso y el PRD son trabajo de skills posteriores.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: la idea ya describe un problema claro y se necesita explicar qué producto lo resuelve antes de avanzar a formalización. El objetivo es pintar el producto y la experiencia, no la implementación.
+- **Sí**: la idea ya describe un problema claro y necesitas explicar qué producto lo resuelve antes de avanzar a formalización. El objetivo es pintar el producto y la experiencia, no la implementación.
 - **No**: esbozar el resultado sin solución, evaluar viabilidad o generar go/no-go, estructurar requerimientos formales, dividir alcance, definir personas o casos de uso, o generar el PRD. Detener si la descripción empieza a incluir stack técnico, esquemas de datos o detalles de implementación.
 
 NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutar tareas en paralelo o para ejecutarlas de forma consecutiva pero aprovechando el subagente especializado.
@@ -31,7 +37,12 @@ Infiere desde:
 - Idea expresada en el mensaje: "Quiero algo para que la gente exporte reportes", "estaría bueno notificar a los usuarios", "modo oscuro".
 - Archivo referenciado en el mensaje: si el usuario menciona un archivo que contiene la idea, úsalo y cita la ruta.
 
-Si no se puede inferir la idea o el resultado no está claro, pregunta: "¿Cuál es la idea y qué resultado quieres lograr? (si no queda claro el problema a resolver, usa `esbozar-idea` primero)" y detente a esperar la respuesta.
+**PAUSA-CHECK**: ¿Se infiere al menos una idea y un resultado deseado del input?
+- SI → registra `IDEA-DESCRIPCION` y continúa.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No logro inferir la idea o el resultado que se quiere lograr.
+  - **Pregunta**: "¿Cuál es la idea y qué resultado quieres lograr? (si no queda claro el problema a resolver, usa `esbozar-idea` primero)"
+  - **Acción**: espera la respuesta, añádela al input y reinicia este paso.
 
 ## Fase A — Eco y diagnóstico inicial
 
@@ -53,7 +64,16 @@ Criterios para distinguir nivel:
 - **Producto**: no hay producto previo o la idea define un espacio nuevo (no extiende uno existente). Requiere crear módulos nuevos y no existe un punto claro del sistema que pueda absorber la idea.
 - **Feature**: hay un módulo en el producto existente que se puede usar como base para realizar una función específica ("modo oscuro", "exportar reportes", "notificaciones push", "agregar autenticación con Google"). Generalmente se expresa como una extensión para mejorar la experiencia del usuario.
 
-Presenta ambos diagnósticos y confirma que quiere describir la funcionalidad antes de avanzar. Si el usuario ya trae una idea con producto visible (madurez "Casi lista"), ofrece generar la descripción con la información disponible. En cualquiera de los casos detente y espera la respuesta
+**PAUSA-CHECK**: ¿El usuario confirma o corrige el diagnóstico?
+- SI (confirma o no responde sin corrección) → continúa a Fase B.
+- NO (corrige) → **PAUSA-ACTIVA**:
+  - **Detectado**: El usuario ajustó el diagnóstico o la interpretación.
+  - **Pregunta**: "Gracias por la corrección. ¿Puedes aclarar la parte que no coincidió?"
+  - **Acción**: aplica la corrección, actualiza el diagnóstico y reinicia este paso.
+- SI, pero madurez "Verde" → **PAUSA-ACTIVA**:
+  - **Detectado**: La idea es demasiado vaga para describir el producto.
+  - **Pregunta**: "La idea aún está muy verde. ¿Quieres primero esbozarla con `esbozar-idea`, o me das más contexto del problema y el resultado?"
+  - **Acción**: espera la respuesta y reinicia este paso.
 
 ## Fase B - Resolución de dominio
 
@@ -70,14 +90,68 @@ Consulta [references/domain-resolution-guide.md](references/domain-resolution-gu
 
 ## Fase C — Diálogo de descripción interactiva
 
-Conduce un diálogo de ida y vuelta con el usuario. **Describe el producto, no la implementación**: el objetivo es pintar el problema, el resultado y la solución con suficiente detalle para planificar, no cómo se construye. Si el usuario empieza a proponer stack técnico o arquitectura, redirígelo al producto ("¿Qué experiencia quieres que el usuario viva con eso?"). Busca cubrir las dimensiones del artefacto, en este orden:
+Conduce un diálogo de ida y vuelta con el usuario. **Describe el producto, no la implementación**: el objetivo es pintar el problema, el resultado y la solución con suficiente detalle para planificar, no cómo se construye. Si el usuario empieza a proponer stack técnico o arquitectura, redirígelo al producto.
 
-1. **Confirmar el problema** — si viene de esbozo, confirma brevemente. Si la idea viene bruta, aclara los síntomas de hoy, quién sufre y el workaround actual sin solución.
-2. **Confirmar el resultado** — el estado final al que se quiere llegar, el flujo del usuario después del cambio, qué deja de pasar. Sin solución.
-3. **Pintar la solución** — la pregunta central: "¿Qué producto entrega ese estado final? Descríbelo por la experiencia que ofrece el usuario, no por cómo se construye." Explora la forma, la experiencia, qué es y qué no es.
-4. **Explorar comportamientos clave** — qué hace el producto, en términos de experiencia.
-5. **Explorar escenarios y variantes** — las bifurcaciones de experiencia que el producto necesita resolver (fallo, saturación, ausencia, etc.). No las resuelvas aquí; identifícalas para análisis posterior.
-6. **Aclarar el beneficiario** — quién se beneficia, ligero (un rol o segmento). Se introduce naturalmente al hablar del producto, no como pregunta aislada.
+Trabaja en bloques pequeños (2 o 3 preguntas a la vez). No todas las preguntas necesitan respuesta explícita: muchas se infieren del diálogo o del repo.
+
+### Paso 1 — Confirmar el problema
+
+**PAUSA-CHECK**: ¿Se puede confirmar o inferir el problema central (síntomas, quién sufre, workaround actual)?
+- SI → registra `problema confirmado` y continúa.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No logro confirmar el problema central.
+  - **Pregunta**: "¿Qué síntomas observas hoy, quién los sufre y qué workaround usan?"
+  - **Acción**: espera la respuesta, añádela y reinicia este paso.
+
+### Paso 2 — Confirmar el resultado
+
+**PAUSA-CHECK**: ¿Se puede describir el estado final al que se quiere llegar?
+- SI → registra `resultado esperado` y continúa.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No logro describir el resultado esperado.
+  - **Pregunta**: "¿Cómo cambia la experiencia del usuario cuando esto esté listo? ¿Qué deja de pasar?"
+  - **Acción**: espera la respuesta, añádela y reinicia este paso.
+
+### Paso 3 — Pintar la solución
+
+**PAUSA-CHECK**: ¿Se puede pintar el producto/solución en términos de experiencia, sin tecnología?
+- SI → registra `solución propuesta` y continúa.
+- NO, el usuario propone stack o arquitectura → **PAUSA-ACTIVA**:
+  - **Detectado**: La descripción incluye detalles de implementación.
+  - **Pregunta**: "Entiendo que mencionas `<detalle técnico>`. ¿Qué experiencia quieres que el usuario viva con eso?"
+  - **Acción**: registra el detalle como "decisión de diseño pendiente", espera la aclaración de experiencia y reinicia este paso.
+- NO, no hay propuesta → **PAUSA-ACTIVA**:
+  - **Detectado**: No hay descripción de la solución.
+  - **Pregunta**: "¿Qué producto entrega ese estado final? Descríbelo por la experiencia del usuario."
+  - **Acción**: espera la respuesta y reinicia este paso.
+
+### Paso 4 — Explorar comportamientos clave
+
+**PAUSA-CHECK**: ¿Se identifican 2-5 comportamientos clave del producto en términos de experiencia?
+- SI → registra `comportamientos clave` y continúa.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No logro identificar comportamientos clave.
+  - **Pregunta**: "¿Qué hace el producto? Dame 2-5 acciones principales que el usuario puede realizar."
+  - **Acción**: espera la respuesta y reinicia este paso.
+
+### Paso 5 — Explorar escenarios y variantes
+
+**PAUSA-CHECK**: ¿Se identifican escenarios alternativos (fallos, saturación, ausencia, datos faltantes, permisos denegados, timeout)?
+- SI → registra `variantes`.
+- NO, pero hay dudas → **PAUSA-ACTIVA**:
+  - **Detectado**: No quedan claros los escenarios alternativos.
+  - **Pregunta**: "¿Qué pasa cuando algo falla, falta o hay demasiados datos? ¿Hay variantes de experiencia que deba conocer?"
+  - **Acción**: espera la respuesta y reinicia este paso.
+- NO y no parecen relevantes → registra `No aplica` y continúa.
+
+### Paso 6 — Aclarar el beneficiario
+
+**PAUSA-CHECK**: ¿Se sabe quién se beneficia (rol o segmento)?
+- SI → registra `beneficiario`.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No queda claro el beneficiario.
+  - **Pregunta**: "¿Quién usa o se beneficia de este producto/funcionalidad?"
+  - **Acción**: espera la respuesta y reinicia este paso.
 
 El nivel diagnosticado en la Fase A modula el alcance del diálogo:
 - **Producto** → diálogo amplio para establecer un espacio nuevo (la experiencia se describe de cero)
@@ -85,11 +159,9 @@ El nivel diagnosticado en la Fase A modula el alcance del diálogo:
 
 La diferencia de alcance por nivel está ejemplificada en [references/examples/example-producto.md](references/examples/example-producto.md) y [references/examples/example-feature.md](references/examples/example-feature.md).
 
-No interroges al usuario con un cuestionario largo de una sola vez, trabaja en bloques pequeños (2 o 3 preguntas a la vez). No todas las preguntas necesitan una respuesta explícita: muchas pueden inferirse del diálogo o del contexto del repo. Si el usuario ya describió el producto con suficiente claridad, no prolongues el diálogo para llenar huecos imaginarios.
-
 ## Fase D — Consolidar descripción
 
-Consolida la descripción usando el template en [idea-analysis-template.md](assets/idea-analysis-template.md). El template especifica la estructura del artefacto. Sigue el template como guía, no de forma literal. Usa tu juicio para determinar si se necesita alguna modificicación o cambio debido al tipo de información existente.
+Consolida la descripción usando el template en [idea-analysis-template.md](assets/idea-analysis-template.md). El template especifica la estructura del artefacto. Sigue el template como guía, no de forma literal. Decide si necesitas ajustar la estructura según el tipo de información disponible.
 
 El artefacto se escribe en forma narrativa (prosa), pero con la densidad necesaria para que quien gestione el desarrollo pueda hacer análisis técnico y descomponer en épicas y tareas sin tener que volver a preguntar lo básico. Los comportamientos clave son las semillas de épicas/tareas: cada uno es una unidad de producto descomponible. Las variantes se declaran como decisiones diferidas, no se resuelven aquí.
 
@@ -107,7 +179,7 @@ Para las preguntas abiertas, usa el template en [open-questions-template.md](ass
 
 El gate evalúa si la narrativa pinta un producto válido, no si llenó campos. Las preguntas del gate (2 Críticas, 2 Importantes, 2 Menores) están especificadas en [idea-analysis-template.md](assets/idea-analysis-template.md). Sigue las instrucciones del template al escribir el artefacto. Resumen operativo:
 
-1. **Decisión de status**: evalúa el inventario de preguntas abiertas. `ready` si no hay Críticas/Importantes sin resolver. `conditional` si hay Importantes sin resolver (el usuario fue alertado y eligió avanzar). `blocked` si hay Críticas sin resolver.
+1. **Decisión de status**: evalúa el inventario de preguntas abiertas. `ready` si no hay Críticas/Importantes sin resolver. `conditional` si hay Importantes sin resolver (alertaste al usuario y eligió avanzar). `blocked` si hay Críticas sin resolver.
 2. **Decisión de next**: si `status` es `ready` o `conditional`, `next: evaluar-alcance-idea` (o `orquestar-descubrimiento-producto`). Si `blocked`, `next` se omite.
 3. **Documentación del gate**: añade al artefacto una subsección "Gate de avance" que registre inventario de preguntas (críticas/importantes/menores) con estado de resolución, evidencia de alerta (si hubo), y estado final de avance. Obligatoria incluso si todas las preguntas se resolvieron inline.
 

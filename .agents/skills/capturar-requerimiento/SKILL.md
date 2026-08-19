@@ -22,11 +22,17 @@ description: >-
 
 Captura y estructura un requerimiento de producto bruto. Transforma una idea vaga o descripción informal en documento estructurado listo para validación.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 Solo documentación: no valida, no aprueba. Estructura la idea.
 
 ## Cuándo usarlo y cuándo no
 
-- **Sí**: existe una idea o feature request informal y se necesita estructurar el requerimiento antes de mapear supuestos o validar viabilidad. La fuente puede ser un mensaje, un email, una descripción pegada o un artefacto previo del workflow (`feature-prioritization.md` o `prerequisites-assessment.md`).
+- **Sí**: existe una idea o feature request informal y debes estructurar el requerimiento antes de mapear supuestos o validar viabilidad. La fuente puede ser un mensaje, un email, una descripción pegada o un artefacto previo del workflow (`feature-prioritization.md` o `prerequisites-assessment.md`).
 - **No**: describir el producto (usa `analizar-idea`), evaluar viabilidad (usa `validar-viabilidad-producto`), generar el PRD formal, dividir en épicas (usa `dividir-epic`), implementar o modificar código.
 
 NOTA: Al ejecutar las distintas fases, determina las partes que no requieren intervención del usuario y divide las tareas para usar subagentes, ya sea para ejecutarlas en paralelo o de forma consecutiva pero aprovechando el subagente especializado.
@@ -39,7 +45,7 @@ Infiere desde:
 - `FUNCIONALIDAD-SLUG` explícito: si el usuario o el orquestador lo provee.
 - `discovery-state.md`: si existe, toma el `next` actual como `FUNCIONALIDAD-SLUG` y lee el nombre/descripción de la funcionalidad desde `feature-prioritization.md` o `scope-roadmap.md`.
 - Descripción pegada: si el usuario pega la idea/feature request.
-- Contenido breve: "Agregar dark mode", "Sistema de notificaciones", etc.
+- Contenido breve: "Agregar dark mode", "Sistema de notificaciones", "Exportar reportes"
 - Artefacto previo: `docs/<domain>/idea/<IDEA-SLUG>/connectivity/prerequisites-assessment.md` o `docs/<domain>/idea/<IDEA-SLUG>/feature-prioritization.md` cuando viene de `evaluar-conectividad-tecnica` o `priorizar-roadmap`.
 - Email o chat snippet: si el usuario copia descripción informal.
 
@@ -49,19 +55,65 @@ Pregunta cuando falta: "¿Cuál es la idea que capturo? (descripción breve o co
 
 ## Fase A — Analizar Idea Bruta
 
-Lee la descripción e identifica:
-1. **Problema central**: ¿Qué problema resuelve?
-2. **Contexto**: ¿Por qué importa ahora?
-3. **Resultado esperado**: ¿Qué cambia para el usuario o el negocio?
-4. **Solución propuesta**: ¿Qué se propone?
-5. **Actores**: ¿Quiénes están involucrados?
-6. **Preguntas abiertas**: Información faltante.
+Para cada paso, intenta extraer la información. Si no es posible, ejecuta `PAUSA-ACTIVA` antes de continuar.
 
-**Puntos de pausa** (detente y pregunta si ocurre):
-- No se puede inferir el **problema central** o el **resultado esperado**.
-- La descripción contiene detalles de implementación (solutionización): detente y advierte que se moverán a "Preguntas abiertas" como decisiones pendientes, y pregunta si el usuario quiere aclarar el "qué" antes de continuar.
-- Faltan **actores** o la **audiencia afectada** es ambigua.
-- Hay términos del dominio desconocidos que cambiarían el alcance.
+### Paso 1 — Extraer problema central
+
+**PAUSA-CHECK**: ¿El input declara o deja inferir un problema claro que alguien sufre?
+- SI → registra `problema central`.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No logro identificar el problema central.
+  - **Pregunta**: "¿Qué problema concreto resuelve esta funcionalidad? ¿Quién lo sufre y qué workaround usa hoy?"
+  - **Acción**: espera la respuesta, añádela al input y reinicia este paso.
+
+### Paso 2 — Extraer contexto
+
+**PAUSA-CHECK**: ¿Se sabe por qué importa ahora?
+- SI → registra `contexto`.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No queda claro por qué esta funcionalidad importa ahora.
+  - **Pregunta**: "¿Qué lo activa? (cambio de negocio, feedback de usuarios, competencia, deuda técnica u otra causa)".
+  - **Acción**: espera la respuesta, añádela al input y reinicia este paso.
+
+### Paso 3 — Extraer resultado esperado
+
+**PAUSA-CHECK**: ¿Se describe el cambio observable para el usuario o negocio?
+- SI → registra `resultado esperado`.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No logro identificar el resultado esperado.
+  - **Pregunta**: "¿Qué cambia para el usuario o el negocio cuando esta funcionalidad esté lista?"
+  - **Acción**: espera la respuesta, añádela al input y reinicia este paso.
+
+### Paso 4 — Extraer solución propuesta
+
+**PAUSA-CHECK**: ¿El input propone un "qué" (capacidad/experiencia) sin detalles de implementación?
+- SI → registra `solución propuesta`.
+- NO, contiene detalles de implementación → **PAUSA-ACTIVA**:
+  - **Detectado**: La descripción contiene detalles de implementación.
+  - **Pregunta**: "Entiendo que mencionas `<detalle>`. ¿Qué capacidad de usuario esperas que habilite? Responde en términos de experiencia, no de tecnología."
+  - **Acción**: registra el detalle como "decisión de diseño pendiente" en Preguntas abiertas, espera la aclaración del "qué" y reinicia este paso.
+- NO, no propone nada → **PAUSA-ACTIVA**:
+  - **Detectado**: No hay propuesta de solución.
+  - **Pregunta**: "¿Qué solución o capacidad propones?"
+  - **Acción**: espera la respuesta y reinicia este paso.
+
+### Paso 5 — Extraer actores
+
+**PAUSA-CHECK**: ¿Se identifican los actores involucrados?
+- SI → registra `actores`.
+- NO → **PAUSA-ACTIVA**:
+  - **Detectado**: No queda clara la audiencia afectada.
+  - **Pregunta**: "¿Quién usa o se beneficia de esta funcionalidad? (usuarios primarios, secundarios, roles internos)"
+  - **Acción**: espera la respuesta y reinicia este paso.
+
+### Paso 6 — Revisar términos del dominio
+
+**PAUSA-CHECK**: ¿Hay términos o restricciones del dominio que cambiarían el alcance y no se pueden inferir?
+- NO → continúa.
+- SI → **PAUSA-ACTIVA**:
+  - **Detectado**: Hay términos del dominio que no entiendo: `<lista>`.
+  - **Pregunta**: "¿Qué significa `<término>` en este contexto y qué alcance le asignas?"
+  - **Acción**: espera la respuesta y reinicia este paso.
 
 ## Fase B — Estructurar Requerimiento
 
@@ -71,10 +123,7 @@ Notas específicas para esta fase:
 - **Solución propuesta**: describe propósito/capacidad. Aplica [references/no-solutionization-guide.md](references/no-solutionization-guide.md); si el usuario menciona detalles de implementación, regístralos en "Preguntas abiertas" como "decisión de diseño pendiente — se resuelve en fases posteriores del workflow".
 - **Preguntas abiertas**: extrae unknowns con [assets/open-questions-template.md](assets/open-questions-template.md).
 
-**Puntos de pausa** (detente y pregunta si ocurre):
-- Al estructurar, descubres que falta el **problema central** o el **resultado esperado**.
-- La **solución propuesta** sigue conteniendo detalles de implementación que no se pueden abstraer.
-- Hay contradicciones entre lo declarado en Fase A y lo que se puede escribir de forma coherente.
+Si al estructurar descubres que falta el problema central, el resultado esperado o hay contradicciones, vuelve a Fase A y ejecuta `PAUSA-ACTIVA`.
 
 ## Fase C — Gate de avance y cierre
 

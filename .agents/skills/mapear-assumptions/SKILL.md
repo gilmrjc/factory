@@ -12,6 +12,12 @@ description: >-
 
 Mapea assumptions de producto en 4 buckets (desirability, viability, feasibility, usability) usando framework de David Bland. Prioriza assumptions de alto riesgo/baja evidencia para focus discovery.
 
+## Refuerzo de ejecución
+
+- Ejecuta este skill dentro de un subagente por fase. No generes el artefacto final hasta que todos los `PAUSA-CHECK` pendientes se resuelvan.
+- Si un `PAUSA-CHECK` da **NO**, ejecuta `PAUSA-ACTIVA`, espera la respuesta del usuario y reinicia el paso.
+- Si falta información crítica, detente. No evites la pausa asumiendo.
+
 Solo análisis: no valida, no implementa. Identifica riesgos para probar.
 
 **Condicionalidad**: Este skill es recomendado pero no bloqueante en el descubrimiento de producto. Para contextos greenfield de bajo riesgo puede omitirse con justificación. Para PRDs con hipótesis significativas (cambio de comportamiento, monetización, regulatory), es obligatorio.
@@ -22,12 +28,6 @@ Solo análisis: no valida, no implementa. Identifica riesgos para probar.
 - **Tipos de experimentos**: `references/experiment-types-by-assumption.md` - Mapping assumption type → experimento sugerido
 - **Matriz Risk vs Evidence**: `assets/risk-evidence-matrix-template.md` - Template para graficar assumptions en matriz 2x2
 - **Preguntas Abiertas**: `assets/open-questions-template.md` - Template para documentar información faltante
-
-# Mapeador de Assumptions
-
-Mapea assumptions de producto en 4 buckets (desirability, viability, feasibility, usability) usando framework de David Bland. Prioriza assumptions de alto riesgo/baja evidencia para focus discovery.
-
-Solo análisis: no valida, no implementa. Identifica riesgos para probar.
 
 ## Fase 0 — Resolver entrada
 
@@ -156,9 +156,9 @@ Esto frena el problema donde un assumption de feasibility de riesgo medio/baja e
 
 ## Fase G — Gate de Avance Condicionado (Preguntas Abiertas)
 
-**Gate obligatorio.** Después de completar el análisis (Fases A–E) y antes de fijar el `Ready for` y escribir el documento final, ejecuta este gate. El documento **no está completo** hasta que Fase G se ejecuta y se documenta, incluso si todas las preguntas se resolvieron inline durante las Fases A/B/C/D.
+**Gate obligatorio.** Después de completar el análisis (Fases A–E) y antes de fijar el `Ready for` y escribir el documento final, ejecuta este gate. El documento **no está completo** hasta que ejecutes y documentes Fase G, incluso si resolviste todas las preguntas inline durante las Fases A/B/C/D.
 
-**Principio**: Las preguntas abiertas no bloquean automáticamente el avance, pero el usuario debe ser alertado y tener la opción de responderlas antes de avanzar. El avance es **condicionado**, no automático. La alerta ocurre **antes de** fijar el `Ready for` y avanzar a `validar-viabilidad-producto`.
+**Principio**: Las preguntas abiertas no bloquean automáticamente el avance, pero alerta al usuario y dale la opción de responderlas antes de avanzar. El avance es **condicionado**, no automático. La alerta ocurre **antes de** fijar el `Ready for` y avanzar a `validar-viabilidad-producto`.
 
 ### Estados de avance
 
